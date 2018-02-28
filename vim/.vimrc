@@ -83,9 +83,9 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
 
 " Powerline (vim statusline)
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
 
 " NerdTree
 map <C-n>  :NERDTreeToggle<CR>
