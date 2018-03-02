@@ -2,6 +2,9 @@ urxvt.font: xft:Droid\ Sans\ Mono\ for\ Powerline:pixelsize=19,xft:Inconsolata\ 
 !!urxvt.font: xft:ProFont\ For\ Powerline:pixelsize=19
 urxvt.scrollBar: 0
 urxvt.internalBorder: 3
+urxvt.iso14755: false
+urxvt.keysym.Shift-Control-V: eval:paste_clipboard
+urxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 
 !! ==== SOLARIZED DARK THEME ===
 #define S_base03        #002b36
