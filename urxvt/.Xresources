@@ -1,12 +1,11 @@
-urxvt.font: xft:Droid\ Sans\ Mono\ for\ Powerline:pixelsize=19,xft:Inconsolata\ for\ Powerline:pixelsize=19
-!!urxvt.font: xft:ProFont\ For\ Powerline:pixelsize=19
+urxvt.font: xft:Droid\ Sans\ Mono\ for\ Powerline:pixelsize=19,xft:DejaVu\ Sans\ Mono\ for\ Powerline:pixelsize=19,xft:FontAwesome:pixelsize=19,xft:Material\ Icons:pixelsize=19
 urxvt.scrollBar: 0
-urxvt.internalBorder: 3
 urxvt.iso14755: false
+urxvt.internalBorder: 4
 urxvt.keysym.Shift-Control-V: eval:paste_clipboard
 urxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
-urxvt*transparent: true
-urxvt*shading: 10
+urxvt.transparent: true
+urxvt.shading: 10
 
 !! ==== SOLARIZED DARK THEME ===
 #define S_base03        #002b36

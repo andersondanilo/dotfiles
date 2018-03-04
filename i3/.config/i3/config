@@ -164,9 +164,6 @@ bindsym $mod+shift+x exec lock
 for_window [class="^.*"] border pixel 0
 gaps inner 10
 gaps outer 0
-# smart_gaps on     
-# smart_borders on
-
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id nitrogen --restore
