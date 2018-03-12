@@ -31,7 +31,8 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
-bindsym $mod+Return exec --no-startup-id urxvt -e bash -c "tmux"
+#bindsym $mod+Return exec --no-startup-id urxvt -e bash -c "tmux"
+bindsym $mod+Return exec --no-startup-id urxvt -e bash -c "tmux -q has-session && exec tmux attach-session -d || exec tmux new-session -n$USER"
 
 
 # kill focused window
@@ -161,9 +162,10 @@ bindsym $mod+shift+x exec lock
 
 
 # i3 gaps
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 gaps inner 10
 gaps outer 0
+smart_borders on
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id nitrogen --restore

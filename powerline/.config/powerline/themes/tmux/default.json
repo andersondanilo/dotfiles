@@ -1,9 +1,7 @@
 {
 	"segments": {
+
 		"right": [
-			{
-				"function": "powerline.segments.common.net.hostname"
-			}
 		]
 	}
 }
