@@ -10,6 +10,8 @@ urxvt.saveLines: 0
 !! urxvt.shading: 10
 
 !! ==== SOLARIZED DARK THEME ===
+URxvt.depth: 32
+
 #define S_base03        #002b36
 #define S_base02        #073642
 #define S_base01        #586e75
