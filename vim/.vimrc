@@ -66,6 +66,8 @@ set laststatus=2
 " customize vert split
 set fillchars+=vert:│
 hi VertSplit cterm=NONE ctermbg=NONE
+" fix urxvt color8
+let g:solarized_termtrans = 1
 
 " PLUGIN CONFIGURATIONS
 

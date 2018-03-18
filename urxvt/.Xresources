@@ -10,7 +10,8 @@ urxvt.saveLines: 0
 !! urxvt.shading: 10
 
 !! ==== SOLARIZED DARK THEME ===
-URxvt.depth: 32
+!! URxvt.depth: 32
+URxvt.intensityStyles: false
 
 #define S_base03        #002b36
 #define S_base02        #073642
@@ -39,7 +40,7 @@ URxvt.depth: 32
 
 !! black dark/light
 *color0:                S_base02
-*color8:                S_base03
+*color8:                #0b4d5e
 
 !! red dark/light
 *color1:                S_red
