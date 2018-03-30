@@ -18,6 +18,7 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'elixir-editors/vim-elixir'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
