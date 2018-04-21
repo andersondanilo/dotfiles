@@ -19,7 +19,10 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'elixir-editors/vim-elixir'
+Plugin 'adoy/vim-php-refactoring-toolbox'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'phpactor/phpactor'
+Plugin 'stephpy/vim-php-cs-fixer'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
@@ -85,13 +88,25 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
+let g:syntastic_php_phpcs_args='--standard="PSR2"'
 
 " Powerline (vim statusline)
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
+" EasyMotion
+map <Leader> <Plug>(easymotion-prefix)
+
 " NerdTree
 map <C-n>  :NERDTreeToggle<CR>
 
+" Omnifunc
+set completeopt-=preview
 
+" phpactor
+autocmd FileType php setlocal omnifunc=phpactor#Complete
+let g:phpactorOmniError = v:true
+
+" phpcsfixer
+let g:php_cs_fixer_path = "/home/anderson/.config/composer/vendor/bin"

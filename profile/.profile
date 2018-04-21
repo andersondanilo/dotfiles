@@ -1,4 +1,4 @@
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.config/composer/vendor/bin
 export TERMINAL=urxvt
 
 # keyboard config
