@@ -109,4 +109,4 @@ autocmd FileType php setlocal omnifunc=phpactor#Complete
 let g:phpactorOmniError = v:true
 
 " phpcsfixer
-let g:php_cs_fixer_path = "/home/anderson/.config/composer/vendor/bin"
+let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
