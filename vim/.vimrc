@@ -23,6 +23,7 @@ Plugin 'adoy/vim-php-refactoring-toolbox'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'phpactor/phpactor'
 Plugin 'stephpy/vim-php-cs-fixer'
+Plugin 'altercation/vim-colors-solarized'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
@@ -59,6 +60,9 @@ filetype plugin indent on    " required
 
 syntax on
 
+" solarized theme
+colorscheme solarized
+
 filetype plugin indent on
 " show existing tab with 4 spaces width
 set tabstop=4
@@ -73,6 +77,8 @@ set fillchars+=vert:│
 hi VertSplit cterm=NONE ctermbg=NONE
 " fix urxvt color8
 let g:solarized_termtrans = 1
+" line number
+set nu
 
 " PLUGIN CONFIGURATIONS
 
@@ -107,6 +113,7 @@ set completeopt-=preview
 " phpactor
 autocmd FileType php setlocal omnifunc=phpactor#Complete
 let g:phpactorOmniError = v:true
+nmap <Leader>gtd :call phpactor#GotoDefinition()<CR>
 
 " phpcsfixer
 let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
