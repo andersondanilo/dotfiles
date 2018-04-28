@@ -17,7 +17,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Quramy/tsuquyomi'
-Plugin 'vim-syntastic/syntastic'
+Plugin 'w0rp/ale'
 Plugin 'elixir-editors/vim-elixir'
 Plugin 'adoy/vim-php-refactoring-toolbox'
 Plugin 'easymotion/vim-easymotion'
@@ -86,15 +86,16 @@ set nu
 let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn)|node_modules|vendor|plugins)$'
 
 " Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
-let g:syntastic_php_phpcs_args='--standard="PSR2"'
+" ale lint engine
+let g:ale_linters = {
+\   'php': ['phpcs', 'php'],
+\}
+let g:ale_php_phpcs_standard = 'PSR2'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+highlight ALEErrorSign ctermbg=0 ctermfg=red
+highlight ALEWarningSign ctermbg=0 ctermfg=yellow
+highlight SignColumn ctermbg=0
 
 " Powerline (vim statusline)
 python3 from powerline.vim import setup as powerline_setup

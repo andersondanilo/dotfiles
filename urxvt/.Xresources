@@ -11,7 +11,7 @@ urxvt.saveLines: 0
 !! urxvt.shading: 10
 
 !! ==== SOLARIZED DARK THEME ===
-URxvt.depth: 32
+! URxvt.depth: 32
 URxvt.intensityStyles: false
 
 ! Common
