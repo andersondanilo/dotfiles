@@ -12,7 +12,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
+" Plugin 'kien/ctrlp.vim'
+Plugin 'wincent/command-t'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim'
@@ -88,11 +89,13 @@ let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn)|node_modules|vendor|plugins)$
 " Syntastic
 " ale lint engine
 let g:ale_linters = {
-\   'php': ['phpcs', 'php'],
+\   'php': ['php', 'phpcs', 'phpmd'],
 \}
 let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
 highlight SignColumn ctermbg=0
@@ -101,6 +104,7 @@ highlight SignColumn ctermbg=0
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
+set noshowmode
 
 " EasyMotion
 map <Leader> <Plug>(easymotion-prefix)
@@ -115,6 +119,9 @@ set completeopt-=preview
 autocmd FileType php setlocal omnifunc=phpactor#Complete
 let g:phpactorOmniError = v:true
 nmap <Leader>gtd :call phpactor#GotoDefinition()<CR>
+nmap <Leader>u :call phpactor#UseAdd()<CR>
+vmap <silent><Leader>exm :<C-U>call phpactor#ExtractMethod()<CR>
+nmap <Leader>mm :call phpactor#ContextMenu()<CR>
 
 " phpcsfixer
 let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
