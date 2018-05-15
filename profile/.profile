@@ -6,3 +6,6 @@ alias tmux='tmux -2'
 
 # keyboard config
 setxkbmap -model abnt2 -layout br -variant abnt2
+
+# disable ctrl+s (freeze screen)
+stty -ixon

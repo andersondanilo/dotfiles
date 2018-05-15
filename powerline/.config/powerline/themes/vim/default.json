@@ -60,11 +60,6 @@
 			},
 			{
 				"exclude_modes": ["nc"],
-				"function": "powerline.segments.vim.plugin.ale.ale",
-				"priority": 40
-			},
-			{
-				"exclude_modes": ["nc"],
 				"function": "powerline.segments.vim.plugin.tagbar.current_tag",
 				"draw_soft_divider": false,
 				"priority": 50
@@ -79,6 +74,11 @@
 		],
 		"right": [
 			{
+				"exclude_modes": ["nc"],
+				"function": "powerline.segments.vim.plugin.ale.ale",
+				"priority": 40
+			},
+			{
 				"function": "file_format",
 				"draw_soft_divider": false,
 				"exclude_modes": ["nc"],
@@ -92,7 +92,7 @@
 			{
 				"function": "file_type",
 				"exclude_modes": ["nc"],
-				"priority": 60
+				"priority": 40
 			},
 			{
 				"function": "line_percent",
