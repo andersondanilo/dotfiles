@@ -25,6 +25,15 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'phpactor/phpactor'
 Plugin 'stephpy/vim-php-cs-fixer'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'rhysd/vim-crystal'
+Plugin 'SirVer/ultisnips'
+Plugin 'tobyS/vmustache'
+Plugin 'tobyS/pdv'
+Plugin 'neovim/python-client'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'kristijanhusak/deoplete-phpactor'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
@@ -86,6 +95,16 @@ set nu
 " ControlP
 let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn)|node_modules|vendor|plugins)$'
 
+" php-refactoring-toolbox
+let g:vim_php_refactoring_use_default_mapping = 0
+let g:vim_php_refactoring_make_setter_fluent = 1
+nnoremap <unique> <Leader>cp :call PhpCreateProperty()<CR>
+nnoremap <unique> <Leader>cgs :call PhpCreateSettersAndGetters()<CR>
+
+" pdv
+let g:pdv_template_dir = $HOME . "/.vim/bundle/pdv/templates_snip"
+nnoremap <unique> <Leader>cdoc :call pdv#DocumentWithSnip()<CR>
+
 " Syntastic
 " ale lint engine
 let g:ale_linters = {
@@ -113,7 +132,11 @@ map <Leader> <Plug>(easymotion-prefix)
 map <C-n>  :NERDTreeToggle<CR>
 
 " Omnifunc
-set completeopt-=preview
+" set completeopt-=preview
+
+" Deoplete
+" let g:deoplete#enable_at_startup = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " phpactor
 autocmd FileType php setlocal omnifunc=phpactor#Complete
@@ -125,3 +148,4 @@ nmap <Leader>mm :call phpactor#ContextMenu()<CR>
 
 " phpcsfixer
 let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
+let g:php_cs_fixer_rules = "@PSR2,no_unused_imports"
