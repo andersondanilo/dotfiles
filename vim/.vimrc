@@ -34,6 +34,7 @@ Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'kristijanhusak/deoplete-phpactor'
+Plugin 'RRethy/vim-illuminate'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
@@ -71,6 +72,7 @@ filetype plugin indent on    " required
 syntax on
 
 " solarized theme
+set background=dark
 colorscheme solarized
 
 filetype plugin indent on
@@ -149,3 +151,6 @@ nmap <Leader>mm :call phpactor#ContextMenu()<CR>
 " phpcsfixer
 let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
 let g:php_cs_fixer_rules = "@PSR2,no_unused_imports"
+
+" CommandT
+let g:CommandTFileScanner = "git"
