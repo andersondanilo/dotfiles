@@ -1,8 +1,0 @@
-#!/bin/bash
-IMAGE=/tmp/screenshot.png
-
-scrot $IMAGE
-
-convert $IMAGE -blur 0x5  $IMAGE
-
-i3lock -i $IMAGE

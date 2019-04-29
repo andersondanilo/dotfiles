@@ -24,7 +24,7 @@ font pango:Droid Sans Mono for Powerline 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -156,7 +156,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym $mod+shift+x exec lock
+bindsym $mod+shift+x exec i3lock
 
 bindsym $mod+Shift+n exec playerctl next
 bindsym $mod+Shift+p exec playerctl previous
