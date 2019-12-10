@@ -35,6 +35,7 @@ Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'kristijanhusak/deoplete-phpactor'
 Plugin 'RRethy/vim-illuminate'
+Plugin 'posva/vim-vue'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
