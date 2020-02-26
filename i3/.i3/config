@@ -24,7 +24,7 @@ font pango:Droid Sans Mono for Powerline 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec termite
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -162,6 +162,16 @@ bindsym $mod+Shift+n exec playerctl next
 bindsym $mod+Shift+p exec playerctl previous
 bindsym $mod+Shift+o exec playerctl play-pause
 
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
 bindsym $mod+Shift+t exec hamster-cli stop
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -175,3 +185,5 @@ bar {
         statusline #839496
     }
 }
+
+exec --no-startup-id nitrogen --restore

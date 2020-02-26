@@ -18,7 +18,8 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Quramy/tsuquyomi'
-Plugin 'w0rp/ale'
+" Plugin 'w0rp/ale'
+Plugin 'dense-analysis/ale'
 Plugin 'elixir-editors/vim-elixir'
 Plugin 'adoy/vim-php-refactoring-toolbox'
 Plugin 'easymotion/vim-easymotion'
@@ -30,13 +31,12 @@ Plugin 'SirVer/ultisnips'
 Plugin 'tobyS/vmustache'
 Plugin 'tobyS/pdv'
 Plugin 'neovim/python-client'
-Plugin 'roxma/nvim-yarp'
-Plugin 'roxma/vim-hug-neovim-rpc'
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'kristijanhusak/deoplete-phpactor'
 Plugin 'RRethy/vim-illuminate'
+Plugin 'jwalton512/vim-blade'
+Plugin 'wakatime/vim-wakatime'
 Plugin 'posva/vim-vue'
 Plugin 'mxw/vim-jsx'
+Plugin 'cakebaker/scss-syntax.vim'
 " Plugin 'Valloric/YouCompleteMe'
 
 " The following are examples of different formats supported.
@@ -114,7 +114,12 @@ nnoremap <unique> <Leader>cdoc :call pdv#DocumentWithSnip()<CR>
 " ale lint engine
 let g:ale_linters = {
 \   'php': ['php', 'phpcs', 'phpmd'],
+\   'javascript': ['eslint'],
 \}
+let g:ale_fixers = {
+ \ 'javascript': ['eslint']
+ \ }
+let g:ale_fix_on_save = 1
 let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
@@ -124,6 +129,7 @@ let g:ale_fixers = {
 \   'javascript': ['eslint'],
 \}
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_enter = 1
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
 highlight SignColumn ctermbg=0
@@ -143,10 +149,6 @@ map <C-n>  :NERDTreeToggle<CR>
 " Omnifunc
 " set completeopt-=preview
 
-" Deoplete
-" let g:deoplete#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
 " phpactor
 autocmd FileType php setlocal omnifunc=phpactor#Complete
 let g:phpactorOmniError = v:true
@@ -161,3 +163,4 @@ let g:php_cs_fixer_rules = "@PSR2,no_unused_imports"
 
 " CommandT
 let g:CommandTFileScanner = "git"
+
