@@ -6,22 +6,32 @@
 ;
 ; Author: Benedikt Vollmerhaus
 ; License: MIT
-
+;
+; https://gitlab.com/BVollmerhaus/dotfiles/-/blob/master/README.md
 ;  __
 ; /   _ |  _  _ _
 ; \__(_)|_(_)| _)
 ;
 
 [xcolor]
-bg     = ${xrdb:color0:#0a0a0a}
-fg     = ${xrdb:color7:#c8c8c8}
-color1 = ${xrdb:color1:#a54242}
-color2 = ${xrdb:color2:#8c9440}
-color3 = ${xrdb:color3:#de935f}
-color4 = ${xrdb:color4:#5f819d}
-color5 = ${xrdb:color5:#85678f}
-color6 = ${xrdb:color6:#5e8d87}
-color8 = ${xrdb:color8:#373b41}
+bg     = #0a0a0a
+fg     = #c8c8c8
+color1 = #a54242
+color2 = #8c9440
+color3 = #de935f
+color4 = #5f819d
+color5 = #85678f
+color6 = #5e8d87
+color8 = #373b41
+;bg     = ${xrdb:color0:#0a0a0a}
+;fg     = ${xrdb:color7:#c8c8c8}
+;color1 = ${xrdb:color1:#a54242}
+;color2 = ${xrdb:color2:#8c9440}
+;color3 = ${xrdb:color3:#de935f}
+;color4 = ${xrdb:color4:#5f819d}
+;color5 = ${xrdb:color5:#85678f}
+;color6 = ${xrdb:color6:#5e8d87}
+;color8 = ${xrdb:color8:#373b41}
 
 
 [color]
@@ -84,30 +94,6 @@ font-3 = mplus Nerd Font:style=Medium:size=12;3
 ; Smaller font size for shorter spaces
 font-4 = mplus Nerd Font:style=Medium:size=7;3
 
-
-; ___        __
-;  | _  _   |__) _  _
-;  |(_)|_)  |__)(_||
-;      |
-
-[bar/top-primary]
-inherit = bar/base
-
-modules-left = now-playing volume right-end-top left-end-bottom ping right-end-top
-modules-right = left-end-top wlan eth right-end-bottom left-end-top date right-end-bottom left-end-top
-
-tray-background = ${color.module-bg}
-tray-padding = ${layout.module-padding}
-tray-position = right
-
-
-[bar/top-secondary]
-inherit = bar/top-primary
-modules-left = volume right-end-top left-end-bottom ping right-end-top
-modules-right = left-end-top date
-tray-position =
-
-
 ;  __                     __
 ; |__) _ _|__|_ _  _ _   |__) _  _
 ; |__)(_) |  | (_)| | |  |__)(_||
@@ -117,8 +103,8 @@ tray-position =
 inherit = bar/base
 bottom = true
 
-modules-left = i3 right-end-bottom left-end-top xwindow right-end-bottom
-modules-right = left-end-bottom cpu memory right-end-top left-end-bottom temp battery wlan volume date 
+modules-left = i3 right-end-bottom left-end-top now-playing right-end-bottom
+modules-right = left-end-bottom cpu memory right-end-top left-end-bottom temp battery ping wlan volume date 
 
 
 [bar/bottom-secondary]
@@ -388,7 +374,7 @@ format-disconnected =
 type = custom/script
 inherit = generic-format-style
 
-exec = $HOME/.config/polybar/modules/measure_ping.py
+exec = $HOME/.config/polybar/modules/measure-ping.py
 tail = true
 click-left = kill -USR1 %pid%
 
@@ -425,7 +411,7 @@ label = %date%  %time%
 type = custom/script
 inherit = generic-format-style
 
-exec = $HOME/.config/polybar/modules/now_playing.py
+exec = $HOME/.config/polybar/modules/now-playing.py
 tail = true
 
 click-left = playerctl next
