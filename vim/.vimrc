@@ -35,6 +35,7 @@ Plugin 'RRethy/vim-illuminate'
 Plugin 'jwalton512/vim-blade'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'posva/vim-vue'
+Plugin 'mxw/vim-jsx'
 Plugin 'cakebaker/scss-syntax.vim'
 " Plugin 'Valloric/YouCompleteMe'
 
@@ -123,6 +124,11 @@ let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 1
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
