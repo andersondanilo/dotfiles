@@ -64,6 +64,7 @@ class NowPlaying:
                 self.player.on('pause', self.on_pause)
                 self.player.on('metadata', self.on_metadata)
                 self.player.on('exit', self.on_exit)
+                print(self.player.props.player_name)
                 print('%{T2}栗%{T-}  Stopped', flush=True)
                 break
 
