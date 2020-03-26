@@ -186,3 +186,8 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 10- # decrease screen brigh
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id nitrogen --restore
+exec --no-startup-id picom
+
+for_window [class=".*"] border pixel 0
+smart_gaps on
+gaps inner 10
