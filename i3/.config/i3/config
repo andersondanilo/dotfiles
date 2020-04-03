@@ -157,7 +157,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym $mod+shift+x exec i3lock
+bindsym $mod+shift+x exec "~/.config/i3/bin/lock.sh"
+exec xautolock -time 15 -locker '~/.config/i3/bin/lock.sh' &
 
 # Media player controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
@@ -187,6 +188,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 10- # decrease screen brigh
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id picom
+exec xautolock -time 15 -locker '~/.config/i3/bin/lock.sh' &
 
 for_window [class=".*"] border pixel 0
 smart_gaps on
