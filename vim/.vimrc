@@ -99,6 +99,9 @@ set nu
 " ControlP
 let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn)|node_modules|vendor|plugins)$'
 
+" tsuquyomi
+let g:tsuquyomi_disable_quickfix = 1
+
 " php-refactoring-toolbox
 let g:vim_php_refactoring_use_default_mapping = 0
 let g:vim_php_refactoring_make_setter_fluent = 1
@@ -116,18 +119,14 @@ let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
 let g:ale_fixers = {
- \ 'javascript': ['eslint']
+ \ 'javascript': ['eslint'],
+ \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo']
  \ }
 let g:ale_fix_on_save = 1
 let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\}
-let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 1
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
