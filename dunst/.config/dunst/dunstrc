@@ -148,7 +148,7 @@ dmenu = /usr/bin/rofi -dmenu -p dunst
 browser = /usr/bin/firefox -new-tab
 
 # Display a notification on startup
-startup_notification = true
+startup_notification = false
 
 
 #

@@ -187,6 +187,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 10- # decrease screen brigh
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id picom
+exec --no-startup-id systemctl --user start dunst
 # exec xautolock -time 5 -locker '~/.config/i3/bin/lock.sh' &
 
 for_window [class=".*"] border pixel 0

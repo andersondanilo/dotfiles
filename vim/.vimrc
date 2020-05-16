@@ -99,9 +99,6 @@ set nu
 " ControlP
 let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn)|node_modules|vendor|plugins)$'
 
-" tsuquyomi
-let g:tsuquyomi_disable_quickfix = 1
-
 " php-refactoring-toolbox
 let g:vim_php_refactoring_use_default_mapping = 0
 let g:vim_php_refactoring_make_setter_fluent = 1
@@ -150,10 +147,15 @@ map <C-n>  :NERDTreeToggle<CR>
 " phpactor
 autocmd FileType php setlocal omnifunc=phpactor#Complete
 let g:phpactorOmniError = v:true
-nmap <Leader>gtd :call phpactor#GotoDefinition()<CR>
-nmap <Leader>u :call phpactor#UseAdd()<CR>
-vmap <silent><Leader>exm :<C-U>call phpactor#ExtractMethod()<CR>
-nmap <Leader>mm :call phpactor#ContextMenu()<CR>
+
+autocmd FileType php nmap <Leader>gtd :call phpactor#GotoDefinition()<CR>
+autocmd FileType php nmap <Leader>u :call phpactor#UseAdd()<CR>
+autocmd FileType php vmap <silent><Leader>exm :<C-U>call phpactor#ExtractMethod()<CR>
+autocmd FileType php nmap <Leader>mm :call phpactor#ContextMenu()<CR>
+
+" tsuquyomi
+let g:tsuquyomi_disable_quickfix = 1
+autocmd FileType typescript,typescriptreact nmap <Leader>gtd :TsuDefinition<CR>
 
 " phpcsfixer
 let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
