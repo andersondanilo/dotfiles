@@ -158,8 +158,10 @@ let g:tsuquyomi_disable_quickfix = 1
 autocmd FileType typescript,typescriptreact nmap <Leader>gtd :TsuDefinition<CR>
 
 " phpcsfixer
+let g:php_cs_fixer_enable_default_mapping = 1
 let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
 let g:php_cs_fixer_rules = "@PSR2,no_unused_imports"
+autocmd FileType php nmap <Leader>pcf :call PhpCsFixerFixFile()<CR>
 
 " CommandT
 let g:CommandTFileScanner = "git"
