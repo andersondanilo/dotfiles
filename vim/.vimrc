@@ -16,6 +16,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Quramy/tsuquyomi'
 " Plugin 'w0rp/ale'
@@ -36,7 +37,9 @@ Plugin 'jwalton512/vim-blade'
 Plugin 'posva/vim-vue'
 Plugin 'mxw/vim-jsx'
 Plugin 'cakebaker/scss-syntax.vim'
-" Plugin 'Valloric/YouCompleteMe'
+Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'vim-gradle'
+" Plugin 'ycm-core/YouCompleteMe'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -57,7 +60,6 @@ Plugin 'cakebaker/scss-syntax.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
@@ -112,10 +114,11 @@ nnoremap <unique> <Leader>cdoc :call pdv#DocumentWithSnip()<CR>
 " Syntastic
 " ale lint engine
 let g:ale_linters = {
-\   'php': ['php', 'phpcs', 'phpmd'],
+\   'php': ['php', 'phpcs', 'phpstan', 'phpmd'],
 \   'javascript': ['eslint'],
 \}
 let g:ale_fixers = {
+ \ 'php': ['php_cs_fixer'],
  \ 'javascript': ['eslint'],
  \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo']
  \ }
@@ -125,6 +128,7 @@ let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 1
+let g:ale_php_cs_fixer_options = '--config=./.php_cs.dist --allow-risky=yes'
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
 highlight SignColumn ctermbg=0
@@ -156,6 +160,8 @@ autocmd FileType php nmap <Leader>mm :call phpactor#ContextMenu()<CR>
 " tsuquyomi
 let g:tsuquyomi_disable_quickfix = 1
 autocmd FileType typescript,typescriptreact nmap <Leader>gtd :TsuDefinition<CR>
+" typescript syntax
+let g:typescript_indent_disable = 1
 
 " phpcsfixer
 let g:php_cs_fixer_enable_default_mapping = 1
@@ -166,3 +172,11 @@ autocmd FileType php nmap <Leader>pcf :call PhpCsFixerFixFile()<CR>
 " CommandT
 let g:CommandTFileScanner = "git"
 
+" Java
+let g:JavaComplete_EnableDefaultMappings = 0
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+" let g:ale_java_eclipselsp_path = "/opt/eclipselsp"
+
+" Custom bindings
+map <Leader>"  :split<CR>
+map <Leader>%  :vsplit<CR>
