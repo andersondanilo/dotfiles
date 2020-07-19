@@ -1,5 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
+set exrc
+set secure
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -129,6 +131,7 @@ let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 1
 let g:ale_php_cs_fixer_options = '--config=./.php_cs.dist --allow-risky=yes'
+let g:ale_php_phpstan_executable = system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi')
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
 highlight SignColumn ctermbg=0
