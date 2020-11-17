@@ -1,0 +1,10 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+    name = Anderson Danilo
+    email = contact@andersondanilo.com
+[core]
+    excludesfile = ~/.gitignore_global
+[alias]
+    changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
+    clean-merged = "!git branch --merged origin/master | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"

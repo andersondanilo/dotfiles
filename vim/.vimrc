@@ -12,6 +12,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 " Plugin 'kien/ctrlp.vim'
@@ -29,7 +31,7 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'phpactor/phpactor'
 Plugin 'stephpy/vim-php-cs-fixer'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'rhysd/vim-crystal'
+Plugin 'vim-crystal/vim-crystal'
 Plugin 'SirVer/ultisnips'
 Plugin 'tobyS/vmustache'
 Plugin 'tobyS/pdv'
@@ -39,7 +41,9 @@ Plugin 'jwalton512/vim-blade'
 Plugin 'posva/vim-vue'
 Plugin 'mxw/vim-jsx'
 Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'davidhalter/jedi-vim'
+Plugin 'entrez/roku.vim'
 " Plugin 'vim-gradle'
 " Plugin 'ycm-core/YouCompleteMe'
 
@@ -97,6 +101,8 @@ let g:solarized_termtrans = 1
 hi Normal guibg=NONE ctermbg=NONE
 " line number
 set nu
+" no fold
+set nofoldenable
 
 " PLUGIN CONFIGURATIONS
 
@@ -147,6 +153,10 @@ map <Leader> <Plug>(easymotion-prefix)
 
 " NerdTree
 map <C-n>  :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['__pycache__', '\.pyc$']
+
+" Jedi (Python)
+let g:jedi#goto_command = "<leader>gtd"
 
 " Omnifunc
 " set completeopt-=preview
@@ -174,6 +184,10 @@ autocmd FileType php nmap <Leader>pcf :call PhpCsFixerFixFile()<CR>
 
 " CommandT
 let g:CommandTFileScanner = "git"
+autocmd FileType crystal nmap <Leader>gtd :CrystalDef<CR>
+
+" Crystal
+let g:crystal_auto_format = 1
 
 " Java
 let g:JavaComplete_EnableDefaultMappings = 0

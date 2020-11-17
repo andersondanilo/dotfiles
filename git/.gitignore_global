@@ -1,0 +1,9 @@
+.metadata
+android/.project
+android/.settings
+jdt.ls-java-project
+patches/*
+.php_cs.cache
+.vimrc
+docker-compose.override.yml
+minio_data

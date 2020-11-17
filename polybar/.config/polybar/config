@@ -102,13 +102,17 @@ font-4 = mplus Nerd Font:style=Medium:size=7;3
 [bar/bottom-primary]
 inherit = bar/base
 bottom = true
+tray-position = right
 
-modules-left = i3 right-end-bottom left-end-top now-playing right-end-bottom
-modules-right = left-end-bottom cpu memory right-end-top left-end-bottom temp battery ping wlan volume date 
+modules-left = i3 right-end-bottom left-end-top right-end-bottom
+modules-right = left-end-bottom cpu memory right-end-top left-end-bottom temp battery ping wlan volume date
 
 
 [bar/bottom-secondary]
 inherit = bar/bottom-primary
+
+modules-left = i3 right-end-bottom left-end-top now-playing right-end-bottom
+modules-right = left-end-bottom right-end-top left-end-bottom wlan ping volume date
 
 
 ; A generic format for any modules that support it. Unfortunately, this
