@@ -5,5 +5,7 @@ jdt.ls-java-project
 patches/*
 .php_cs.cache
 .vimrc
+.vscode
 docker-compose.override.yml
 minio_data
+*.code-workspace

@@ -59,7 +59,10 @@ class NowPlaying:
         """
         while True:
             try:
-                self.player = Playerctl.Player.new('spotify')
+                try:
+                    self.player = Playerctl.Player.new('spotify')
+                except GLib.Error:
+                    self.player = Playerctl.Player.new()
                 self.player.on('play', self.on_play)
                 self.player.on('pause', self.on_pause)
                 self.player.on('metadata', self.on_metadata)
