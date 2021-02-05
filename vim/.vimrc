@@ -1,7 +1,10 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
-set exrc
-set secure
+
+if getcwd() =~# '^\(/home/anderson/Workspace/\)'
+  " https://vimtricks.com/p/local-vimrc-files/
+  set secure exrc
+endif
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -43,7 +46,7 @@ Plugin 'posva/vim-vue'
 Plugin 'mxw/vim-jsx'
 Plugin 'cakebaker/scss-syntax.vim'
 " Plugin 'artur-shaik/vim-javacomplete2'
-" Plugin 'davidhalter/jedi-vim'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'entrez/roku.vim'
 " Plugin 'vim-gradle'
 " Plugin 'ycm-core/YouCompleteMe'
@@ -157,7 +160,17 @@ map <C-n>  :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['__pycache__', '\.pyc$']
 
 " Jedi (Python)
+let g:jedi#popup_on_dot = 0
 let g:jedi#goto_command = "<leader>gtd"
+let g:jedi#goto_assignments_command = ""
+let g:jedi#goto_stubs_command = ""
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = ""
+let g:jedi#usages_command = ""
+let g:jedi#completions_command = ""
+let g:jedi#rename_command = ""
+autocmd FileType python setlocal completeopt-=preview
+let g:jedi#show_call_signatures = "0"
 
 " Omnifunc
 " set completeopt-=preview
@@ -185,6 +198,7 @@ autocmd FileType php nmap <Leader>pcf :call PhpCsFixerFixFile()<CR>
 
 " CommandT
 let g:CommandTFileScanner = "git"
+let g:CommandTGitIncludeUntracked = 1
 autocmd FileType crystal nmap <Leader>gtd :CrystalDef<CR>
 
 " Crystal

@@ -3,8 +3,13 @@
 # Please adapt and uncomment the following lines:
     name = Anderson Danilo
     email = contact@andersondanilo.com
+	signingkey = CD9266A835B8CDF42F38232B2CA543223F86C50F
 [core]
     excludesfile = ~/.gitignore_global
 [alias]
     changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
     clean-merged = "!git branch --merged origin/master | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+[commit]
+	gpgsign = true
+[pull]
+	ff = only
