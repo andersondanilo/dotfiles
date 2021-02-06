@@ -1,6 +1,6 @@
 configuration {
  modi: "window,drun,ssh,combi";
- theme: "solarized";
+ theme: "/home/anderson/.config/polybar/material/scripts/rofi/launcher.rasi";
  font: "Droid Sans Mono for Powerline 12";
  combi-modi: "window,drun,ssh";
 }
