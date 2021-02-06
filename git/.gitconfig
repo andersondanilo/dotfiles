@@ -3,7 +3,7 @@
 # Please adapt and uncomment the following lines:
     name = Anderson Danilo
     email = contact@andersondanilo.com
-	signingkey = CD9266A835B8CDF42F38232B2CA543223F86C50F
+	signingkey = 614C8C06DE5CB261AFC3EEE257F3E6589075F87C
 [core]
     excludesfile = ~/.gitignore_global
 [alias]
