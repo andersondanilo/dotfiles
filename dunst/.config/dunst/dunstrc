@@ -91,7 +91,7 @@ sort = yes
 
 # Seconds with no mouse or keyboard input after which to consider the
 # user idle and not remove non-transient notifications (0 to disable)
-idle_threshold = 90
+idle_threshold = 15
 
 # Seconds after which to display a notification's age (-1 to disable)
 show_age_threshold = 60
