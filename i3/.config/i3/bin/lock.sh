@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+# Forget gpg passphase
+echo RELOADAGENT | gpg-connect-agent
+
 # Remove old print
 
 test -f /tmp/screen_locked.png && rm /tmp/screen_locked.png
