@@ -132,7 +132,8 @@ let g:ale_linters = {
 let g:ale_fixers = {
  \ 'php': ['php_cs_fixer'],
  \ 'javascript': ['eslint'],
- \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo']
+ \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo'],
+ \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo']
  \ }
 let g:ale_fix_on_save = 1
 let g:ale_php_phpcs_standard = 'PSR2'
