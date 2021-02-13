@@ -9,7 +9,7 @@
 [alias]
     changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
     clean-merged = "!git branch --merged origin/master | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
-    sync = "!git pull --ff-only && git push"
+    sync = "!git fetch && git rebase && git push"
 [commit]
 	gpgsign = true
 [pull]
