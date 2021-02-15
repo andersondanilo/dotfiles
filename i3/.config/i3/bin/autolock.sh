@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VIDEO_PLAYERS=(google-chrome vlc zoho)
+VIDEO_PLAYERS=(google-chrome vlc zoho chromium)
 SOUND_STATUS_PATH=/proc/asound/card0/pcm0c/sub0/status
 FOCUSED_WINDOW_ID=$(xprop -root _NET_ACTIVE_WINDOW | awk -F' ' '{print $NF}')
 
