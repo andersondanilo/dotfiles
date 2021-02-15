@@ -190,7 +190,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 5000- # decrease screen bri
 
 exec_always --no-startup-id setxkbmap -model abnt2 -layout br -variant abnt2
 exec_always --no-startup-id bash ~/.config/polybar/launch.sh --material
-exec --no-startup-id nitrogen --restore
+exec_always --no-startup-id nitrogen --restore
 exec --no-startup-id picom
 exec --no-startup-id systemctl --user start dunst
 exec --no-startup-id dex -ae i3
