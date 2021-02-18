@@ -25,6 +25,7 @@ $ cd ~/.vim/bundle/vimproc.vim && make
 ### i3
 
 - install the fonts
+- pip install i3ipc
 
 ### alacritty
 

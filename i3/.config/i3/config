@@ -196,6 +196,10 @@ exec --no-startup-id systemctl --user start dunst
 exec --no-startup-id dex -ae i3
 exec xautolock -time 5 -locker '~/.config/i3/bin/autolock.sh' &
 
+for_window [class="Gnome-calculator" instance="gnome-calculator"] floating enable
+for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable
+for_window [window_role="GtkFileChooserDialog"] exec ~/.config/i3/bin/resize.py 80% 80%
+
 for_window [class=".*"] border pixel 0
 smart_gaps on
 gaps inner 10
