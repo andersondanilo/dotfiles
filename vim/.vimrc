@@ -48,6 +48,7 @@ Plugin 'cakebaker/scss-syntax.vim'
 " Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'entrez/roku.vim'
+Plugin 'jamessan/vim-gnupg'
 " Plugin 'vim-gradle'
 " Plugin 'ycm-core/YouCompleteMe'
 
@@ -136,13 +137,15 @@ let g:ale_fixers = {
  \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo']
  \ }
 let g:ale_fix_on_save = 1
-let g:ale_php_phpcs_standard = 'PSR2'
+" let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 1
-let g:ale_php_cs_fixer_options = '--config=./.php_cs.dist --allow-risky=yes'
+" let g:ale_php_cs_fixer_options = '--config=./.php_cs --allow-risky=yes'
+let g:ale_php_cs_fixer_options = '--allow-risky=yes'
 let g:ale_php_phpstan_executable = system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi')
+let g:ale_php_phpmd_executable = system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi')
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
 highlight SignColumn ctermbg=0
@@ -193,7 +196,7 @@ let g:typescript_indent_disable = 1
 
 " phpcsfixer
 let g:php_cs_fixer_enable_default_mapping = 1
-let g:php_cs_fixer_path = "~/.config/composer/vendor/bin/php-cs-fixer"
+let g:php_cs_fixer_path = system('if ! type git &> /dev/null; then echo php-cs-fixer; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/php-cs-fixer; if [ -x "$PSE" ]; then echo -n $PSE; else echo php-cs-fixer; fi; fi')
 let g:php_cs_fixer_rules = "@PSR2,no_unused_imports"
 autocmd FileType php nmap <Leader>pcf :call PhpCsFixerFixFile()<CR>
 
