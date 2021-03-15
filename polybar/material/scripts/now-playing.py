@@ -32,11 +32,12 @@ class NowPlaying:
 
     ARTIST = 'xesam:artist'
     TITLE = 'xesam:title'
+    MUSIC_ICON = ''
 
     def __init__(self) -> None:
         self.player = None
 
-        self.icon: str = '栗'
+        self.icon: str = self.MUSIC_ICON
         self.status: str = ''
         self.artist: str = ''
         self.title: str = ''
@@ -68,11 +69,11 @@ class NowPlaying:
                 self.player.on('metadata', self.on_metadata)
                 self.player.on('exit', self.on_exit)
                 print(self.player.props.player_name)
-                print('%{T2}栗%{T-}  Stopped', flush=True)
+                print('%{T2}' + self.MUSIC_ICON + '%{T-}  Stopped', flush=True)
                 break
 
             except GLib.Error:
-                print('%{T2}ﱘ%{T-}  No player running', flush=True)
+                print('%{T2}'+self.MUSIC_ICON+'%{T-}  No player running', flush=True)
                 time.sleep(2)  # Wait before searching again
 
     def on_play(self, _player) -> None:
@@ -80,7 +81,7 @@ class NowPlaying:
         :param _player: The player that started playing
         :return: None
         """
-        self.icon = '契'
+        self.icon = self.MUSIC_ICON
         self.print_status()
 
     def on_pause(self, _player) -> None:

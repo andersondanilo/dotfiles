@@ -12,7 +12,8 @@ Plug 'tpope/vim-sleuth' " Detect indent
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'dense-analysis/ale'
-Plug 'altercation/vim-colors-solarized'
+"Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
 Plug 'entrez/roku.vim'
@@ -34,12 +35,18 @@ set nofoldenable
 
 " Theme configuration
 set background=dark
-colorscheme solarized
+set termguicolors
+colorscheme solarized8
 set fillchars+=vert:│
-hi VertSplit cterm=NONE ctermbg=NONE
-" fix urxvt color8
-let g:solarized_termtrans = 1
+hi VertSplit guibg=NONE guifg=#586e75
+" hi StatusLineNC guifg=#073642 guibg=#586e75
 hi Normal guibg=NONE ctermbg=NONE
+let g:solarized_termcolors=256
+hi EndOfBuffer guifg=#002b36
+
+" Editor KeyBindings
+map <Leader>"  :split<CR>
+map <Leader>%  :vsplit<CR>
 
 
 " Plugin configuration
@@ -47,12 +54,15 @@ hi Normal guibg=NONE ctermbg=NONE
 " Airline (statusline)
 let g:airline_theme='solarized'
 let g:airline_powerline_fonts = 1
+let g:airline_solarized_dark_inactive_border = 1
 
 " NerdTree
-map <Leader>n  :NERDTreeToggle<CR>
+map <Leader>nt  :NERDTreeToggle<CR>
+map <Leader>nf  :NERDTreeFind<CR>
 let NERDTreeIgnore = ['__pycache__', '\.pyc$']
 
 " Fzf
+command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, { 'options': [ '-i' ] }, <bang>0) " Fzf case insensitive
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
 let g:fzf_colors =
   \ { 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
@@ -68,7 +78,8 @@ let g:ale_fixers = {
  \ 'php': ['php_cs_fixer'],
  \ 'javascript': ['eslint'],
  \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo'],
- \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo']
+ \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo'],
+ \ 'rust': ['rustfmt'],
  \ }
 let g:ale_fix_on_save = 1
 let g:ale_sign_error = '✘'
@@ -81,12 +92,11 @@ let g:ale_php_phpmd_executable = system('if ! type git &> /dev/null; then echo p
 highlight ALEErrorSign ctermbg=0 ctermfg=red
 highlight ALEWarningSign ctermbg=0 ctermfg=yellow
 highlight SignColumn ctermbg=0
-highlight PMenu cterm=none ctermfg=darkblue ctermbg=black gui=none guifg=darkblue guibg=black
+" highlight PMenu cterm=none ctermfg=darkblue ctermbg=black gui=none guifg=darkblue guibg=black
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
-
 
 " Language Server Protocal
 " ===========================
@@ -99,12 +109,34 @@ nmap <Leader>rf :lua vim.lsp.buf.references()<CR>
 lua << EOF
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
--- Use a loop to conveniently both setup defined servers 
+-- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
 nvim_lsp["tsserver"].setup { on_attach = on_attach }
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
 nvim_lsp["phpactor"].setup { on_attach = on_attach, cmd = {os.getenv("HOME") .. "/.config/composer/vendor/bin/phpactor", "language-server"} }
+nvim_lsp["rls"].setup {
+  on_attach = on_attach,
+  settings = {
+    rust = {
+      unstable_features = true,
+      build_on_save = false,
+      all_features = true,
+    },
+  },
+}
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false
+    }
+)
+
+-- vim.lsp.set_log_level("debug")
+-- :lua print(vim.lsp.get_log_path())
+-- ~/.cache/nvim/lsp.log
 EOF

@@ -28,10 +28,11 @@ for screen in $(xrandr --query | grep -w connected); do
     case ${screen} in
         *primary*)
           launch_bar "${output}" main
+          process_id=$!
           ;;
         *)
         launch_bar "${output}" secondary
+        process_id=$!
         ;;
     esac
 done
-
