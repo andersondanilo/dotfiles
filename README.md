@@ -34,3 +34,8 @@ $ cd ~/.vim/bundle/vimproc.vim && make
 ### polybar
 
 - install the fonts
+
+
+## Post Setup
+- Configure PulseEffects with Pipeware (replacement of pulseaudio) (https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Extreme)
+
