@@ -12,7 +12,6 @@ Plug 'tpope/vim-sleuth' " Detect indent
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'dense-analysis/ale'
-"Plug 'altercation/vim-colors-solarized'
 Plug 'lifepillar/vim-solarized8'
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
@@ -43,10 +42,14 @@ hi VertSplit guibg=NONE guifg=#586e75
 hi Normal guibg=NONE ctermbg=NONE
 let g:solarized_termcolors=256
 hi EndOfBuffer guifg=#002b36
+hi ALEErrorSign guibg=#073642 guifg=#dc322f
+hi ALEWarningSign guibg=#073642 guifg=#b58900
+hi SignColumn guifg=#657b83 guibg=#073642
 
 " Editor KeyBindings
 map <Leader>"  :split<CR>
 map <Leader>%  :vsplit<CR>
+map <Leader>ch :nohl<CR>
 
 
 " Plugin configuration
@@ -89,10 +92,8 @@ let g:ale_lint_on_enter = 1
 let g:ale_php_cs_fixer_options = '--allow-risky=yes'
 let g:ale_php_phpstan_executable = system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi')
 let g:ale_php_phpmd_executable = system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi')
-highlight ALEErrorSign ctermbg=0 ctermfg=red
-highlight ALEWarningSign ctermbg=0 ctermfg=yellow
-highlight SignColumn ctermbg=0
 " highlight PMenu cterm=none ctermfg=darkblue ctermbg=black gui=none guifg=darkblue guibg=black
+let g:ale_rust_cargo_use_clippy = 1
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -104,6 +105,7 @@ set completeopt-=preview
 nmap <Leader>gd :lua vim.lsp.buf.definition()<CR>
 nmap <Leader>hv :lua vim.lsp.buf.hover()<CR>
 nmap <Leader>rf :lua vim.lsp.buf.references()<CR>
+nmap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
 
 " Language servers
 lua << EOF

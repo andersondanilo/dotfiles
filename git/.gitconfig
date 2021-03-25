@@ -13,6 +13,8 @@
 [commit]
 	gpgsign = true
 [pull]
-	ff = only
+	rebase = true
 [push]
 	default = current
+[fetch]
+	prune = true
