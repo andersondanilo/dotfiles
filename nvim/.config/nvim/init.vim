@@ -11,7 +11,9 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-sleuth' " Detect indent
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
+Plug 'file://'.expand('~/Workspace/personal/ale')
+Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'lifepillar/vim-solarized8'
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
@@ -22,6 +24,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'deoplete-plugins/deoplete-lsp'
 Plug 'andersondanilo/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
+" Plug 'tmux-focus-events.vim'
 call plug#end()
 
 " Generic nvim configuration
@@ -35,6 +38,7 @@ set nofoldenable
 " Theme configuration
 set background=dark
 set termguicolors
+set signcolumn=yes
 colorscheme solarized8
 set fillchars+=vert:│
 hi VertSplit guibg=NONE guifg=#586e75
@@ -51,6 +55,15 @@ map <Leader>"  :split<CR>
 map <Leader>%  :vsplit<CR>
 map <Leader>ch :nohl<CR>
 
+" faster c+[
+set ttimeout
+set ttimeoutlen=5
+
+" Avoid Ctrl+C (Keyboard-Interrupt errors)
+map <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>
+imap <C-c> <C-O>:echo "Ctrl+C temporary disabled use Ctrl+["<CR>
+vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>
+
 
 " Plugin configuration
 " ====================
@@ -63,6 +76,8 @@ let g:airline_solarized_dark_inactive_border = 1
 map <Leader>nt  :NERDTreeToggle<CR>
 map <Leader>nf  :NERDTreeFind<CR>
 let NERDTreeIgnore = ['__pycache__', '\.pyc$']
+exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no'
+
 
 " Fzf
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, { 'options': [ '-i' ] }, <bang>0) " Fzf case insensitive
@@ -70,7 +85,7 @@ let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comm
 let g:fzf_colors =
   \ { 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'] }
-map <Leader>p  :Files<CR>
+nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 
 " ALE Linter
 let g:ale_linters = {
@@ -83,21 +98,25 @@ let g:ale_fixers = {
  \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo'],
  \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo'],
  \ 'rust': ['rustfmt'],
+ \ 'brs': ['bsfmt_fixer'],
  \ }
 let g:ale_fix_on_save = 1
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
+let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 1
 let g:ale_php_cs_fixer_options = '--allow-risky=yes'
 let g:ale_php_phpstan_executable = system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi')
 let g:ale_php_phpmd_executable = system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi')
-" highlight PMenu cterm=none ctermfg=darkblue ctermbg=black gui=none guifg=darkblue guibg=black
 let g:ale_rust_cargo_use_clippy = 1
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
+
+" easy motion
+nmap  \| <Plug>(easymotion-overwin-f2)
 
 " Language Server Protocal
 " ===========================
@@ -121,6 +140,7 @@ end
 nvim_lsp["tsserver"].setup { on_attach = on_attach }
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
 nvim_lsp["phpactor"].setup { on_attach = on_attach, cmd = {os.getenv("HOME") .. "/.config/composer/vendor/bin/phpactor", "language-server"} }
+nvim_lsp["brighterscript"].setup { on_attach = on_attach }
 nvim_lsp["rls"].setup {
   on_attach = on_attach,
   settings = {
@@ -132,10 +152,21 @@ nvim_lsp["rls"].setup {
   },
 }
 
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+--     vim.lsp.diagnostic.on_publish_diagnostics, {
+--         virtual_text = false
+--     }
+-- )
+
+require("nvim-ale-diagnostic")
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false
-    }
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline = false,
+    virtual_text = false,
+    signs = true,
+    update_in_insert = false,
+  }
 )
 
 -- vim.lsp.set_log_level("debug")
