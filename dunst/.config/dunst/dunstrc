@@ -173,6 +173,11 @@ foreground = "#c8c8c8"
 timeout = 0
 icon = dialog-error
 
+[script_play_sound_critical]
+summary = "*"
+script = /home/anderson/.config/dunst/play_sound.sh
+urgency = critical
+
 
 #            __
 # |_/ _     |__). _  _|. _  _  _

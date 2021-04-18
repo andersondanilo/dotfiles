@@ -208,6 +208,7 @@ exec --no-startup-id picom
 exec --no-startup-id systemctl --user start dunst
 exec --no-startup-id dex -ae i3
 exec xautolock -time 5 -locker '~/.config/i3/bin/autolock.sh' &
+exec --no-startup-id ~/.config/polybar/material/scripts/polypomo.py --breaktime 300 --worktime 1500 > /tmp/polypomo.status
 
 for_window [class="Gnome-calculator" instance="gnome-calculator"] floating enable
 for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable

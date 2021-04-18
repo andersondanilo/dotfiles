@@ -12,7 +12,7 @@ import signal
 import subprocess
 import threading
 
-PING_CMD = ("ping 8.8.8.8 -c 1 | "
+PING_CMD = ("ping google.com.br -c 1 | "
             "sed -En 's/.*time=([0-9]+(\\.[0-9]+)?) ms$/\\1/p'")
 
 

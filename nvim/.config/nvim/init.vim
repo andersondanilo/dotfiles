@@ -116,7 +116,8 @@ let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 
 " easy motion
-nmap  \| <Plug>(easymotion-overwin-f2)
+" nmap  \| <Plug>(easymotion-overwin-f2)
+nmap  <Leader>f <Plug>(easymotion-overwin-f)
 
 " Language Server Protocal
 " ===========================
