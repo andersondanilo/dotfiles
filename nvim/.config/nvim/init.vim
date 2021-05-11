@@ -24,6 +24,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'deoplete-plugins/deoplete-lsp'
 Plug 'andersondanilo/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
+Plug 'mfussenegger/nvim-dap'
 " Plug 'tmux-focus-events.vim'
 call plug#end()
 
@@ -80,12 +81,13 @@ exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no'
 
 
 " Fzf
+" let $FZF_DEFAULT_COMMAND = 'ag -g ""' " consider gitignore
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, { 'options': [ '-i' ] }, <bang>0) " Fzf case insensitive
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
 let g:fzf_colors =
   \ { 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'] }
-nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":GFiles --cached --others --exclude-standard\<cr>"
 
 " ALE Linter
 let g:ale_linters = {
@@ -173,4 +175,59 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 -- vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())
 -- ~/.cache/nvim/lsp.log
+EOF
+
+
+" Debug adapter protocols
+nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+nnoremap <silent> <F6> :lua require'dap'.step_over()<CR>
+nnoremap <silent> <F7> :lua require'dap'.step_into()<CR>
+nnoremap <silent> <F8> :lua require'dap'.step_out()<CR>
+nnoremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle()<CR>
+
+lua << EOF
+-- lua code goes here
+local dap = require('dap')
+
+dap.set_log_level('trace')
+
+dap.adapters.php = {
+  type = 'executable',
+  command = 'node',
+  args = {os.getenv('HOME') .. '/Workspace/personal/test-debug/adapters/vscode-php-debug/out/phpDebug.js'},
+}
+
+dap.configurations.php = {
+  {
+      type = 'php',
+      request = 'launch',
+      name = 'Listen for xdebug',
+      hostname = '0.0.0.0',
+      stopOnEntry = false,
+      log = true,
+      serverSourceRoot = '/var/www/html/',
+      localSourceRoot = vim.fn.getcwd() .. '/',
+  },
+}
+
+dap.adapters.roku = {
+  type = 'executable',
+  command = 'node',
+  args = {os.getenv('HOME') .. '/Workspace/personal/test-debug/adapters/roku-debug/dist/myRokuDebug.js'},
+}
+
+-- dap.configurations.brs = {
+--   {
+--       type = 'roku',
+--       request = 'launch',
+--       name = 'Roku debug',
+--       log = true,
+--       host = '192.168.0.118',
+--       rootDir = vim.fn.getcwd(),
+--       outDir = vim.fn.getcwd() .. '/out',
+--       retainStagingFolder = true,
+--   },
+-- }
+
 EOF

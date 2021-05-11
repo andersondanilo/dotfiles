@@ -9,3 +9,4 @@ patches/*
 docker-compose.override.yml
 minio_data
 *.code-workspace
+clover.xml

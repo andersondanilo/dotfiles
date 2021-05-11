@@ -6,3 +6,10 @@ export PATH="$PATH:/home/anderson/.local/bin"
 
 alias vim="echo 'use nvim'"
 alias vi="echo 'use nvim'"
+
+export FZF_DEFAULT_OPTS="
+--height=50%
+--layout=reverse
+--prompt='➤ '
+--tabstop=4
+"
