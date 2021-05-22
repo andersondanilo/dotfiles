@@ -1,83 +1,62 @@
-#
-# Powerline Double Blue - Tmux Theme
-# Created by Jim Myhrberg <contact@jimeh.me>.
-#
-# Inspired by vim-powerline: https://github.com/Lokaltog/powerline
-#
-# Requires terminal to be using a powerline compatible font, find one here:
-# https://github.com/Lokaltog/powerline-fonts
-#
+### theme settings ###
 
-# Status update interval
-set -g status-interval 1
+# window separators
+set-option -wg window-status-separator ""
 
-# Basic status bar colors
-set -g status-fg colour14
-set -g status-bg colour0
+# monitor window changes
+set-option -wg monitor-activity on
+set-option -wg monitor-bell on
 
-# Left side of status bar
-# set -g status-left-bg colour233
-# set -g status-left-fg colour243
-set -g status-left-style bg=colour233,fg=colour243
-set -g status-left-length 40
-set -g status-left "#[fg=colour7,bg=colour12,bold] #S #[fg=colour12,bg=colour10,nobold]#[fg=colour7,bg=colour10] #I:#P #[fg=colour10,bg=colour0,nobold]"
+# set statusbar update interval
+set-option -g status-interval 1
 
-# Right side of status bar
-# set -g status-right-bg colour233
-# set -g status-right-fg colour243
-set -g status-right-style bg=colour233,fg=colour243
-set -g status-right-length 150
-set -g status-right "#[fg=colour10,bg=colour0]#[fg=colour7,bg=colour10] %H:%M:%S "
+### colorscheme ###
 
-# Window status
-set -g window-status-format "  #I:#W#F  "
-set -g window-status-current-format "#[fg=colour0,bg=colour4]#[fg=colour8,bg=colour4,bold] #I:#W#F #[fg=colour4,bg=colour0,nobold]"
+# change window screen colors
+set-option -wg mode-style bg="#98c379",fg="#2a2f39"
 
-# Current window status
-# set -g window-status-current-bg colour24
-# set -g window-status-current-fg colour233
-set -g window-status-current-style bg=colour24,fg=colour233
+# default statusbar colors (terminal bg should be)
+set-option -g status-style bg="#313640",fg="#5d677a"
 
-# Window with activity status
-# set -g window-status-activity-bg colour245 # fg and bg are flipped here due to
-# set -g window-status-activity-fg colour233 # a bug in tmux
-set -g window-status-activity-style bg=colour245,fg=colour233 # a bug in tmux
+# default window title colors
+set-option -wg window-status-style bg="#2a2f39",fg="#868d9b"
 
-# Window separator
-set -g window-status-separator ""
+# colors for windows with activity
+set-option -wg window-status-activity-style bg="#2a2f39",fg="#5d677a"
 
-# Window status alignment
-set -g status-justify left
+# colors for windows with bells
+set-option -wg window-status-bell-style bg="#2a2f39",fg="#98c379"
 
-# Pane border
-# set -g pane-border-bg default
-# set -g pane-border-fg colour238
-set -g pane-border-style bg=default,fg=colour238
+# active window title colors
+set-option -wg window-status-current-style bg="#98c379",fg="#2a2f39"
 
-# Active pane border
-# set -g pane-active-border-bg default
-# set -g pane-active-border-fg colour24
-set -g pane-active-border-style bg=default,fg=colour24
+# pane border
+set-option -g pane-active-border-style fg="#98c379"
+set-option -g pane-border-style fg="#2a2f39"
 
-# Pane number indicator
-set -g display-panes-colour colour233
-set -g display-panes-active-colour colour245
+# message info
+set-option -g message-style bg="#98c379",fg="#2a2f39"
 
-# Clock mode
-set -g clock-mode-colour colour24
-set -g clock-mode-style 24
+# writing commands inactive
+set-option -g message-command-style bg="#5d677a",fg="#2a2f39"
 
-# Message
-# set -g message-bg colour24
-# set -g message-fg black
-set -g message-style bg=colour24,fg=black
+# pane number display
+set-option -g display-panes-active-colour "#98c379"
+set-option -g display-panes-colour "#2a2f39"
 
-# Command message
-# set -g message-command-bg colour233
-# set -g message-command-fg black
-set -g message-command-style bg=colour233,fg=black
+# clock
+set-option -wg clock-mode-colour "#98c379"
 
-# Mode
-# set -g mode-bg colour24
-# set -g mode-fg colour231
-set -g mode-style bg=colour24,fg=colour231
+# copy mode highlighting
+%if #{>=:#{version},3.2}
+    set-option -wg copy-mode-match-style "bg=#5d677a,fg=#2a2f39"
+    set-option -wg copy-mode-current-match-style "bg=#5da5e1,fg=#2a2f39"
+%endif
+
+# statusbar formatting
+# "#5da5e1" MUST be in lowercase here (conflicts with statusline alias otherwise)
+set-option -g status-left "#[bg=#5d677a, fg=#2a2f39]#{?client_prefix,#[bg=#5da5e1],#[bg=#5d677a]} #{session_name} "
+set-option -g status-right "#[bg=#2a2f39, fg=#868d9b] %Y-%m-%d %H:%M:%S #[bg=#5d677a, fg=#2a2f39]#{?client_prefix,#[bg=#5da5e1],#[bg=#5d677a]} #{host_short} "
+
+set-option -wg window-status-current-format "#{?window_zoomed_flag,#[fg=default bold],#[fg=default]} #{window_index} #{window_name} "
+set-option -wg window-status-format "#{?window_zoomed_flag,#[fg=default bold],#[fg=default]} #{window_index} #{window_name} "

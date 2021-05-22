@@ -11,10 +11,14 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-sleuth' " Detect indent
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'chrisbra/Colorizer'
+Plug 'adoy/vim-php-refactoring-toolbox'
 " Plug 'dense-analysis/ale'
 Plug 'file://'.expand('~/Workspace/personal/ale')
 Plug 'nathunsmitty/nvim-ale-diagnostic'
-Plug 'lifepillar/vim-solarized8'
+" Plug 'lifepillar/vim-solarized8' " theme
+" Plug 'morhetz/gruvbox' " theme
+Plug 'sonph/onehalf', { 'rtp': 'vim' } " theme
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
 Plug 'entrez/roku.vim'
@@ -25,6 +29,7 @@ Plug 'deoplete-plugins/deoplete-lsp'
 Plug 'andersondanilo/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
 Plug 'mfussenegger/nvim-dap'
+Plug 'habamax/vim-godot'
 " Plug 'tmux-focus-events.vim'
 call plug#end()
 
@@ -40,21 +45,36 @@ set nofoldenable
 set background=dark
 set termguicolors
 set signcolumn=yes
-colorscheme solarized8
+" colorscheme gruvbox
+colorscheme onehalfdark
 set fillchars+=vert:│
-hi VertSplit guibg=NONE guifg=#586e75
-" hi StatusLineNC guifg=#073642 guibg=#586e75
 hi Normal guibg=NONE ctermbg=NONE
-let g:solarized_termcolors=256
-hi EndOfBuffer guifg=#002b36
-hi ALEErrorSign guibg=#073642 guifg=#dc322f
-hi ALEWarningSign guibg=#073642 guifg=#b58900
-hi SignColumn guifg=#657b83 guibg=#073642
+
+" Gruv box custom
+" hi LineNr guibg=#3c3836
+"
+" onehalfdark custom " copy hi LineNr
+hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34 
+
+
+" Solarized custom
+"hi VertSplit guibg=NONE guifg=#586e75
+" NOT USED hi StatusLineNC guifg=#073642 guibg=#586e75
+" let g:solarized_termcolors=256
+" hi EndOfBuffer guifg=#002b36
+" hi ALEErrorSign guibg=#073642 guifg=#dc322f
+" hi ALEWarningSign guibg=#073642 guifg=#b58900
+" hi SignColumn guifg=#657b83 guibg=#073642
 
 " Editor KeyBindings
 map <Leader>"  :split<CR>
 map <Leader>%  :vsplit<CR>
 map <Leader>ch :nohl<CR>
+" nmap  <Leader>s :w<CR>
+nmap  <Leader>q :q<CR>
+imap <C-s> <C-[>:w<CR>
+nmap <C-s> :w<CR>
+nmap <Leader>yf :let @+ = expand("%")<cr>
 
 " faster c+[
 set ttimeout
@@ -65,12 +85,16 @@ map <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>
 imap <C-c> <C-O>:echo "Ctrl+C temporary disabled use Ctrl+["<CR>
 vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>
 
+" Commands
+command FormatJSON :%!jq .
+command -range FormatJSONSel :<line1>,<line2>!jq .
+
 
 " Plugin configuration
 " ====================
 " Airline (statusline)
-let g:airline_theme='solarized'
-let g:airline_powerline_fonts = 1
+let g:airline_theme='onehalfdark'
+let g:airline_powerline_fonts = 0
 let g:airline_solarized_dark_inactive_border = 1
 
 " NerdTree
@@ -79,6 +103,10 @@ map <Leader>nf  :NERDTreeFind<CR>
 let NERDTreeIgnore = ['__pycache__', '\.pyc$']
 exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no'
 
+" php refactoring
+let g:vim_php_refactoring_use_default_mapping = 0
+let g:vim_php_refactoring_auto_validate_sg = 1
+let g:vim_php_refactoring_make_setter_fluent = 1
 
 " Fzf
 " let $FZF_DEFAULT_COMMAND = 'ag -g ""' " consider gitignore
@@ -144,6 +172,7 @@ nvim_lsp["tsserver"].setup { on_attach = on_attach }
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
 nvim_lsp["phpactor"].setup { on_attach = on_attach, cmd = {os.getenv("HOME") .. "/.config/composer/vendor/bin/phpactor", "language-server"} }
 nvim_lsp["brighterscript"].setup { on_attach = on_attach }
+nvim_lsp["gdscript"].setup { on_attach = on_attach }
 nvim_lsp["rls"].setup {
   on_attach = on_attach,
   settings = {
