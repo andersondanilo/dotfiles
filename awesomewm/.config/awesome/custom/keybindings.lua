@@ -1,11 +1,11 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+local naughty = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
 -- Ext library
 local cyclefocus = require('lib/cyclefocus')
-local screenshot = require('lib/awesomewm-screenshot/screenshot')
 
 
 local terminal_tmux = terminal .. " -e tmux new-session \\; set-option destroy-unattached"
@@ -51,6 +51,9 @@ globalkeys = gears.table.join(
     --     end,
     --     {description = "go back", group = "client"}),
     -- modkey+Tab: cycle through all clients.
+    awful.key({ modkey }, "x", function () awful.util.spawn("customlock lock") end,
+              {description = "lock screen", group = "screen"}),
+
     awful.key({ modkey }, "Tab", function(c)
         cyclefocus.cycle({modifier="Super_L"})
     end),
@@ -58,6 +61,12 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Super_L"})
     end),
+    -- modkey+Shift+Tab: backwards
+    awful.key({ modkey, "Shift" }, "Tab", function(c)
+        cyclefocus.cycle({modifier="Super_L"})
+    end),
+    awful.key({ modkey, }, "n", naughty.destroy_all_notifications,
+        {description = "clear notifications", group = "awesome"}),
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal_tmux) end,
               {description = "open a terminal", group = "launcher"}),
@@ -101,12 +110,8 @@ globalkeys = gears.table.join(
         {description = "prev audio", group = "multimedia keys"}),
 
 
-    awful.key({ }, "Print", scrot_full,
-      {description = "Take a screenshot of entire screen", group = "screenshot"}),
-    awful.key({ modkey, }, "Print", scrot_selection,
-      {description = "Take a screenshot of selection", group = "screenshot"}),
-    awful.key({ "Shift" }, "Print", scrot_window,
-      {description = "Take a screenshot of focused window", group = "screenshot"})
+    awful.key({ }, "Print", function () awful.util.spawn("flameshot gui") end,
+      {description = "Take a screenshot of entire screen", group = "screenshot"})
 )
 
 clientkeys = gears.table.join(

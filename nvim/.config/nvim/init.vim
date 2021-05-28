@@ -13,11 +13,9 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'chrisbra/Colorizer'
 Plug 'adoy/vim-php-refactoring-toolbox'
-" Plug 'dense-analysis/ale'
-Plug 'file://'.expand('~/Workspace/personal/ale')
+Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
+Plug 'andersondanilo/ale' " Plug 'dense-analysis/ale'
 Plug 'nathunsmitty/nvim-ale-diagnostic'
-" Plug 'lifepillar/vim-solarized8' " theme
-" Plug 'morhetz/gruvbox' " theme
 Plug 'sonph/onehalf', { 'rtp': 'vim' } " theme
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
@@ -70,10 +68,11 @@ hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34
 map <Leader>"  :split<CR>
 map <Leader>%  :vsplit<CR>
 map <Leader>ch :nohl<CR>
-" nmap  <Leader>s :w<CR>
-nmap  <Leader>q :q<CR>
+nmap  <Leader>s :w<CR>
 imap <C-s> <C-[>:w<CR>
 nmap <C-s> :w<CR>
+map  <Leader>q :q<CR>
+map  <Leader>x :qall<CR>
 nmap <Leader>yf :let @+ = expand("%")<cr>
 
 " faster c+[
@@ -121,6 +120,7 @@ nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" 
 let g:ale_linters = {
 \   'php': ['php', 'phpcs', 'phpstan', 'phpmd'],
 \   'javascript': ['eslint'],
+\   'python': ['flake8', 'mypy', 'pylint', 'pyright'],
 \}
 let g:ale_fixers = {
  \ 'php': ['php_cs_fixer'],
@@ -129,6 +129,7 @@ let g:ale_fixers = {
  \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo'],
  \ 'rust': ['rustfmt'],
  \ 'brs': ['bsfmt_fixer'],
+ \ 'python': ['autopep8'],
  \ }
 let g:ale_fix_on_save = 1
 let g:ale_sign_error = '✘'
@@ -170,8 +171,8 @@ end
 -- and map buffer local keybindings when the language server attaches
 nvim_lsp["tsserver"].setup { on_attach = on_attach }
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
-nvim_lsp["phpactor"].setup { on_attach = on_attach, cmd = {os.getenv("HOME") .. "/.config/composer/vendor/bin/phpactor", "language-server"} }
-nvim_lsp["brighterscript"].setup { on_attach = on_attach }
+nvim_lsp["phpactor"].setup { on_attach = on_attach }
+nvim_lsp["brighterscript-ls"].setup { on_attach = on_attach }
 nvim_lsp["gdscript"].setup { on_attach = on_attach }
 nvim_lsp["rls"].setup {
   on_attach = on_attach,

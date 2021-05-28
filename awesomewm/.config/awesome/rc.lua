@@ -390,3 +390,5 @@ awful.spawn.with_shell(
        'xrdb -merge <<< "awesome.started:true";' ..
        'dex -ae Awesome'
        )
+
+awful.spawn.with_shell('customlock start')

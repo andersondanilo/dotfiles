@@ -1,0 +1,155 @@
+#!/bin/bash
+
+ME="$(readlink -f "$0")"
+DIM_TIMEOUT=60
+LOCK_TIMEOUT=5 # after dim timeout
+STAND_TIMEOUT=$((DIM_TIMEOUT + LOCK_TIMEOUT + 10))
+SUSPEND_TIMEOUT=300
+OFF_TIMEOUT=600
+SLEEP_PID=""
+COMMAND=$1
+SCREENSHOT_BG=/tmp/screen_locked.png
+I3LOCK_OPTIONS="-i $SCREENSHOT_BG"
+LOG_FILE=/tmp/customlock.log
+REDSHIFT_SERVICE=redshift-gtk
+
+
+log_message() {
+    LOG_LINE="[$COMMAND: $BASHPID] $@"
+    echo $LOG_LINE
+    echo $LOG_LINE >> $LOG_FILE
+}
+
+log_message "Location: $ME"
+
+configure() {
+    log_message "variables:"
+    log_message "  DIM_TIMEOUT: $DIM_TIMEOUT"
+    log_message "  LOCK_TIMEOUT: $LOCK_TIMEOUT"
+    log_message "  STAND_TIMEOUT: $STAND_TIMEOUT"
+    log_message "  SUSPEND_TIMEOUT: $SUSPEND_TIMEOUT"
+    log_message "  OFF_TIMEOUT: $OFF_TIMEOUT"
+    log_message "configuring with xset"
+    xset s $DIM_TIMEOUT $LOCK_TIMEOUT
+    xset dpms $STAND_TIMEOUT $SUSPEND_TIMEOUT $OFF_TIMEOUT
+}
+
+reduce_xrand_brightness() {
+    OUTPUTS=($(xrandr --current | sed -n 's/\([^ ]*\) connected .*/\1/p'))
+    for OUT in ${OUTPUTS[@]}; do
+        xrandr --output $OUT --brightness 0.2
+    done
+}
+
+restore_xrand_brightness() {
+    OUTPUTS=($(xrandr --current | sed -n 's/\([^ ]*\) connected .*/\1/p'))
+    for OUT in ${OUTPUTS[@]}; do
+        xrandr --output $OUT --brightness 1
+    done
+}
+
+start_xss_lock() {
+    configure
+    #exec xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" lock
+    xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" lock
+}
+
+pre_dim() {
+    log_message "dim: start (idle: $(xprintidle))"
+    systemctl stop --user $REDSHIFT_SERVICE
+    reduce_xrand_brightness
+}
+
+post_dim() {
+    log_message "dim: end"
+    restore_xrand_brightness
+    reload_picom
+    systemctl start --user $REDSHIFT_SERVICE
+}
+
+start_dim() {
+    pre_dim
+    start_sleep
+    wait
+    post_dim
+}
+
+reload_picom() {
+    pkill -USR1 picom
+}
+
+pre_lock() {
+    log_message "lock: lock screen (idle: $(xprintidle))"
+    playerctl -a pause
+    echo RELOADAGENT | gpg-connect-agent
+    test -f $SCREENSHOT_BG && rm $SCREENSHOT_BG
+    scrot $SCREENSHOT_BG
+    mogrify -scale 10% -scale 1000% $SCREENSHOT_BG
+}
+
+post_lock() {
+    reload_picom
+    log_message "lock: unlock screen"
+}
+
+start_i3lock() {
+    pgrep i3lock && echo "i3lock already started" && exit 0
+
+    pre_lock
+
+    # We set a trap to kill the locker if we get killed, then start the locker and
+    # wait for it to exit. The waiting is not that straightforward when the locker
+    # forks, so we use this polling only if we have a sleep lock to deal with.
+    if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
+        kill_i3lock() {
+            pkill -xu $EUID "$@" i3lock
+        }
+
+        trap kill_i3lock TERM INT
+
+        # we have to make sure the locker does not inherit a copy of the lock fd
+        i3lock $I3LOCK_OPTIONS {XSS_SLEEP_LOCK_FD}<&-
+
+        # now close our fd (only remaining copy) to indicate we're ready to sleep
+        exec {XSS_SLEEP_LOCK_FD}<&-
+
+        while kill_i3lock -0; do
+            sleep 0.5
+        done
+    else
+        trap 'kill %%' TERM INT
+        i3lock -n $I3LOCK_OPTIONS &
+        wait
+    fi
+
+    post_lock
+}
+
+start_sleep() {
+    sleep infinity & SLEEP_PID=$!
+    trap cancel_sleep INT TERM HUP
+}
+
+cancel_sleep() {
+    if [ ! -z "$SLEEP_PID" ]; then
+        log_message "cancel sleep $SLEEP_PID"
+        kill $SLEEP_PID
+    else
+        log_message "sleep is not started"
+    fi
+}
+
+
+case "$1" in
+    start)
+        start_xss_lock
+        ;;
+    dim|notify)
+        start_dim
+        ;;
+    lock)
+        start_i3lock
+        ;;
+esac
+
+log_message "finished"
