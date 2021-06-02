@@ -28,8 +28,12 @@ Plug 'andersondanilo/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
 Plug 'mfussenegger/nvim-dap'
 Plug 'habamax/vim-godot'
+Plug 'vim-crystal/vim-crystal'
 " Plug 'tmux-focus-events.vim'
 call plug#end()
+
+" test plugin
+" set rtp+=$HOME/Workspace/personal/vim/nvim-lsp-ale
 
 " Generic nvim configuration
 set tabstop=4
@@ -38,6 +42,7 @@ set expandtab
 set fillchars+=vert:│
 set nu
 set nofoldenable
+set nohlsearch
 
 " Theme configuration
 set background=dark
@@ -67,7 +72,7 @@ hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34
 " Editor KeyBindings
 map <Leader>"  :split<CR>
 map <Leader>%  :vsplit<CR>
-map <Leader>ch :nohl<CR>
+" map <Leader>ch :nohl<CR>
 nmap  <Leader>s :w<CR>
 imap <C-s> <C-[>:w<CR>
 nmap <C-s> :w<CR>
@@ -197,7 +202,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = false,
     virtual_text = false,
-    signs = true,
+    signs = false,
     update_in_insert = false,
   }
 )
