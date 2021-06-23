@@ -25,17 +25,17 @@ window:
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  #position:
-  #  x: 0
-  #  y: 0
+  # position:
+  #   x: 0
+  #   y: 0
 
   # Window padding (changes require restart)
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  # padding:
-  #   x: 0
-  #   y: 0
+  padding:
+   x: 2
+   y: 2
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
@@ -60,7 +60,7 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  # startup_mode: Fullscreen
+  startup_mode: Fullscreen
 
   # Window title
   #title: Alacritty
@@ -148,7 +148,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 12
+  size: 11
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -349,7 +349,7 @@ background_opacity: 0.97
   # Record all characters and escape sequences as test data.
   #ref_test: false
 
-#mouse:
+mouse:
   # Click settings
   #
   # The `double_click` and `triple_click` settings control the time
@@ -359,7 +359,7 @@ background_opacity: 0.97
   #triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
-  #hide_when_typing: false
+  hide_when_typing: true
 
   #url:
     # URL launcher
@@ -505,16 +505,18 @@ background_opacity: 0.97
 # binding with the same triggers is defined. To unset a default binding, it can
 # be mapped to the `ReceiveChar` action. Alternatively, you can use `None` for
 # a no-op if you do not wish to receive input characters for that binding.
-#key_bindings:
+key_bindings:
   # (Windows, Linux, and BSD only)
-  #- { key: V,        mods: Control|Shift, action: Paste            }
-  #- { key: C,        mods: Control|Shift, action: Copy             }
-  #- { key: Insert,   mods: Shift,         action: PasteSelection   }
-  #- { key: Key0,     mods: Control,       action: ResetFontSize    }
-  #- { key: Equals,   mods: Control,       action: IncreaseFontSize }
-  #- { key: Add,      mods: Control,       action: IncreaseFontSize }
-  #- { key: Subtract, mods: Control,       action: DecreaseFontSize }
-  #- { key: Minus,    mods: Control,       action: DecreaseFontSize }
+  - { key: V,        mods: Control|Shift, action: Paste            }
+  - { key: C,        mods: Control|Shift, action: Copy             }
+  - { key: Insert,   mods: Shift,         action: PasteSelection   }
+  - { key: Key0,     mods: Control|Shift, action: ResetFontSize    }
+  - { key: Equals,   mods: Alt,           action: IncreaseFontSize }
+  - { key: Minus,    mods: Alt,           action: DecreaseFontSize }
+
+  # remove old (with control instead of alt)
+  - { key: Equals,   mods: Control,       action: ReceiveChar }
+  - { key: Minus,    mods: Control,       action: ReceiveChar }
 
   # (Windows only)
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }

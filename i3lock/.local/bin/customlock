@@ -8,10 +8,10 @@ SUSPEND_TIMEOUT=300
 OFF_TIMEOUT=600
 SLEEP_PID=""
 COMMAND=$1
-SCREENSHOT_BG=/tmp/screen_locked.png
-I3LOCK_OPTIONS="-i $SCREENSHOT_BG"
+I3LOCK_OPTIONS="-t -i $HOME/Pictures/Wallpapers/current.png"
 LOG_FILE=/tmp/customlock.log
 REDSHIFT_SERVICE=redshift-gtk
+AUTOLOCK_BLOCKER=/tmp/autolock-blocker.lock
 
 
 log_message() {
@@ -49,9 +49,10 @@ restore_xrand_brightness() {
 }
 
 start_xss_lock() {
+    [ -e $AUTOLOCK_BLOCKER ] && rm $AUTOLOCK_BLOCKER
     configure
     #exec xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" lock
-    xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" lock
+    xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" autolock
 }
 
 pre_dim() {
@@ -68,10 +69,14 @@ post_dim() {
 }
 
 start_dim() {
-    pre_dim
-    start_sleep
-    wait
-    post_dim
+    if [ ! -e "$AUTOLOCK_BLOCKER" ]; then
+        pre_dim
+        start_sleep
+        wait
+        post_dim
+    else
+        log_message "autolock blocked!"
+    fi
 }
 
 reload_picom() {
@@ -82,9 +87,6 @@ pre_lock() {
     log_message "lock: lock screen (idle: $(xprintidle))"
     playerctl -a pause
     echo RELOADAGENT | gpg-connect-agent
-    test -f $SCREENSHOT_BG && rm $SCREENSHOT_BG
-    scrot $SCREENSHOT_BG
-    mogrify -scale 10% -scale 1000% $SCREENSHOT_BG
 }
 
 post_lock() {
@@ -128,6 +130,10 @@ start_i3lock() {
 start_sleep() {
     sleep infinity & SLEEP_PID=$!
     trap cancel_sleep INT TERM HUP
+    trap "echo '[$COMMAND: $BASHPID] found QUIT signal'" QUIT
+    trap "echo '[$COMMAND: $BASHPID] found EXIT signal'" EXIT
+    trap "echo '[$COMMAND: $BASHPID] found USR1 signal'" USR1
+    trap "echo '[$COMMAND: $BASHPID] found USR1 signal'" KILL
 }
 
 cancel_sleep() {
@@ -139,6 +145,23 @@ cancel_sleep() {
     fi
 }
 
+autolock() {
+    if [ ! -e "$AUTOLOCK_BLOCKER" ]; then
+        start_i3lock
+    else
+        log_message "autolock blocked!"
+    fi
+}
+
+disable_autolock() {
+    touch $AUTOLOCK_BLOCKER
+    log_message "disabled"
+}
+
+enable_autolock() {
+    rm $AUTOLOCK_BLOCKER
+    log_message "enabled"
+}
 
 case "$1" in
     start)
@@ -150,6 +173,17 @@ case "$1" in
     lock)
         start_i3lock
         ;;
+    autolock)
+        autolock
+        ;;
+    disable)
+        disable_autolock
+        ;;
+    enable)
+        enable_autolock
+        ;;
+    *)
+        echo "command not recognized: $1"
 esac
 
 log_message "finished"

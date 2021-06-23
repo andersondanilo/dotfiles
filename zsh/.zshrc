@@ -9,7 +9,7 @@ gpgconf --launch gpg-agent
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="robbyrussell"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="ghanima-onehalf"
 DEFAULT_USER=$USER
 
 # Uncomment the following line to use case-sensitive completion.
@@ -54,7 +54,18 @@ DEFAULT_USER=$USER
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git yarn-completion)
+plugins=(git yarn-completion zsh-vi-mode)
+
+# zsh-vi-mode: https://github.com/jeffreytse/zsh-vi-mode
+function zvm_before_init() {
+  # The plugin will auto execute this zvm_before_init function
+  zvm_bindkey viins '^[[A' history-beginning-search-backward
+  zvm_bindkey viins '^[[B' history-beginning-search-forward
+  zvm_bindkey vicmd '^[[A' history-beginning-search-backward
+  zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+}
 
 # User configuration
 

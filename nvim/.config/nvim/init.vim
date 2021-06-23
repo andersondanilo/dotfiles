@@ -15,7 +15,6 @@ Plug 'chrisbra/Colorizer'
 Plug 'adoy/vim-php-refactoring-toolbox'
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 Plug 'andersondanilo/ale' " Plug 'dense-analysis/ale'
-Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'sonph/onehalf', { 'rtp': 'vim' } " theme
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
@@ -26,14 +25,21 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'deoplete-plugins/deoplete-lsp'
 Plug 'andersondanilo/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
+Plug 'tpope/vim-surround'
 Plug 'mfussenegger/nvim-dap'
 Plug 'habamax/vim-godot'
 Plug 'vim-crystal/vim-crystal'
-" Plug 'tmux-focus-events.vim'
+Plug 'junegunn/vader.vim'
+Plug 'nathunsmitty/nvim-ale-diagnostic'
+Plug 'psliwka/vim-smoothie'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'andersondanilo/todo-comments.nvim'
+Plug 'vim-scripts/LargeFile'
 call plug#end()
 
 " test plugin
-" set rtp+=$HOME/Workspace/personal/vim/nvim-lsp-ale
+" set rtp+=$HOME/Workspace/personal/vim/nvim-ale-diagnostic
+" set rtp+=$HOME/Workspace/personal/vim/todo-comments.nvim
 
 " Generic nvim configuration
 set tabstop=4
@@ -76,9 +82,36 @@ map <Leader>%  :vsplit<CR>
 nmap  <Leader>s :w<CR>
 imap <C-s> <C-[>:w<CR>
 nmap <C-s> :w<CR>
-map  <Leader>q :q<CR>
-map  <Leader>x :qall<CR>
+map  <Leader>c :close<CR>
 nmap <Leader>yf :let @+ = expand("%")<cr>
+
+" tab commands
+nmap <Leader>to :tabonly<CR> 
+nmap <Leader>tn :tabn<CR> 
+nmap <Leader>tp :tabp<CR> 
+nmap <Leader>tc :tabclose<CR> 
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+
+" Buffers keybindings
+function! Custombwipeout(listed) abort
+    let l:buffers = filter(getbufinfo(), {_, v -> !v.loaded && (!v.listed || a:listed)})
+    if !empty(l:buffers)
+        execute 'bwipeout' join(map(l:buffers, {_, v -> v.bufnr}))
+    endif
+endfunction
+
+nmap <Leader>bb :Buffers<CR>
+nmap <leader>bq :bp <BAR> bd #<CR>
+nmap <leader>bo :call Custombwipeout(1)<CR>
+
 
 " faster c+[
 set ttimeout
@@ -92,12 +125,22 @@ vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>
 " Commands
 command FormatJSON :%!jq .
 command -range FormatJSONSel :<line1>,<line2>!jq .
+command LspStop :lua vim.lsp.stop_client(vim.lsp.get_active_clients())
+
 
 
 " Plugin configuration
 " ====================
 " Airline (statusline)
 let g:airline_theme='onehalfdark'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#show_splits = 0
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_tabs = 1
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline_powerline_fonts = 0
 let g:airline_solarized_dark_inactive_border = 1
 
@@ -105,6 +148,9 @@ let g:airline_solarized_dark_inactive_border = 1
 map <Leader>nt  :NERDTreeToggle<CR>
 map <Leader>nf  :NERDTreeFind<CR>
 let NERDTreeIgnore = ['__pycache__', '\.pyc$']
+let NERDTreeMapOpenInTab='<C-t>'
+let NERDTreeMapOpenSplit='<C-x>'
+let NERDTreeQuitOnOpen=1
 exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no'
 
 " php refactoring
@@ -119,7 +165,7 @@ let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comm
 let g:fzf_colors =
   \ { 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'] }
-nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":GFiles --cached --others --exclude-standard\<cr>"
+nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":NERDTreeClose\<cr>:GFiles --cached --others --exclude-standard\<cr>"
 
 " ALE Linter
 let g:ale_linters = {
@@ -159,9 +205,10 @@ nmap  <Leader>f <Plug>(easymotion-overwin-f)
 " ===========================
 " keybindings
 nmap <Leader>gd :lua vim.lsp.buf.definition()<CR>
-nmap <Leader>hv :lua vim.lsp.buf.hover()<CR>
-nmap <Leader>rf :lua vim.lsp.buf.references()<CR>
-nmap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
+nmap <Leader>ga :lua vim.lsp.buf.code_action()<CR>
+" nmap <Leader>hv :lua vim.lsp.buf.hover()<CR>
+" nmap <Leader>rf :lua vim.lsp.buf.references()<CR>
+" nmap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
 
 " Language servers
 lua << EOF
@@ -202,7 +249,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = false,
     virtual_text = false,
-    signs = false,
+    signs = true,
     update_in_insert = false,
   }
 )
@@ -210,6 +257,18 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 -- vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())
 -- ~/.cache/nvim/lsp.log
+EOF
+
+" Other lua plugin configs
+lua << EOF
+  require("todo-comments").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+    highlight = {
+      max_line_len = 2000
+    }
+  }
 EOF
 
 
