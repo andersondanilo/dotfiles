@@ -8,7 +8,7 @@
  */
 
 configuration {
-	font:							"Terminus 9";
+	//font:							"Terminus 9";
     show-icons:                     true;
 	icon-theme: 					"Papirus";
     display-drun: 					"";
@@ -20,6 +20,10 @@ configuration {
 }
 
 @import "colors.rasi"
+
+* {
+    default-border-radius: 4px;
+}
 
 window {
     transparency:                   "real";
@@ -37,15 +41,15 @@ window {
 prompt {
     enabled: 						true;
 	padding: 						0px 5px 0px -10px;
-	background-color: 				@al;
-	text-color: 					@bar;
-	font:							"Material\-Design\-Iconic\-Font 10";
+	background-color: 				@primary-color;
+	text-color: 					@on-primary-color;
+	//font:							"Material\-Design\-Iconic\-Font 10";
 }
 
 entry {
-    background-color:               @al;
-    text-color:                     @bar;
-    placeholder-color:              @bar;
+    background-color:               @primary-color;
+    text-color:                     @on-primary-color;
+    placeholder-color:              @on-primary-color-light;
     expand:                         true;
     horizontal-align:               0;
     placeholder:                    "Search...";
@@ -55,8 +59,8 @@ entry {
 
 inputbar {
 	children: 						[ prompt, entry ];
-    background-color:               @ac;
-    text-color:                     @bar;
+    background-color:               @primary-color;
+    text-color:                     @on-primary-color;
     expand:                         false;
 	border:							0px;
     border-radius:                  0px;
@@ -66,7 +70,7 @@ inputbar {
 }
 
 listview {
-    background-color:               @al;
+    background-color:               @background-color;
     padding:                        10px 10px 10px 10px;
     columns:                        2;
     lines:                          7;
@@ -77,10 +81,10 @@ listview {
 }
 
 mainbox {
-    background-color:               @al;
-	border:							0px;
-    border-radius:                  0px;
-	border-color:					@ac;
+    background-color:               @background-color;
+	border:							4px;
+    border-radius:                  @default-border-radius;
+	border-color:					@border-color;
     children:                       [ inputbar, listview ];
     spacing:                       	0px;
     padding:                        0px;
@@ -88,7 +92,7 @@ mainbox {
 
 element {
     background-color:               @al;
-    text-color:                     @fg;
+    text-color:                     @on-background-color;
     orientation:                    horizontal;
     border-radius:                  0px;
     padding:                        10px;
@@ -107,9 +111,9 @@ element-text {
 }
 
 element selected {
-    background-color:               @bga;
-    text-color:                     @fg;
+    background-color:               @primary-color;
+    text-color:                     @on-primary-color;
 	border:							0px;
-    border-radius:                  0px;
-    border-color:                  	@bg;
+    border-radius:                  @default-border-radius;
+    border-color:                  	@border-color;
 }

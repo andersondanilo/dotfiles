@@ -1,10 +1,17 @@
 /* colors */
 
 * {
+  primary-color: #98c379FF;
+  on-primary-color: #000000FF;
+  on-primary-color-light: #444444FF;
+  background-color: #282c34;
+  on-background-color: #FFFFFFFF;
+  border-color: #1f2229FF;
+
   al:   #00000000;
-  bg:   #002b36FF;
-  bga:  #268bd233;
-  bar:  #eee8d5FF;
-  fg:   #eee8d5FF;
-  ac:   #268bd2FF;
+  bg:   @background-color;
+  bga:  @primary-color;
+  bar:  @on-primary-color;
+  fg:   @on-background-color;
+  ac:   @primary-color;
 }

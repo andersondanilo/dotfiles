@@ -8,18 +8,19 @@ local dpi = require("beautiful.xresources").apply_dpi
 local Color = require("lib/luacolors")
 
 local colors = {
-    color1 = "#353535", -- brown
-    color2 = "#86A869", -- light green
-    color3 = "#CAC28D", -- extreme light brown
-    color4 = "#BEA866", -- light brown
-    color5 = "#A6352E", -- red
+    color_bg = "#282c34", -- brown
+    color_primary = "#86A869", -- light green
+    color_on_primary = "#353535", -- light green
+    color_on_bg_light = "#b5c9ee", -- extreme light brown
+    color_on_bg = "#96a6c5", -- light brown
+    color_urgent = "#A6352E", -- red
 }
 
-colors.color1_inactive = Color.new(colors.color1):lighten_by(1.5):to_rgb()
-colors.color1_dark = Color.new(colors.color1):lighten_by(0.8):to_rgb()
-colors.color1_light = Color.new(colors.color1):lighten_by(1.3):to_rgb()
-colors.color1_opacity = Color.new(colors.color1):lighten_by(2):to_rgb()
-colors.color3_light = Color.new(colors.color3):lighten_by(1.3):to_rgb()
+colors.color_bg_inactive = Color.new(colors.color_bg):lighten_by(1.5):to_rgb()
+colors.color_bg_dark = Color.new(colors.color_bg):lighten_by(0.8):to_rgb()
+colors.color_bg_light = Color.new(colors.color_bg):lighten_by(1.3):to_rgb()
+colors.color_bg_opacity = Color.new(colors.color_bg):lighten_by(2):to_rgb()
+colors.color_on_bg_light_light = Color.new(colors.color_on_bg_light):lighten_by(1.3):to_rgb()
 
 -- {{{ Main
 local theme = {}
@@ -30,26 +31,28 @@ theme.wallpaper = string.format("%s/Pictures/Wallpapers/wallpaperflare.com_wallp
 theme.font      = "NotoSans 8"
 
 -- {{{ Colors
-theme.fg_normal  = colors.color3
-theme.fg_focus   = colors.color3_light
-theme.fg_urgent  = colors.color3_light
-theme.bg_normal  = colors.color1
-theme.bg_focus   = colors.color1_light
-theme.bg_urgent  = colors.color5
+theme.fg_normal  = colors.color_on_bg_light
+theme.fg_focus   = colors.color_on_primary
+theme.fg_urgent  = colors.color_on_bg_light_light
+theme.bg_normal  = colors.color_bg
+theme.bg_focus   = colors.color_primary
+theme.bg_urgent  = colors.color_urgent
 theme.bg_systray = theme.bg_normal
 -- }}}
 
 -- {{{ Borders
 theme.useless_gap   = dpi(0)
 theme.border_width  = dpi(3)
-theme.border_normal = colors.color1_inactive
-theme.border_focus  = colors.color1_dark
-theme.border_marked = colors.color1
+theme.border_normal = colors.color_bg_inactive
+theme.border_focus  = colors.color_bg_dark
+theme.border_marked = colors.color_bg
 -- }}}
 
 -- {{{ Titlebars
-theme.titlebar_bg_focus  = colors.color1
-theme.titlebar_bg_normal = colors.color1_inactive
+theme.titlebar_fg_focus  = colors.color_on_bg
+theme.titlebar_bg_focus  = colors.color_bg
+theme.titlebar_fg_normal  = colors.color_on_bg
+theme.titlebar_bg_normal = colors.color_bg_inactive
 -- }}}
 
 -- There are other variable sets
@@ -120,6 +123,9 @@ theme.layout_cornerse   = theme_path .. "/layouts/cornerse.png"
 -- {{{ Systray
 theme.systray_icon_spacing = 5
 -- }}}
+--
+theme.tasklist_plain_task_name = false
+theme.tasklist_shape_border_color = colors.color_bg_light
 
 -- {{{ Titlebar
 theme.titlebar_close_button_focus  = theme_path .. "/titlebar/close_focus.png"

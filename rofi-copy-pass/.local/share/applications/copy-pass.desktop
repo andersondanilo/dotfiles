@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Keywords=password;pass;password manager;
+Categories=GTK;
+Name=Copy Pass
+Comment=Copy Pass
+TryExec=copy-pass.sh
+Icon=edit-paste-symbolic
+Exec=copy-pass.sh

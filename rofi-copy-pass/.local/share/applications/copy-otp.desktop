@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Keywords=password;pass;password manager;
+Categories=GTK;
+Name=Copy OTP
+Comment=Copy OTP
+TryExec=copy-pass.sh
+Icon=edit-paste-symbolic
+Exec=copy-otp.sh
