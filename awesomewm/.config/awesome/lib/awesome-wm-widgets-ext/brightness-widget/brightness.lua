@@ -19,6 +19,7 @@ local get_brightness_cmd
 local set_brightness_cmd
 local inc_brightness_cmd
 local dec_brightness_cmd
+local get_brightness_parser = function(out) return out end;
 
 local brightness_widget = {}
 
@@ -54,10 +55,13 @@ local function worker(user_args)
         inc_brightness_cmd = 'xbacklight -inc ' .. step
         dec_brightness_cmd = 'xbacklight -dec ' .. step
     elseif program == 'brightnessctl' then
-        get_brightness_cmd = 'brightnessctl get'
+        get_brightness_cmd = 'brightnessctl'
         set_brightness_cmd = 'brightnessctlX set ' -- <level>
         inc_brightness_cmd = 'brightnessctl set +' .. step .. '%'
         dec_brightness_cmd = 'brightnessctl set ' .. step .. '%-'
+        get_brightness_parser = function (out)
+            return string.match(out, "%d+%%"):gsub("%%", "")
+        end
     else
         show_warning(program .. " command is not supported by the widget")
         return
@@ -114,7 +118,8 @@ local function worker(user_args)
     end
 
     local update_widget = function(widget, stdout, _, _, _)
-        local brightness_level = tonumber(string.format("%.0f", stdout))
+        local percentage = get_brightness_parser(stdout)
+        local brightness_level = tonumber(string.format("%.0f", percentage))
         current_level = brightness_level
         widget:set_value(brightness_level)
     end

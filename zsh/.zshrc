@@ -56,13 +56,18 @@ DEFAULT_USER=$USER
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git yarn-completion zsh-vi-mode)
 
+autoload -U history-search-end
+
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+
 # zsh-vi-mode: https://github.com/jeffreytse/zsh-vi-mode
 function zvm_before_init() {
   # The plugin will auto execute this zvm_before_init function
-  zvm_bindkey viins '^[[A' history-beginning-search-backward
-  zvm_bindkey viins '^[[B' history-beginning-search-forward
-  zvm_bindkey vicmd '^[[A' history-beginning-search-backward
-  zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+  zvm_bindkey viins '^[[A' history-beginning-search-backward-end
+  zvm_bindkey viins '^[[B' history-beginning-search-forward-end
+  zvm_bindkey vicmd '^[[A' history-beginning-search-backward-end
+  zvm_bindkey vicmd '^[[B' history-beginning-search-forward-end
 
   ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
 }

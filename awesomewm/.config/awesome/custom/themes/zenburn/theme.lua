@@ -13,6 +13,7 @@ local colors = {
     color_on_primary = "#353535", -- light green
     color_on_bg_light = "#b5c9ee", -- extreme light brown
     color_on_bg = "#96a6c5", -- light brown
+    color_fg = "#ececec",
     color_urgent = "#A6352E", -- red
 }
 
@@ -31,7 +32,7 @@ theme.wallpaper = string.format("%s/Pictures/Wallpapers/wallpaperflare.com_wallp
 theme.font      = "NotoSans 8"
 
 -- {{{ Colors
-theme.fg_normal  = colors.color_on_bg_light
+theme.fg_normal  = colors.color_fg
 theme.fg_focus   = colors.color_on_primary
 theme.fg_urgent  = colors.color_on_bg_light_light
 theme.bg_normal  = colors.color_bg

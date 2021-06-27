@@ -23,7 +23,7 @@ require("awful.hotkeys_popup.keys")
 -- ext
 -- local pomodoro_widget = require("lib/openpomodoro-awesomewm")
 local volume_widget = require('lib.awesome-wm-widgets-ext.volume-widget.volume')
-local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local brightness_widget = require("lib.awesome-wm-widgets-ext.brightness-widget.brightness")
 
 -- {{{ Error handling
@@ -265,20 +265,19 @@ awful.screen.connect_for_each_screen(function(s)
             volume_widget{
                 widget_type = 'icon_and_text'
             },
-            widget_separator,
+            --widget_separator,
             brightness_widget{
-                type = 'icon_and_text',
+                type = 'arc',
                 program = 'brightnessctl',
                 step = 2,
             },
-            widget_separator,
-            mykeyboardlayout,
-            widget_separator,
-            batteryarc_widget({
-                show_current_level = true,
-                arc_thickness = 1,
-            }),
-            widget_separator,
+            --widget_separator,
+            -- mykeyboardlayout,
+            --widget_separator,
+            battery_widget{
+               path_to_icons=os.getenv("HOME") .. "/.icons/oomox-Custom OneHalf/22/status/"
+            },
+            --widget_separator,
             mysystray,
             mytextclock,
         },
