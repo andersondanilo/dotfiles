@@ -23,7 +23,7 @@ require("awful.hotkeys_popup.keys")
 -- ext
 -- local pomodoro_widget = require("lib/openpomodoro-awesomewm")
 local volume_widget = require('lib.awesome-wm-widgets-ext.volume-widget.volume')
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local battery_widget = require("lib.awesome-wm-widgets-ext..battery-widget.battery")
 local brightness_widget = require("lib.awesome-wm-widgets-ext.brightness-widget.brightness")
 
 -- {{{ Error handling
@@ -168,7 +168,6 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 local mysystray = wibox.widget.systray()
--- mysystray:set_base_size(16)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -178,7 +177,7 @@ awful.screen.connect_for_each_screen(function(s)
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
+    -- s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -191,7 +190,20 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
+        buttons = taglist_buttons,
+        widget_template = {
+            {
+                {
+                     id     = 'text_role',
+                     widget = wibox.widget.textbox,
+                },
+                left  = 10,
+                right = 10,
+                widget = wibox.container.margin
+            },
+            id     = 'background_role',
+            widget = wibox.container.background,
+        }
     }
 
     -- Create a tasklist widget
@@ -245,7 +257,11 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({
+       position = "top",
+       screen = s,
+       height = 28
+    })
 
     local widget_separator = wibox.widget.textbox("  ")
 
@@ -255,32 +271,32 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             s.mytaglist,
-            s.mypromptbox,
+            {
+                layout = wibox.layout.align.horizontal,
+                forced_width = 1
+            }
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
+        wibox.container.margin(wibox.widget { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            -- pomodoro_widget,
-            -- widget_separator,
-            volume_widget{
-                widget_type = 'icon_and_text'
+            {
+               layout = wibox.layout.fixed.horizontal,
+               spacing = beautiful.systray_icon_spacing,
+               volume_widget{
+                   widget_type = 'icon_and_text'
+               },
+               brightness_widget{
+                   type = 'arc',
+                   program = 'brightnessctl',
+                   step = 2,
+               },
+               battery_widget{
+                  path_to_icons="/usr/share/icons/oomox-CustomOneHalf/22/status/"
+               },
+               mysystray,
             },
-            --widget_separator,
-            brightness_widget{
-                type = 'arc',
-                program = 'brightnessctl',
-                step = 2,
-            },
-            --widget_separator,
-            -- mykeyboardlayout,
-            --widget_separator,
-            battery_widget{
-               path_to_icons=os.getenv("HOME") .. "/.icons/oomox-Custom OneHalf/22/status/"
-            },
-            --widget_separator,
-            mysystray,
             mytextclock,
-        },
+        }, 0, 0, 5, 5)
     }
 end)
 -- }}}

@@ -18,8 +18,10 @@ local utils = require("awesome-wm-widgets.volume-widget.utils")
 
 local LIST_DEVICES_CMD = [[sh -c "pacmd list-sinks; pacmd list-sources"]]
 local GET_VOLUME_CMD = 'amixer -D pulse sget Master'
-local INC_VOLUME_CMD = 'amixer -D pulse sset Master 2%+'
-local DEC_VOLUME_CMD = 'amixer -D pulse sset Master 2%-'
+--local INC_VOLUME_CMD = 'amixer -D pulse sset Master 2%+'
+--local DEC_VOLUME_CMD = 'amixer -D pulse sset Master 2%-'
+local INC_VOLUME_CMD = 'pactl -- set-sink-volume 0 +2% && amixer -D pulse sget Master'
+local DEC_VOLUME_CMD = 'pactl -- set-sink-volume 0 -2% && amixer -D pulse sget Master'
 local TOG_VOLUME_CMD = 'amixer -D pulse sset Master toggle'
 
 
@@ -183,11 +185,11 @@ local function worker(user_args)
     end
 
     function volume:inc()
-        spawn.easy_async(INC_VOLUME_CMD, function(stdout) update_graphic(volume.widget, stdout) end)
+        spawn.easy_async_with_shell(INC_VOLUME_CMD, function(stdout) update_graphic(volume.widget, stdout) end)
     end
 
     function volume:dec()
-        spawn.easy_async(DEC_VOLUME_CMD, function(stdout) update_graphic(volume.widget, stdout) end)
+        spawn.easy_async_with_shell(DEC_VOLUME_CMD, function(stdout) update_graphic(volume.widget, stdout) end)
     end
 
     function volume:toggle()

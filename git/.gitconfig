@@ -10,7 +10,7 @@
     changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
     clean-merged = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
     sync = "!git fetch && git rebase && git push"
-    sed = "!git ls-files -z | xargs -0 sed -i -e"
+    readd = update-index --again
 [commit]
 	gpgsign = true
 [pull]

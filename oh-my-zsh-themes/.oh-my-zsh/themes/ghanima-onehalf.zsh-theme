@@ -80,7 +80,7 @@ prompt_context() {
     delta_context=$DELTA
   else
     delta_context=$DELTA_NORMAL
-    colorfg=yellow
+    colorfg="#e5c07b"
   fi
 
   if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CONNECTION" ]]; then
@@ -113,15 +113,15 @@ prompt_vim() {
   if [[ $KEYMAP = 'viins' ]] || [[ $KEYMAP = 'main' ]]; then
     bk="#61afef"
     fgr="#272c33"
-    ref=" %{%B%}INSERT %{%b%}"
+    ref=" %{%B%}I %{%b%}"
   elif [[ $KEYMAP = 'vicmd' ]]; then
-    bk="#98c379"
+    bk="#e5c07b"
     fgr="#272c33"
-    ref=" %{%B%}NORMAL %{%b%}"
+    ref=" %{%B%}N %{%b%}"
   elif [[ $KEYMAP = 'viopp' ]]; then
-    bk="#61afef"
+    bk="#56b6c2"
     fgr="#272c33"
-    ref=" %{%B%}OPPER %{%b%}"
+    ref=" %{%B%}O %{%b%}"
   else
     bk=red
     ref=" $KEYMAP "
@@ -146,6 +146,11 @@ prompt_right_start() {
 }
 # Git: branch/detached head, dirty status
 prompt_git() {
+  (( $+commands[git] )) || return
+  if [[ "$(git config --get oh-my-zsh.hide-status 2>/dev/null)" = 1 ]]; then
+    return
+  fi
+
   local color ref
   is_dirty() {
     test -n "$(git status --porcelain --ignore-submodules)"
@@ -153,14 +158,37 @@ prompt_git() {
   ref="$vcs_info_msg_0_"
   fgcolor=$PRIMARY_FG
   if [[ -n "$ref" ]]; then
-    if is_dirty; then
+    local mode dirty staged_count
+    ref="${ref}"
+    dirty=$(parse_git_dirty)
+    unstaged_count="$(git diff --name-only | wc -l)"
+    staged_count="$(git diff --name-only --cached | wc -l)"
+
+    color="#5d677a"
+    fgcolor=white
+
+    if [[ -n $dirty ]]; then
       color="#e5c07b"
-      ref="$PLUSMINUS ${ref}"
-    else
-      color="#5d677a"
-      fgcolor=white
-      ref="${ref}"
+      fgcolor=$PRIMARY_FG
     fi
+
+    if [[ "$unstaged_count" != "0" ]]; then
+      ref="${ref} $PLUSMINUS"
+    fi
+
+    if [[ "$staged_count" != "0" ]]; then
+      ref="${ref} ●"
+    fi
+
+    if [[ -e "${repo_path}/BISECT_LOG" ]]; then
+      mode=" <B>"
+    elif [[ -e "${repo_path}/MERGE_HEAD" ]]; then
+      mode=" >M<"
+    elif [[ -e "${repo_path}/rebase" || -e "${repo_path}/rebase-apply" || -e "${repo_path}/rebase-merge" || -e "${repo_path}/../.dotest" ]]; then
+      mode=" >R>"
+    fi
+    ref="${ref}${mode}"
+
     if [[ "${ref/.../}" == "$ref" ]]; then
       ref="$ref $BRANCH"
     else
@@ -177,12 +205,10 @@ prompt_right_end() {
 }
 
 prompt_top_left() {
-  RETVAL=$?
   CURRENT_BG='NONE'
   prompt_vim
-  prompt_git
   prompt_dir
-  prompt_status
+  prompt_git
   prompt_end
 }
 
@@ -192,32 +218,11 @@ prompt_bottom_left() {
   prompt_end
 }
 
-#prompt_bottom_right() {
-#  CURRENT_BG='NONE'
-#  prompt_git
-#  prompt_right_end
-#}
-
-get_space () {
-  local LENGTH1=`echo "$1" | wc -c`
-  local LENGTH2=`echo "$2" | wc -c`
-  local LENGTH=0
-  (( LENGTH = $LENGTH1 + $LENGTH2 ))
-  local SPACES=""
-
-  echo "Len1: $LENGTH1 - "
-  echo "Len2: $LENGTH2 - "
-  echo "1: '$1' - $LENGTH1"
-  echo "2: '$2' - $LENGTH2"
-
-  (( LENGTH = ${COLUMNS} - $LENGTH - 1))
-
-  for i in {0..$LENGTH}
-    do
-      SPACES="$SPACES "
-    done
-
-  echo $SPACES
+prompt_bottom_right() {
+  RETVAL=$?
+  CURRENT_BG='NONE'
+  prompt_status
+  prompt_right_end
 }
 
 prompt_ghanima_precmd() {
@@ -226,10 +231,11 @@ prompt_ghanima_precmd() {
   # otherwise this is empty
   KEYMAP="viins"
   TOP_PROMPT='%{%f%b%k%}$(prompt_top_left)'
-  PROMPT=$TOP_PROMPT$'\n''$(prompt_bottom_left)'
+  #PROMPT=$TOP_PROMPT$'\n''$(prompt_bottom_left)'
+  PROMPT=$TOP_PROMPT'$(prompt_bottom_left)'
 
-  #RPROMPT='%{%f%b%k%}$(prompt_bottom_right)'
-  RPROMPT=''
+  RPROMPT='%{%f%b%k%}$(prompt_bottom_right)'
+  #RPROMPT=''
 }
 
 prompt_ghanima_setup() {

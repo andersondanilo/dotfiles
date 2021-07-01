@@ -51,10 +51,12 @@ theme.border_marked = colors.color_bg
 
 -- {{{ Titlebars
 theme.titlebar_fg_focus  = colors.color_on_bg
-theme.titlebar_bg_focus  = colors.color_bg
+theme.titlebar_bg_focus  = colors.color_bg_dark
 theme.titlebar_fg_normal  = colors.color_on_bg
 theme.titlebar_bg_normal = colors.color_bg_inactive
 -- }}}
+
+theme.taglist_fg_empty = colors.color_on_bg
 
 -- There are other variable sets
 -- overriding the default one when

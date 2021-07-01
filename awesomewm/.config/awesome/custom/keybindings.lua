@@ -90,9 +90,9 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Multimedia keys
-    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%+") end,
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("pactl -- set-sink-volume 0 +2%") end,
         {description = "raise volume", group = "multimedia keys"}),
-    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%-") end,
+    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("pactl -- set-sink-volume 0 -2%") end,
         {description = "lower volume", group = "multimedia keys"}),
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end,
         {description = "toggle mute volume", group = "multimedia keys"}),
