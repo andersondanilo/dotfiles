@@ -105,9 +105,6 @@ myawesomemenu = {
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
@@ -179,13 +176,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create a promptbox for each screen
     -- s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(gears.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
@@ -372,15 +362,31 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = true }
     },
 
+    { rule_any = {class = { "Alacritty" }
+      }, properties = { titlebars_enabled = false }
+    },
+
     { rule_any = {class = { "pomotroid" }
       }, properties = { titlebars_enabled = false }
     },
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
+    { rule = { class = "Firefox" },
+      properties = { maximized = true, titlebars_enabled = false } },
+
+    { rule = { class = "Spotify" },
+      properties = { maximized = true, tag = "9" } },
 }
 -- }}}
+
+local function on_maximized_set_or_change(c, is_change)
+   print("on_maximized_set_or_change")
+
+   --if c.maximized then
+   --   awful.titlebar.hide(c)
+   --else
+   --   awful.titlebar.show(c)
+   --end
+end
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -388,13 +394,58 @@ client.connect_signal("manage", function (c)
     -- Set the windows at the slave,
     -- i.e. put it at the end of others instead of setting it master.
     -- if not awesome.startup then awful.client.setslave(c) end
+    -- print("signal manage")
+    -- print("is floating: " .. tostring(c.floating))
+    -- print("user_position: " .. tostring(c.size_hints.user_position))
+    -- print("program_position: " .. tostring(c.size_hints.program_position))
+    -- print("c.maximized: " .. tostring(c.maximized))
+    -- print("c.class: " .. tostring(c.class))
+    -- print("c.name: " .. tostring(c.name))
+    -- print("c.role: " .. tostring(c.role))
+    -- print("c.type: " .. tostring(c.type))
+    -- print("c.window: " .. tostring(c.window))
+    -- print("c.maximized_vertical: " .. tostring(c.maximized_vertical))
+    -- print("c.maximized_horizontal: " .. tostring(c.maximized_horizontal))
+    -- print("c.geometry: " .. tostring(c.geometry))
+    -- print("c.role: " .. tostring(c.role))
+    -- print("c.window: " .. tostring(c.window))
+    -- print("c.screen.geometry.width: " .. tostring(c.screen.geometry.width))
+    -- print("c.screen.geometry.height: " .. tostring(c.screen.geometry.height))
+    -- print("c.screen.width: " .. tostring(c.screen.width))
+    -- print("c.motif_wm_hints: " .. tostring(c.motif_wm_hints))
+    -- print("c.width: " .. tostring(c.width))
+    -- print("c.height: " .. tostring(c.height))
+
+    if c.class == nil then
+       c.minimized = true
+       c:connect_signal("property::class", function ()
+         c.minimized = false
+         awful.rules.apply(c)
+       end)
+    end
 
     if awesome.startup
       and not c.size_hints.user_position
       and not c.size_hints.program_position then
         -- Prevent clients from being unreachable after screen count changes.
-        awful.placement.no_offscreen(c)
+        if c.floating then
+        else
+           awful.placement.no_offscreen(c)
+        end
+    else
+      if not c.size_hints.user_position
+         and not c.size_hints.program_position
+         and not c.maximized then
+         awful.placement.centered(c)
+      end
     end
+
+    on_maximized_set_or_change(c, false)
+end)
+
+client.connect_signal("property::maximized", function(c)
+   print("property::maximized received")
+   on_maximized_set_or_change(c, true)
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.

@@ -9,6 +9,7 @@
 [alias]
     changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
     clean-merged = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+    clean-all-except-master = "!git branch | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -D"
     sync = "!git fetch && git rebase && git push"
     readd = update-index --again
 [commit]

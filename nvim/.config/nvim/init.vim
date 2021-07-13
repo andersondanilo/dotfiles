@@ -46,9 +46,11 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set fillchars+=vert:│
-set nu
-set nofoldenable
-set nohlsearch
+set number relativenumber
+" set nofoldenable
+" set nohlsearch
+
+let g:markdown_folding = 1
 
 " Theme configuration
 set background=dark
@@ -78,11 +80,11 @@ hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34
 " Editor KeyBindings
 map <Leader>"  :split<CR>
 map <Leader>%  :vsplit<CR>
-" map <Leader>ch :nohl<CR>
+map <Leader>h :nohl<CR>
 nmap  <Leader>s :w<CR>
 imap <C-s> <C-[>:w<CR>
 nmap <C-s> :w<CR>
-map  <Leader>c :close<CR>
+map  <Leader>q :close<CR>
 nmap <Leader>yf :let @+ = expand("%")<cr>
 
 " tab commands
@@ -131,6 +133,7 @@ command LspStop :lua vim.lsp.stop_client(vim.lsp.get_active_clients())
 
 " Plugin configuration
 " ====================
+
 " Airline (statusline)
 let g:airline_theme='onehalfdark'
 let g:airline#extensions#tabline#enabled = 1

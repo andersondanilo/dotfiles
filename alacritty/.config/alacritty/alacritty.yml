@@ -25,9 +25,9 @@ window:
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  # position:
-  #   x: 0
-  #   y: 0
+  #position:
+  #  x: 100
+  #  y: 100
 
   # Window padding (changes require restart)
   #
@@ -60,7 +60,7 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  startup_mode: Fullscreen
+  startup_mode: Windowed
 
   # Window title
   #title: Alacritty

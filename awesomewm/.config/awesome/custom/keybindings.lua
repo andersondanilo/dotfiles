@@ -20,13 +20,13 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "d", function()  awful.util.spawn("rofi -combi-modi window,drun -show combi") end,
               {description = "open rofi", group = "rofi"}),
 
-    awful.key({ modkey,           }, "j",
+    awful.key({ modkey,           }, "Down",
         function ()
             awful.client.focus.byidx( 1)
         end,
         {description = "focus next by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "k",
+    awful.key({ modkey,           }, "Up",
         function ()
             awful.client.focus.byidx(-1)
         end,
@@ -36,9 +36,9 @@ globalkeys = gears.table.join(
     --          {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey }, "l", function () awful.screen.focus_relative( 1) end,
+    awful.key({ modkey }, "Right", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
-    awful.key({ modkey }, "h", function () awful.screen.focus_relative(-1) end,
+    awful.key({ modkey }, "Left", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
@@ -123,9 +123,9 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "h",      function (c) c:move_to_screen(c.screen.index - 1) end,
+    awful.key({ modkey, "Shift"   }, "Left",      function (c) c:move_to_screen(c.screen.index - 1) end,
              {description = "move to left screen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "l",      function (c) c:move_to_screen(c.screen.index + 1) end,
+    awful.key({ modkey, "Shift"   }, "Right",      function (c) c:move_to_screen(c.screen.index + 1) end,
              {description = "move to right screen", group = "client"}),
     awful.key({ modkey,           }, "Up",
         function (c)

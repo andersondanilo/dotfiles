@@ -25,7 +25,7 @@ colors.color_on_bg_light_light = Color.new(colors.color_on_bg_light):lighten_by(
 
 -- {{{ Main
 local theme = {}
-theme.wallpaper = string.format("%s/Pictures/Wallpapers/wallpaperflare.com_wallpaper.jpg", os.getenv("HOME"))
+theme.wallpaper = string.format("%s/Pictures/Wallpapers/current.jpg", os.getenv("HOME"))
 -- }}}
 
 -- {{{ Styles

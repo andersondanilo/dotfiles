@@ -1,0 +1,18 @@
+/* colors */
+
+* {
+  primary-color: #98c379FF;
+  on-primary-color: #000000FF;
+  on-primary-color-light: #444444FF;
+  background-color: #282c34;
+  background-color-dark: #1f2229FF;
+  on-background-color: #FFFFFFFF;
+  border-color: #1f2229FF;
+
+  al:   #00000000;
+  bg:   @background-color;
+  bga:  @primary-color;
+  bar:  @on-primary-color;
+  fg:   @on-background-color;
+  ac:   @primary-color;
+}
