@@ -22,7 +22,24 @@ log_message() {
 
 log_message "Location: $ME"
 
+enable_autolock() {
+    log_message "enable_autolock()"
+    [ -e "$AUTOLOCK_BLOCKER" ] && rm $AUTOLOCK_BLOCKER
+    configure
+    xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" autolock &
+    log_message "enabled"
+}
+
+disable_autolock() {
+    log_message "disable_autolock()"
+    touch $AUTOLOCK_BLOCKER
+    pkill xss-lock
+    unconfigure
+    log_message "disabled"
+}
+
 configure() {
+    log_message "configure()"
     log_message "variables:"
     log_message "  DIM_TIMEOUT: $DIM_TIMEOUT"
     log_message "  LOCK_TIMEOUT: $LOCK_TIMEOUT"
@@ -32,6 +49,12 @@ configure() {
     log_message "configuring with xset"
     xset s $DIM_TIMEOUT $LOCK_TIMEOUT
     xset dpms $STAND_TIMEOUT $SUSPEND_TIMEOUT $OFF_TIMEOUT
+}
+
+unconfigure() {
+    log_message "unconfigure()"
+    xset s off
+    xset s off -dpms
 }
 
 reduce_xrand_brightness() {
@@ -46,13 +69,6 @@ restore_xrand_brightness() {
     for OUT in ${OUTPUTS[@]}; do
         xrandr --output $OUT --brightness 1
     done
-}
-
-start_xss_lock() {
-    [ -e $AUTOLOCK_BLOCKER ] && rm $AUTOLOCK_BLOCKER
-    configure
-    #exec xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" lock
-    xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" autolock
 }
 
 pre_dim() {
@@ -84,17 +100,20 @@ reload_picom() {
 }
 
 pre_lock() {
+    log_message "pre_lock()"
     log_message "lock: lock screen (idle: $(xprintidle))"
     playerctl -a pause
     echo RELOADAGENT | gpg-connect-agent
 }
 
 post_lock() {
+    log_message "post_lock()"
     reload_picom
     log_message "lock: unlock screen"
 }
 
 start_i3lock() {
+    log_message "start_i3lock()"
     pgrep i3lock && echo "i3lock already started" && exit 0
 
     pre_lock
@@ -128,6 +147,7 @@ start_i3lock() {
 }
 
 start_sleep() {
+    log_message "start_sleep()"
     sleep infinity & SLEEP_PID=$!
     trap cancel_sleep INT TERM HUP
     trap "echo '[$COMMAND: $BASHPID] found QUIT signal'" QUIT
@@ -146,6 +166,7 @@ cancel_sleep() {
 }
 
 autolock() {
+    log_message "autolock()"
     if [ ! -e "$AUTOLOCK_BLOCKER" ]; then
         start_i3lock
     else
@@ -153,19 +174,25 @@ autolock() {
     fi
 }
 
-disable_autolock() {
-    touch $AUTOLOCK_BLOCKER
-    log_message "disabled"
+always_on() {
+    log_message "always_on()"
+    disable_autolock
+    sleep infinity & SLEEP_PID=$!
+    #trap finish_always_on INT TERM HUP QUIT EXIT USR1 KILL
+    trap finish_always_on EXIT
+    wait
 }
 
-enable_autolock() {
-    rm $AUTOLOCK_BLOCKER
-    log_message "enabled"
+function finish_always_on() {
+    log_message "finish_always_on()"
+    kill $SLEEP_PID
+    enable_autolock
+    log_message "autolock enabled again"
 }
 
 case "$1" in
-    start)
-        start_xss_lock
+    start|enable)
+        enable_autolock
         ;;
     dim|notify)
         start_dim
@@ -179,8 +206,8 @@ case "$1" in
     disable)
         disable_autolock
         ;;
-    enable)
-        enable_autolock
+    always_on)
+        always_on
         ;;
     *)
         echo "command not recognized: $1"

@@ -26,6 +26,21 @@ local volume_widget = require('lib.awesome-wm-widgets-ext.volume-widget.volume')
 local battery_widget = require("lib.awesome-wm-widgets-ext..battery-widget.battery")
 local brightness_widget = require("lib.awesome-wm-widgets-ext.brightness-widget.brightness")
 
+sharedtags = require("lib.awesome-sharedtags")
+
+tags = sharedtags({
+    { name = "1", layout = awful.layout.layouts[1] },
+    { name = "2", layout = awful.layout.layouts[1] },
+    { name = "3", layout = awful.layout.layouts[1] },
+    { name = "4", layout = awful.layout.layouts[1] },
+    { name = "5", layout = awful.layout.layouts[1] },
+    { name = "6", layout = awful.layout.layouts[1] },
+    { name = "7", layout = awful.layout.layouts[1] },
+    { name = "8", layout = awful.layout.layouts[1] },
+    { name = "9", layout = awful.layout.layouts[1] },
+    -- { screen = 2, layout = awful.layout.layouts[2] }
+})
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -171,7 +186,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     -- s.mypromptbox = awful.widget.prompt()
@@ -374,7 +389,18 @@ awful.rules.rules = {
       properties = { maximized = true, titlebars_enabled = false } },
 
     { rule = { class = "Spotify" },
-      properties = { maximized = true, tag = "9" } },
+      properties = { maximized = true, tag = tags["9"] } },
+
+    {
+        rule = {
+            class = "jetbrains-studio",
+            name="^win[0-9]+$"
+        },
+        properties = { 
+            placement = awful.placement.no_offscreen,
+            titlebars_enabled = false
+        }
+    },
 }
 -- }}}
 
@@ -496,6 +522,15 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- awful.mouse.connect_signal("property::screen", function()
+--    for s in screen do
+--       print("DEBUG: Screen found: " .. tostring(s))
+--       print("DEBUG: mytaglist found: " .. tostring(s.mytaglist))
+--       print("DEBUG: mytaglist.beautiful found: " .. tostring(s.mytaglist.beautiful))
+--       -- s.mywibox.bg = awful.screen.focused() == s and "#ff0000" or "#00ff00"
+--    end
+-- end)
 
 -- Autostart
 awful.spawn.with_shell(

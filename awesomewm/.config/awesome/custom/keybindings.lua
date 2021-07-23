@@ -20,13 +20,14 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "d", function()  awful.util.spawn("rofi -combi-modi window,drun -show combi") end,
               {description = "open rofi", group = "rofi"}),
 
-    awful.key({ modkey,           }, "Down",
+
+    awful.key({ modkey,           }, "n",
         function ()
             awful.client.focus.byidx( 1)
         end,
         {description = "focus next by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "Up",
+    awful.key({ modkey,           }, "p",
         function ()
             awful.client.focus.byidx(-1)
         end,
@@ -42,15 +43,6 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    -- awful.key({ modkey,           }, "Tab",
-    --     function ()
-    --         awful.client.focus.history.previous()
-    --         if client.focus then
-    --             client.focus:raise()
-    --         end
-    --     end,
-    --     {description = "go back", group = "client"}),
-    -- modkey+Tab: cycle through all clients.
     awful.key({ modkey }, "x", function () awful.util.spawn("customlock lock") end,
               {description = "lock screen", group = "screen"}),
 
@@ -65,7 +57,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Super_L"})
     end),
-    awful.key({ modkey, }, "n", naughty.destroy_all_notifications,
+    awful.key({ modkey, }, "c", naughty.destroy_all_notifications,
         {description = "clear notifications", group = "awesome"}),
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal_tmux) end,
@@ -131,12 +123,12 @@ clientkeys = gears.table.join(
         function (c)
             c.maximized = true
             c:raise()
-        end),
+        end, {description = "maximize client", group = "client"}),
     awful.key({ modkey,           }, "Down",
         function (c)
             c.maximized = false
             c:raise()
-        end)
+        end, {description = "minimize client", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -148,9 +140,9 @@ for i = 1, 9 do
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
                         local screen = awful.screen.focused()
-                        local tag = screen.tags[i]
+                        local tag = tags[i]
                         if tag then
-                           tag:view_only()
+                           sharedtags.viewonly(tag, screen)
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
@@ -158,9 +150,9 @@ for i = 1, 9 do
         awful.key({ modkey, "Control" }, "#" .. i + 9,
                   function ()
                       local screen = awful.screen.focused()
-                      local tag = screen.tags[i]
+                      local tag = tags[i]
                       if tag then
-                         awful.tag.viewtoggle(tag)
+                         sharedtags.viewtoggle(tag, screen)
                       end
                   end,
                   {description = "toggle tag #" .. i, group = "tag"}),
@@ -168,7 +160,7 @@ for i = 1, 9 do
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local tag = client.focus.screen.tags[i]
+                          local tag = tags[i]
                           if tag then
                               client.focus:move_to_tag(tag)
                           end
@@ -179,7 +171,7 @@ for i = 1, 9 do
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local tag = client.focus.screen.tags[i]
+                          local tag = tags[i]
                           if tag then
                               client.focus:toggle_tag(tag)
                           end

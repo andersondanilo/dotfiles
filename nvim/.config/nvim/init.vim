@@ -126,6 +126,7 @@ vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>
 
 " Commands
 command FormatJSON :%!jq .
+command FormatXML :%!xmllint --format -
 command -range FormatJSONSel :<line1>,<line2>!jq .
 command LspStop :lua vim.lsp.stop_client(vim.lsp.get_active_clients())
 

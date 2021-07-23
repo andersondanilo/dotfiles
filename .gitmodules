@@ -4,3 +4,6 @@
 [submodule "awesomewm/.config/awesome/lib/awesomewm-screenshot"]
 	path = awesomewm/.config/awesome/lib/awesomewm-screenshot
 	url = https://github.com/denisoster/awesomewm-screenshot.git
+[submodule "awesomewm/.config/awesome/lib/awesome-sharedtags"]
+	path = awesomewm/.config/awesome/lib/awesome-sharedtags
+	url = git@github.com:Drauthius/awesome-sharedtags.git
