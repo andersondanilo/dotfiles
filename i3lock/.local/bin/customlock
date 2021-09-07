@@ -13,9 +13,8 @@ LOG_FILE=/tmp/customlock.log
 REDSHIFT_SERVICE=redshift-gtk
 AUTOLOCK_BLOCKER=/tmp/autolock-blocker.lock
 
-
 log_message() {
-    LOG_LINE="[$COMMAND: $BASHPID] $@"
+    LOG_LINE="[$(date +%H:%M:%S)][$COMMAND: $BASHPID] $@"
     echo $LOG_LINE
     echo $LOG_LINE >> $LOG_FILE
 }
@@ -58,6 +57,7 @@ unconfigure() {
 }
 
 reduce_xrand_brightness() {
+    log_message "reduce_xrand_brightness()"
     OUTPUTS=($(xrandr --current | sed -n 's/\([^ ]*\) connected .*/\1/p'))
     for OUT in ${OUTPUTS[@]}; do
         xrandr --output $OUT --brightness 0.2
@@ -65,6 +65,7 @@ reduce_xrand_brightness() {
 }
 
 restore_xrand_brightness() {
+    log_message "restore_xrand_brightness()"
     OUTPUTS=($(xrandr --current | sed -n 's/\([^ ]*\) connected .*/\1/p'))
     for OUT in ${OUTPUTS[@]}; do
         xrandr --output $OUT --brightness 1
@@ -72,19 +73,21 @@ restore_xrand_brightness() {
 }
 
 pre_dim() {
+    log_message "pre_dim()"
     log_message "dim: start (idle: $(xprintidle))"
     systemctl stop --user $REDSHIFT_SERVICE
     reduce_xrand_brightness
 }
 
 post_dim() {
-    log_message "dim: end"
+    log_message "post_dim()"
     restore_xrand_brightness
-    reload_picom
+    #reload_picom
     systemctl start --user $REDSHIFT_SERVICE
 }
 
 start_dim() {
+    log_message "start_dim()"
     if [ ! -e "$AUTOLOCK_BLOCKER" ]; then
         pre_dim
         start_sleep
@@ -96,6 +99,7 @@ start_dim() {
 }
 
 reload_picom() {
+    log_message "reload_picom()"
     pkill -USR1 picom
 }
 
@@ -108,13 +112,13 @@ pre_lock() {
 
 post_lock() {
     log_message "post_lock()"
-    reload_picom
+    #reload_picom
     log_message "lock: unlock screen"
 }
 
 start_i3lock() {
     log_message "start_i3lock()"
-    pgrep i3lock && echo "i3lock already started" && exit 0
+    pgrep i3lock && log_message "i3lock already started" && exit 0
 
     pre_lock
 
@@ -122,7 +126,10 @@ start_i3lock() {
     # wait for it to exit. The waiting is not that straightforward when the locker
     # forks, so we use this polling only if we have a sleep lock to deal with.
     if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
+        log_message "starting i3 lock (condition 1)"
+
         kill_i3lock() {
+            log_message "kill_i3lock()"
             pkill -xu $EUID "$@" i3lock
         }
 
@@ -138,6 +145,7 @@ start_i3lock() {
             sleep 0.5
         done
     else
+        log_message "starting i3 lock (condition 2)"
         trap 'kill %%' TERM INT
         i3lock -n $I3LOCK_OPTIONS &
         wait

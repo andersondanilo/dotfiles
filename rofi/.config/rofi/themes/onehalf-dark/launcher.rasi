@@ -13,8 +13,8 @@ configuration {
 	icon-theme: 					"Papirus";
     display-drun: 					"";
     drun-display-format:            "{name}";
-    disable-history:                false;
-    fullscreen:                     false;
+    //disable-history:                false;
+    //fullscreen:                     false;
 	hide-scrollbar: 				true;
 	sidebar-mode: 					false;
 }
@@ -91,7 +91,6 @@ mainbox {
 }
 
 element {
-    background-color:               @al;
     text-color:                     @on-background-color;
     orientation:                    horizontal;
     border-radius:                  0px;
@@ -101,6 +100,7 @@ element {
 element-icon {
     size:                           24px;
     border:                         0px;
+    background-color:               inherit;
 }
 
 element-text {
@@ -108,6 +108,12 @@ element-text {
     horizontal-align:               0;
     vertical-align:                 0.5;
     margin:                         0px 2.5px 0px 2.5px;
+    background-color:               inherit;
+    color:                          @on-background-color;
+}
+
+element-text selected {
+    color:                          @on-primary-color;
 }
 
 element selected {

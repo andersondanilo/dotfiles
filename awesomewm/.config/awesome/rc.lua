@@ -523,14 +523,14 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
--- awful.mouse.connect_signal("property::screen", function()
---    for s in screen do
---       print("DEBUG: Screen found: " .. tostring(s))
---       print("DEBUG: mytaglist found: " .. tostring(s.mytaglist))
---       print("DEBUG: mytaglist.beautiful found: " .. tostring(s.mytaglist.beautiful))
---       -- s.mywibox.bg = awful.screen.focused() == s and "#ff0000" or "#00ff00"
---    end
--- end)
+--awful.mouse.connect_signal("property::screen", function()
+--   for s in screen do
+--      print("DEBUG: Screen found: " .. tostring(s))
+--      print("DEBUG: mytaglist found: " .. tostring(s.mytaglist))
+--      print("DEBUG: mytaglist.beautiful found: " .. tostring(s.mytaglist.beautiful))
+--      -- s.mywibox.bg = awful.screen.focused() == s and "#ff0000" or "#00ff00"
+--   end
+--end)
 
 -- Autostart
 awful.spawn.with_shell(

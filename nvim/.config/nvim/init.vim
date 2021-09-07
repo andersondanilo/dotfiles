@@ -12,7 +12,7 @@ Plug 'tpope/vim-sleuth' " Detect indent
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'chrisbra/Colorizer'
-Plug 'adoy/vim-php-refactoring-toolbox'
+" Plug 'adoy/vim-php-refactoring-toolbox'
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 Plug 'andersondanilo/ale' " Plug 'dense-analysis/ale'
 Plug 'sonph/onehalf', { 'rtp': 'vim' } " theme
@@ -22,8 +22,10 @@ Plug 'entrez/roku.vim'
 Plug 'jamessan/vim-gnupg'
 Plug 'easymotion/vim-easymotion'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'nixprime/cpsm'
 Plug 'deoplete-plugins/deoplete-lsp'
-Plug 'andersondanilo/nvim-lspconfig'
+" Plug 'andersondanilo/nvim-lspconfig'
+Plug 'neovim/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-surround'
 Plug 'mfussenegger/nvim-dap'
@@ -33,13 +35,15 @@ Plug 'junegunn/vader.vim'
 Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'psliwka/vim-smoothie'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'andersondanilo/todo-comments.nvim'
+Plug 'folke/todo-comments.nvim'
 Plug 'vim-scripts/LargeFile'
+Plug 'jparise/vim-graphql'
+Plug 'cespare/vim-toml'
 call plug#end()
 
 " test plugin
 " set rtp+=$HOME/Workspace/personal/vim/nvim-ale-diagnostic
-" set rtp+=$HOME/Workspace/personal/vim/todo-comments.nvim
+set rtp+=$HOME/Workspace/personal/vim/vim-php-refactoring-toolbox
 
 " Generic nvim configuration
 set tabstop=4
@@ -47,6 +51,7 @@ set shiftwidth=4
 set expandtab
 set fillchars+=vert:│
 set number relativenumber
+set cursorline
 " set nofoldenable
 " set nohlsearch
 
@@ -160,16 +165,24 @@ exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no'
 " php refactoring
 let g:vim_php_refactoring_use_default_mapping = 0
 let g:vim_php_refactoring_auto_validate_sg = 1
+let g:vim_php_refactoring_auto_validate_g = 1
 let g:vim_php_refactoring_make_setter_fluent = 1
+let g:vim_php_refactoring_add_sg_types = 1
 
 " Fzf
 " let $FZF_DEFAULT_COMMAND = 'ag -g ""' " consider gitignore
-command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, { 'options': [ '-i' ] }, <bang>0) " Fzf case insensitive
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
 let g:fzf_colors =
   \ { 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'] }
-nnoremap <silent> <expr> <Leader>p (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":NERDTreeClose\<cr>:GFiles --cached --others --exclude-standard\<cr>"
+command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, { 'options': [ '-i' ] }, <bang>0) " Fzf case insensitive
+command! -bang -nargs=* BLines
+           \ call fzf#vim#buffer_lines(<q-args>,{'options': ['--layout=reverse','-i','--info=inline']}, <bang>0)
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep('git grep --line-number --ignore-case '.shellescape(<q-args>), 0, {'options': '-i --delimiter : --nth 4..'}, <bang>0)
+nnoremap <silent> <expr> <Leader>pf (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":NERDTreeClose\<cr>:GFiles --cached --others --exclude-standard\<cr>"
+nnoremap <silent> <Leader>pl :BLines<CR>
+nnoremap <silent> <Leader>pg :GGrep<CR>
 
 " ALE Linter
 let g:ale_linters = {
@@ -193,8 +206,8 @@ let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 1
 let g:ale_php_cs_fixer_options = '--allow-risky=yes'
-let g:ale_php_phpstan_executable = system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi')
-let g:ale_php_phpmd_executable = system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi')
+let g:ale_php_phpstan_executable = trim(system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi'))
+let g:ale_php_phpmd_executable = trim(system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi'))
 let g:ale_rust_cargo_use_clippy = 1
 
 " deoplete
@@ -210,7 +223,7 @@ nmap  <Leader>f <Plug>(easymotion-overwin-f)
 " keybindings
 nmap <Leader>gd :lua vim.lsp.buf.definition()<CR>
 nmap <Leader>ga :lua vim.lsp.buf.code_action()<CR>
-" nmap <Leader>hv :lua vim.lsp.buf.hover()<CR>
+nmap <Leader>gh :lua vim.lsp.buf.hover()<CR>
 " nmap <Leader>rf :lua vim.lsp.buf.references()<CR>
 " nmap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
 
@@ -228,7 +241,7 @@ end
 nvim_lsp["tsserver"].setup { on_attach = on_attach }
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
 nvim_lsp["phpactor"].setup { on_attach = on_attach }
-nvim_lsp["brighterscript-ls"].setup { on_attach = on_attach }
+-- nvim_lsp["brighterscript-ls"].setup { on_attach = on_attach }
 nvim_lsp["gdscript"].setup { on_attach = on_attach }
 nvim_lsp["rls"].setup {
   on_attach = on_attach,
@@ -258,7 +271,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
--- vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())
 -- ~/.cache/nvim/lsp.log
 EOF
