@@ -385,7 +385,7 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = false }
     },
 
-    { rule = { class = "Firefox" },
+    { rule = { class = "firefox" },
       properties = { maximized = true, titlebars_enabled = false } },
 
     { rule = { class = "Spotify" },
