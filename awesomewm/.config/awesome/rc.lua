@@ -296,7 +296,7 @@ awful.screen.connect_for_each_screen(function(s)
                    step = 2,
                },
                battery_widget{
-                  path_to_icons="/usr/share/icons/oomox-CustomOneHalf/22/status/"
+                  path_to_icons=os.getenv("HOME") .. "/.icons/oomox-CustomOneHalf/22/status/"
                },
                mysystray,
             },
