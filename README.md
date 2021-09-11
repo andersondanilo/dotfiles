@@ -35,6 +35,10 @@ $ cd ~/.vim/bundle/vimproc.vim && make
 
 - install the fonts
 
+### gtk themes
+Themes generated with oomox, after the stow we can also create a snap to also apply this theme on snapcraft apps
+- https://gist.github.com/andersondanilo/85b5f470d294ec360d3498a06e534158
+
 
 ## Post Setup
 - Configure PulseEffects with Pipeware (replacement of pulseaudio) (https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Extreme)
