@@ -74,7 +74,7 @@ prompt_context() {
   local user=`whoami`
   local delta_context
   local colorfg="default"
-  local colorbg=$PRIMARY_FG
+  local colorbg="background"
 
   if [[ $KEYMAP = 'viins' ]] || [[ $KEYMAP = 'main' ]]; then
     delta_context=$DELTA
