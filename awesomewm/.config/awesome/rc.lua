@@ -38,6 +38,7 @@ tags = sharedtags({
     { name = "7", layout = awful.layout.layouts[1] },
     { name = "8", layout = awful.layout.layouts[1] },
     { name = "9", layout = awful.layout.layouts[1] },
+    { name = "10", layout = awful.layout.layouts[1] },
     -- { screen = 2, layout = awful.layout.layouts[2] }
 })
 

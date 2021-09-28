@@ -189,6 +189,7 @@ let g:ale_linters = {
 \   'php': ['php', 'phpcs', 'phpstan', 'phpmd'],
 \   'javascript': ['eslint'],
 \   'python': ['flake8', 'mypy', 'pylint', 'pyright'],
+\   'rust': ['cargo'],
 \}
 let g:ale_fixers = {
  \ 'php': ['php_cs_fixer'],
