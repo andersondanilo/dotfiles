@@ -24,7 +24,6 @@ Plug 'easymotion/vim-easymotion'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'nixprime/cpsm'
 Plug 'deoplete-plugins/deoplete-lsp'
-" Plug 'andersondanilo/nvim-lspconfig'
 Plug 'neovim/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-surround'
@@ -68,9 +67,14 @@ hi Normal guibg=NONE ctermbg=NONE
 
 " Gruv box custom
 " hi LineNr guibg=#3c3836
-"
+
 " onehalfdark custom " copy hi LineNr
 hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34 
+
+hi Pmenu ctermfg=236 ctermbg=247 guifg=#B4C1D4 guibg=#1F2329
+hi PmenuSel ctermfg=236 ctermbg=247 guifg=#1F2329 guibg=#98c379
+hi PmenuSbar ctermfg=236 ctermbg=247 guifg=#1F2329 guibg=#98c379
+hi PmenuThumb ctermfg=236 ctermbg=247 guifg=#B4C1D4 guibg=#1F2329
 
 
 " Solarized custom
@@ -178,8 +182,12 @@ let g:fzf_colors =
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, { 'options': [ '-i' ] }, <bang>0) " Fzf case insensitive
 command! -bang -nargs=* BLines
            \ call fzf#vim#buffer_lines(<q-args>,{'options': ['--layout=reverse','-i','--info=inline']}, <bang>0)
+" command! -bang -nargs=* GGrep
+"  \ call fzf#vim#grep('git grep --line-number --ignore-case '.shellescape(<q-args>), 0, {'options': '-i --delimiter : --nth 4..'}, <bang>0)
 command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep('git grep --line-number --ignore-case '.shellescape(<q-args>), 0, {'options': '-i --delimiter : --nth 4..'}, <bang>0)
+  \ call fzf#vim#grep(
+  \   'git grep --line-number --ignore-case -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'options': '--delimiter : --nth 3..', 'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 nnoremap <silent> <expr> <Leader>pf (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":NERDTreeClose\<cr>:GFiles --cached --others --exclude-standard\<cr>"
 nnoremap <silent> <Leader>pl :BLines<CR>
 nnoremap <silent> <Leader>pg :GGrep<CR>
@@ -210,6 +218,7 @@ let g:ale_php_cs_fixer_options = '--allow-risky=yes'
 let g:ale_php_phpstan_executable = trim(system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi'))
 let g:ale_php_phpmd_executable = trim(system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi'))
 let g:ale_rust_cargo_use_clippy = 1
+let g:ale_completion_enabled = 0
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -234,7 +243,7 @@ local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 -- Use a loop to conveniently both setup defined servers
