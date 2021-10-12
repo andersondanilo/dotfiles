@@ -13,17 +13,22 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'chrisbra/Colorizer'
 " Plug 'adoy/vim-php-refactoring-toolbox'
-Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
-Plug 'andersondanilo/ale' " Plug 'dense-analysis/ale'
+" Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
+" Plug 'andersondanilo/ale' " Plug 'dense-analysis/ale'
 Plug 'sonph/onehalf', { 'rtp': 'vim' } " theme
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
 Plug 'entrez/roku.vim'
 Plug 'jamessan/vim-gnupg'
 Plug 'easymotion/vim-easymotion'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'nixprime/cpsm'
-Plug 'deoplete-plugins/deoplete-lsp'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'deoplete-plugins/deoplete-lsp'
+" Plug 'nixprime/cpsm'
+" Plug 'Shougo/ddc.vim'
+" Plug 'vim-denops/denops.vim'
+" Plug 'nvim-lua/completion-nvim'
+" Plug 'ray-x/lsp_signature.nvim'
+Plug 'rafaelsq/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-surround'
@@ -31,18 +36,22 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'habamax/vim-godot'
 Plug 'vim-crystal/vim-crystal'
 Plug 'junegunn/vader.vim'
-Plug 'nathunsmitty/nvim-ale-diagnostic'
+" Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'psliwka/vim-smoothie'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'folke/todo-comments.nvim'
+" Plug 'folke/lsp-colors.nvim'
 Plug 'vim-scripts/LargeFile'
 Plug 'jparise/vim-graphql'
 Plug 'cespare/vim-toml'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
 call plug#end()
 
 " test plugin
 " set rtp+=$HOME/Workspace/personal/vim/nvim-ale-diagnostic
-set rtp+=$HOME/Workspace/personal/vim/vim-php-refactoring-toolbox
+" set rtp+=$HOME/Workspace/personal/vim/vim-php-refactoring-toolbox
 
 " Generic nvim configuration
 set tabstop=4
@@ -71,11 +80,20 @@ hi Normal guibg=NONE ctermbg=NONE
 " onehalfdark custom " copy hi LineNr
 hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34 
 
-hi Pmenu ctermfg=236 ctermbg=247 guifg=#B4C1D4 guibg=#1F2329
+hi Pmenu ctermfg=236 ctermbg=247 guifg=#B4C1D4 guibg=#373e49
 hi PmenuSel ctermfg=236 ctermbg=247 guifg=#1F2329 guibg=#98c379
-hi PmenuSbar ctermfg=236 ctermbg=247 guifg=#1F2329 guibg=#98c379
-hi PmenuThumb ctermfg=236 ctermbg=247 guifg=#B4C1D4 guibg=#1F2329
+hi PmenuSbar ctermfg=236 ctermbg=247 guifg=#98c379 guibg=#2c323a
+hi PmenuThumb ctermfg=236 ctermbg=247 guifg=#2c323a guibg=#98c379
 
+hi LspDiagnosticsDefaultError guifg=#e06c75
+hi LspDiagnosticsDefaultWarning guifg=#e5c07b
+hi LspDiagnosticsDefaultInformation guifg=#61afef
+hi LspDiagnosticsDefaultHint guifg=#56b6c2
+
+hi DiagnosticError guifg=#e06c75
+hi DiagnosticWarning guifg=#e5c07b
+hi DiagnosticInformation guifg=#61afef
+hi DiagnosticHint guifg=#56b6c2
 
 " Solarized custom
 "hi VertSplit guibg=NONE guifg=#586e75
@@ -193,32 +211,32 @@ nnoremap <silent> <Leader>pl :BLines<CR>
 nnoremap <silent> <Leader>pg :GGrep<CR>
 
 " ALE Linter
-let g:ale_linters = {
-\   'php': ['php', 'phpcs', 'phpstan', 'phpmd'],
-\   'javascript': ['eslint'],
-\   'python': ['flake8', 'mypy', 'pylint', 'pyright'],
-\   'rust': ['cargo'],
-\}
-let g:ale_fixers = {
- \ 'php': ['php_cs_fixer'],
- \ 'javascript': ['eslint'],
- \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo'],
- \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo'],
- \ 'rust': ['rustfmt'],
- \ 'brs': ['bsfmt_fixer'],
- \ 'python': ['autopep8'],
- \ }
-let g:ale_fix_on_save = 1
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = '⚠'
-let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 1
-let g:ale_php_cs_fixer_options = '--allow-risky=yes'
-let g:ale_php_phpstan_executable = trim(system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi'))
-let g:ale_php_phpmd_executable = trim(system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi'))
-let g:ale_rust_cargo_use_clippy = 1
-let g:ale_completion_enabled = 0
+" let g:ale_linters = {
+" \   'php': ['php', 'phpcs', 'phpstan', 'phpmd'],
+" \   'javascript': ['eslint'],
+" \   'python': ['flake8', 'mypy', 'pylint', 'pyright'],
+" \   'rust': ['cargo'],
+" \}
+" let g:ale_fixers = {
+"  \ 'php': ['php_cs_fixer'],
+"  \ 'javascript': ['eslint'],
+"  \ 'typescript': ['eslint', 'tslint', 'prettier', 'xo'],
+"  \ 'typescriptreact': ['eslint', 'tslint', 'prettier', 'xo'],
+"  \ 'rust': ['rustfmt'],
+"  \ 'brs': ['bsfmt_fixer'],
+"  \ 'python': ['autopep8'],
+"  \ }
+" let g:ale_fix_on_save = 1
+" let g:ale_sign_error = '✘'
+" let g:ale_sign_warning = '⚠'
+" let g:ale_sign_column_always = 1
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_enter = 1
+" let g:ale_php_cs_fixer_options = '--allow-risky=yes'
+" let g:ale_php_phpstan_executable = trim(system('if ! type git &> /dev/null; then echo phpstan; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpstan; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpstan; fi; fi'))
+" let g:ale_php_phpmd_executable = trim(system('if ! type git &> /dev/null; then echo phpmd; else PSE=`git rev-parse --show-toplevel 2> /dev/null`/vendor/bin/phpmd; if [ -x "$PSE" ]; then echo -n $PSE; else echo phpmd; fi; fi'))
+" let g:ale_rust_cargo_use_clippy = 1
+" let g:ale_completion_enabled = 0
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -234,21 +252,112 @@ nmap  <Leader>f <Plug>(easymotion-overwin-f)
 nmap <Leader>gd :lua vim.lsp.buf.definition()<CR>
 nmap <Leader>ga :lua vim.lsp.buf.code_action()<CR>
 nmap <Leader>gh :lua vim.lsp.buf.hover()<CR>
+
 " nmap <Leader>rf :lua vim.lsp.buf.references()<CR>
 " nmap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
+
+" autocomplete plugin 
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+autocmd BufEnter * lua require'completion'.on_attach()
+imap <silent> <c-n> <Plug>(completion_trigger)
 
 " Language servers
 lua << EOF
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
+  -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
   -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- require "lsp_signature".on_attach({
+  --   bind = true, -- This is mandatory, otherwise border config won't get registered.
+  --   handler_opts = {
+  --     border = "none",
+  --     -- toggle_key = "<C-h>",
+  --     padding = " "
+  --   }
+  -- }, bufnr)
+  -- require'completion'.on_attach(client, bufnr)
+  if client.resolved_capabilities.document_formatting then
+    vim.api.nvim_command [[augroup Format]]
+    vim.api.nvim_command [[autocmd! * <buffer>]]
+    vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
+    vim.api.nvim_command [[augroup END]]
+  end
 end
+
+
+-- Setup custom linters
+local eslint = {
+  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+  lintStdin = true,
+  lintFormats = {"%f:%l:%c: %m"},
+  lintIgnoreExitCode = true,
+  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+  formatStdin = true
+}
+
+local function eslint_config_exists()
+  local eslintrc = vim.fn.glob(".eslintrc*", 0, 1)
+
+  if not vim.tbl_isempty(eslintrc) then
+    return true
+  end
+
+  if vim.fn.filereadable("package.json") then
+    if vim.fn.json_decode(vim.fn.readfile("package.json"))["eslintConfig"] then
+      return true
+    end
+  end
+
+  return false
+end
+
+nvim_lsp.efm.setup {
+  on_attach = function(client, ...)
+    client.resolved_capabilities.document_formatting = true
+    client.resolved_capabilities.goto_definition = false
+    on_attach(client, ...)
+  end,
+  root_dir = function()
+    if not eslint_config_exists() then
+      return nil
+    end
+    return vim.fn.getcwd()
+  end,
+  settings = {
+    languages = {
+      javascript = {eslint},
+      javascriptreact = {eslint},
+      ["javascript.jsx"] = {eslint},
+      typescript = {eslint},
+      ["typescript.tsx"] = {eslint},
+      typescriptreact = {eslint}
+    }
+  },
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescript.tsx",
+    "typescriptreact"
+  },
+}
+
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-nvim_lsp["tsserver"].setup { on_attach = on_attach }
+nvim_lsp["tsserver"].setup {
+  on_attach = function(client, ...)
+    if client.config.flags then
+      client.config.flags.allow_incremental_sync = true
+    end
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, ...)
+  end
+}
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
 nvim_lsp["phpactor"].setup { on_attach = on_attach }
 -- nvim_lsp["brighterscript-ls"].setup { on_attach = on_attach }
@@ -270,16 +379,43 @@ nvim_lsp["rls"].setup {
 --     }
 -- )
 
-require("nvim-ale-diagnostic")
+-- require("nvim-ale-diagnostic")
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = false,
+    underline = true,
     virtual_text = false,
     signs = true,
-    update_in_insert = false,
+    update_in_insert = true,
   }
 )
+
+
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = false,
+    disable = {},
+  },
+  ensure_installed = {
+    "tsx",
+    "toml",
+    "fish",
+    "php",
+    "json",
+    "yaml",
+    "swift",
+    "html",
+    "scss"
+  },
+}
+
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
 
 vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())
@@ -297,6 +433,59 @@ lua << EOF
     }
   }
 EOF
+
+
+lua << EOF
+require("trouble").setup {
+  -- mode = "loclist"
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  -- refer to the configuration section below
+}
+EOF
+
+lua << EOF
+-- local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+-- 
+-- for type, icon in pairs(signs) do
+--   local hl = "DiagnosticSign" .. type
+--   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+
+vim.fn.sign_define("DiagnosticSignError",
+    {text = "", texthl = "DiagnosticError"})
+vim.fn.sign_define("DiagnosticSignWarning",
+    {text = "", texthl = "DiagnosticWarning"})
+vim.fn.sign_define("DiagnosticSignInformation",
+    {text = "", texthl = "DiagnosticInformation"})
+vim.fn.sign_define("DiagnosticSignHint",
+    {text = "", texthl = "DiagnosticHint"})
+
+function PrintDiagnostics(opts, bufnr, line_nr, client_id)
+  opts = opts or {}
+
+  bufnr = bufnr or 0
+  line_nr = line_nr or (vim.api.nvim_win_get_cursor(0)[1] - 1)
+
+  local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr, line_nr, opts, client_id)
+  if vim.tbl_isempty(line_diagnostics) then return end
+
+  local diagnostic_message = ""
+  for i, diagnostic in ipairs(line_diagnostics) do
+    diagnostic_message = diagnostic_message .. string.format("%d: %s", i, diagnostic.message or "")
+    print(diagnostic_message)
+    if i ~= #line_diagnostics then
+      diagnostic_message = diagnostic_message .. "\n"
+    end
+  end
+  vim.api.nvim_echo({{diagnostic_message, "Normal"}}, false, {})
+end
+
+vim.cmd [[ autocmd CursorHold * lua PrintDiagnostics() ]]
+
+vim.o.updatetime = 250
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+EOF
+
 
 
 " Debug adapter protocols
