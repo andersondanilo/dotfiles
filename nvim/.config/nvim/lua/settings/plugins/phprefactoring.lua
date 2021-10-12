@@ -1,0 +1,5 @@
+vim.cmd [[let g:vim_php_refactoring_use_default_mapping = 0]]
+vim.cmd [[let g:vim_php_refactoring_auto_validate_sg = 1]]
+vim.cmd [[let g:vim_php_refactoring_auto_validate_g = 1]]
+vim.cmd [[let g:vim_php_refactoring_make_setter_fluent = 1]]
+vim.cmd [[let g:vim_php_refactoring_add_sg_types = 1]]

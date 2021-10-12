@@ -1,0 +1,5 @@
+vim.cmd [=[let NERDTreeIgnore = ['__pycache__', '\.pyc$']]=]
+vim.cmd [[let NERDTreeMapOpenInTab='<C-t>']]
+vim.cmd [[let NERDTreeMapOpenSplit='<C-x>']]
+vim.cmd [[let NERDTreeQuitOnOpen=1]]
+vim.cmd [[exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no']]

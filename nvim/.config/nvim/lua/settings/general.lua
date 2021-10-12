@@ -1,0 +1,7 @@
+vim.cmd [[ set tabstop=4 ]]
+vim.cmd [[ set shiftwidth=4 ]]
+vim.cmd [[ set expandtab ]]
+vim.cmd [[ set ttimeout ]]
+vim.cmd [[ set ttimeoutlen=5 ]]
+vim.cmd [[ set completeopt=menuone,noinsert,noselect ]]
+vim.cmd [[ set shortmess+=c ]]

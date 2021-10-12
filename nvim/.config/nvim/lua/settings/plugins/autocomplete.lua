@@ -1,0 +1,2 @@
+-- vim.cmd [[autocmd BufEnter * lua require'completion'.on_attach()]]
+-- moved to on_attach of lsp config
