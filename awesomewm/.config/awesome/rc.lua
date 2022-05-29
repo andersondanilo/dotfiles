@@ -4,9 +4,11 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+awful.screen.set_auto_dpi_enabled(true)
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
@@ -173,7 +175,7 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        gears.wallpaper.maximized(wallpaper, s, false)
     end
 end
 
@@ -182,9 +184,77 @@ screen.connect_signal("property::geometry", set_wallpaper)
 
 local mysystray = wibox.widget.systray()
 
+function enforce_all_screen_with_tags()
+   for s in screens do
+      screen.enforce_screen_with_tags(s)
+   end
+end
+
+function enforce_screen_with_tags(s)
+   local count_tags = 0
+   local best_tag = nil
+
+   local function get_tag_points(tag)
+      local points = 1000 - (#tag.clients(tag))
+
+      if tag.oldscreen == s then
+         points = points - 100
+      end
+
+      return points
+   end
+
+   local function is_better_tag(tag)
+      if best_tag == nil then
+         return true
+      end 
+
+      if get_tag_points(tag) > get_tag_points(best_tag) then
+         return true
+      end
+
+      return false
+   end
+
+   for _, tag in ipairs(tags) do
+      if tag.screen == s then
+         count_tags = count_tags + 1
+      else
+         if is_better_tag(tag) then
+            best_tag = tag
+         end
+      end
+      -- gears.debug.dump(#tag.clients(tag))
+      -- gears.debug.dump(tag.oldscreen)
+   end
+
+   if count_tags == 0 then
+      sharedtags.movetag(best_tag, s)
+   end
+end
+
 awful.screen.connect_for_each_screen(function(s)
+
+    print("DEBUG Connecting screen " .. tostring(s.index))
+    print("DEBUG with DPI " .. tostring(s.dpi))
+
+    local outputs = s.outputs
+    local output_keys = gears.table.keys(outputs)
+    local output_name = output_keys[1]
+
+    if not output_name ~= nil then 
+        local output_height = outputs[output_name]["mm_height"]
+        print(output_name .. " height " .. tostring(output_height))
+    end
+
     -- Wallpaper
     set_wallpaper(s)
+
+    s:connect_signal("tag::history::update", function()
+       enforce_screen_with_tags(s)
+    end)
+
+    -- s:set_auto_dpi_enabled(true)
 
     -- Each screen has its own tag table.
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
@@ -306,6 +376,7 @@ awful.screen.connect_for_each_screen(function(s)
     }
 end)
 -- }}}
+
 
 
 clientbuttons = gears.table.join(

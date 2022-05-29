@@ -14,6 +14,10 @@ return require('packer').startup(function()
     use 'leafgarland/typescript-vim'
     use 'peitalin/vim-jsx-typescript'
     use 'chrisbra/Colorizer'
+    use 'adoy/vim-php-refactoring-toolbox'
+    --use '2072/php-indenting-for-vim'
+    use {'vim-scripts/php.vim', as = 'php-indent'}
+    use {'stanangeloff/php.vim', as = 'php-syntax'}
     use {
         'sonph/onehalf',
         rtp = 'vim',
@@ -38,9 +42,118 @@ return require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'folke/todo-comments.nvim'
     use 'vim-scripts/LargeFile'
-    use 'jparise/vim-graphql'
+    -- use 'jparise/vim-graphql'
     use 'cespare/vim-toml'
     use {'nvim-treesitter/nvim-treesitter', run = function() vim.cmd(':TSUpdate') end}
     use 'kyazdani42/nvim-web-devicons'
     use 'folke/trouble.nvim'
+    use 'tpope/vim-repeat'
+    use {
+      'zegervdv/nrpattern.nvim',
+      config = function()
+        -- Basic setup
+        local patterns = require"settings/plugins/nrpattern"
+        require"nrpattern".setup(patterns)
+      end,
+    }
+    -- use 'airblade/vim-gitgutter'
+    use {
+      'lewis6991/gitsigns.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim'
+      },
+      config = function()
+        local config = require"settings/plugins/gitsigns"
+        require('gitsigns').setup(config)
+      end
+    }
+    -- use {
+    --    'NTBBloodbath/rest.nvim',
+    --    requires = { "nvim-lua/plenary.nvim" },
+    --    config = function()
+    --      require"settings/plugins/rest-nvim"
+    --    end
+    -- }
+    use { 'nicwest/vim-http' }
+
+    use { 'rust-lang/rust.vim' }
+    use { 'ryanoasis/vim-devicons' }
+    use {
+      'windwp/nvim-projectconfig',
+      config = function()
+        require('nvim-projectconfig').setup()
+      end
+    }
+    use {
+      'Pocco81/AutoSave.nvim',
+      config = function()
+        require('autosave').setup(
+          {
+            enabled = false,
+            execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+            events = {"InsertLeave", "TextChanged"},
+            conditions = {
+                exists = true,
+                filename_is_not = {},
+                filetype_is_not = {},
+                modifiable = true
+            },
+            write_all_buffers = false,
+            on_off_commands = true,
+            clean_command_line_interval = 0,
+            debounce_delay = 135
+          }
+        )
+      end
+    }
+    use {
+      'rmagatti/auto-session',
+      config = function()
+        local patterns = {
+          '~/Workspace/*/*',
+          '~/Workspace/*/scripts/*',
+          '~/Workspace/*/playground/*',
+        }
+
+        local auto_session_allowed_dirs = {}
+
+        for _, pattern in ipairs(patterns) do
+          local paths = vim.fn.expand(pattern, false, true)
+          for _, path in ipairs(paths) do
+            table.insert(auto_session_allowed_dirs, path)
+          end
+        end
+
+        require('auto-session').setup {
+          log_level = 'info',
+          auto_session_allowed_dirs = auto_session_allowed_dirs,
+          auto_session_enabled = true,
+          auto_save_enabled = true,
+          auto_restore_enabled = true,
+          auto_session_create_enabled = true,
+          pre_save_cmds = {"tabdo NERDTreeClose"}
+        }
+
+        vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+      end
+    }
+    use { 'tpope/vim-markdown' }
+    use { 'dhruvasagar/vim-zoom' }
+    --use {
+    --  'wikitopian/hardmode',
+    --  config = function()
+    --    vim.api.nvim_exec([[autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()]], false)
+    --  end
+    --}
+    -- use { 'vwxyutarooo/nerdtree-devicons-syntax' }
+    -- use { 'tiagofumo/vim-nerdtree-syntax-highlight' }
+
+    --use {
+    --    'oberblastmeister/neuron.nvim',
+    --    config = function()
+    --        require'settings/plugins/neuron'
+    --    end
+    --}
+    --use 'nvim-lua/popup.nvim'
+    --use 'nvim-telescope/telescope.nvim'
 end)

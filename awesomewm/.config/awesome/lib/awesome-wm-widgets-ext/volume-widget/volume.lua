@@ -20,8 +20,14 @@ local LIST_DEVICES_CMD = [[sh -c "pacmd list-sinks; pacmd list-sources"]]
 local GET_VOLUME_CMD = 'amixer -D pulse sget Master'
 --local INC_VOLUME_CMD = 'amixer -D pulse sset Master 2%+'
 --local DEC_VOLUME_CMD = 'amixer -D pulse sset Master 2%-'
-local INC_VOLUME_CMD = 'pactl -- set-sink-volume 0 +2% && amixer -D pulse sget Master'
-local DEC_VOLUME_CMD = 'pactl -- set-sink-volume 0 -2% && amixer -D pulse sget Master'
+--
+-- TODO: Unify volume command def (between widget and keybinding)
+local INC_VOLUME_CMD = 'pactl -- set-sink-volume @DEFAULT_SINK@ +2% && amixer -D pulse sget Master'
+local DEC_VOLUME_CMD = 'pactl -- set-sink-volume @DEFAULT_SINK@ -2% && amixer -D pulse sget Master'
+
+-- WARN: this alsa command can unsync the left/right channels
+-- local INC_VOLUME_CMD = 'amixer -D pulse sset Master playback 2%+ && amixer -D pulse sget Master'
+-- local DEC_VOLUME_CMD = 'amixer -D pulse sset Master playback 2%- && amixer -D pulse sget Master'
 local TOG_VOLUME_CMD = 'amixer -D pulse sset Master toggle'
 
 

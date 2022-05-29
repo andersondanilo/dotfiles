@@ -28,6 +28,9 @@ vim.cmd [[map <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>]]
 vim.cmd [[imap <C-c> <C-O>:echo "Ctrl+C temporary disabled use Ctrl+["<CR>]]
 vim.cmd [[vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>]]
 
+-- paste default register in visual mode without overwriting itself
+vim.cmd [[xnoremap p pgvy]]
+
 -- Custom commands
 vim.cmd [[command FormatJSON :%!jq .]]
 vim.cmd [[command FormatXML :%!xmllint --format -]]
@@ -40,10 +43,20 @@ vim.cmd [[map <Leader>nf  :NERDTreeFind<CR>]]
 vim.cmd [[nnoremap <silent> <expr> <Leader>pf (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":NERDTreeClose\<cr>:GFiles --cached --others --exclude-standard\<cr>"]]
 vim.cmd [[nnoremap <silent> <Leader>pl :BLines<CR>]]
 vim.cmd [[nnoremap <silent> <Leader>pg :GGrep<CR>]]
+vim.cmd [[nnoremap <silent> <Leader>ps :GGrepExact<CR>]]
 vim.cmd [[nmap  <Leader>f <Plug>(easymotion-overwin-f)]]
 vim.cmd [[nmap <Leader>gd :lua vim.lsp.buf.definition()<CR>]]
+vim.cmd [[nmap <Leader>gn :lua vim.diagnostic.goto_next()<CR>]]
+vim.cmd [[nmap <Leader>gp :lua vim.diagnostic.goto_prev()<CR>]]
+vim.cmd [[nmap <Leader>ge :TroubleToggle document_diagnostics<CR>]]
 vim.cmd [[nmap <Leader>ga :lua vim.lsp.buf.code_action()<CR>]]
-vim.cmd [[nmap <Leader>gh :lua vim.lsp.buf.hover()<CR>]]
+vim.cmd [[nmap <Leader>gh :lua lsp_show_hover_doc()<CR>]]
 vim.cmd [[inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"]]
 vim.cmd [[inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"]]
 vim.cmd [[imap <silent> <c-n> <Plug>(completion_trigger)]]
+vim.cmd [[nmap = <Plug>(PatternIncrement)]]
+vim.cmd [[nmap - <Plug>(PatternDecrement)]]
+
+-- custom movements
+-- vim.cmd [[noremap <leader>j :<C-U>call smoothie#downwards() <CR>]]
+-- vim.cmd [[noremap <leader>k :<C-U>call smoothie#upwards() <CR>]]

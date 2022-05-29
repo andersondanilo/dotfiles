@@ -16,4 +16,4 @@ export FZF_DEFAULT_OPTS="
 
 source $HOME/.asdf/asdf.sh
 
-alias cdf="NEW_DIR=\$(fd --type directory | fzf --bind 'tab:replace-query+reload(fd --type directory --search-path {})') && cd \$NEW_DIR"
+alias sd="NEW_DIR=\$(fd --type directory | fzf --bind 'tab:replace-query+reload(fd --type directory --search-path {})') && cd \$NEW_DIR"

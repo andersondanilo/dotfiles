@@ -8,10 +8,11 @@
     excludesfile = ~/.gitignore_global
 [alias]
     changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
-    clean-merged = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
-    clean-all-except-master = "!git branch | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -D"
+    clean-merged = "!git branch --merged | grep  -v '\\*\\|master\\|develop\\|main' | xargs -n 1 git branch -d"
+    clean-all-except-master = "!git branch | grep  -v '\\*\\|master\\|develop\\|main' | xargs -n 1 git branch -D"
     sync = "!git fetch && git rebase && git push"
     readd = update-index --again
+    recommit = "!git commit --amend --date=\"$(date -R)\""
 [commit]
 	gpgsign = true
 [pull]
@@ -22,3 +23,10 @@
 	prune = true
 [init]
 	defaultBranch = master
+[branch "master"]
+	pushRemote = no_push_in_gitconfig
+[branch "main"]
+	pushRemote = no_push_in_gitconfig
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

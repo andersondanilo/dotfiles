@@ -82,9 +82,10 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Multimedia keys
-    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("pactl -- set-sink-volume 0 +2%") end,
+    -- TODO: Unify volume command def (between widget and keybinding)
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("pactl -- set-sink-volume @DEFAULT_SINK@ +2%") end,
         {description = "raise volume", group = "multimedia keys"}),
-    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("pactl -- set-sink-volume 0 -2%") end,
+    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("pactl -- set-sink-volume @DEFAULT_SINK@ -2%") end,
         {description = "lower volume", group = "multimedia keys"}),
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end,
         {description = "toggle mute volume", group = "multimedia keys"}),
@@ -101,6 +102,13 @@ globalkeys = gears.table.join(
     awful.key({}, "XF86AudioPrev", function () awful.util.spawn("playerctl previous") end,
         {description = "prev audio", group = "multimedia keys"}),
 
+
+    awful.key({ modkey }, "t", function ()
+        gears.debug.print_warning("win-t down")
+      end, function ()
+        gears.debug.print_warning("win-t down")
+      end,
+      {description = "Take a screenshot of entire screen", group = "screenshot"}),
 
     awful.key({ }, "Print", function () awful.util.spawn("flameshot gui") end,
       {description = "Take a screenshot of entire screen", group = "screenshot"})
@@ -134,6 +142,7 @@ clientkeys = gears.table.join(
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
+--
 for i = 1, 10 do
     local nr_key = "#" .. i + 9 -- keycode
 

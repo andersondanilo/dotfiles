@@ -1,6 +1,7 @@
+@theme "themes/onehalf-dark/launcher.rasi"
+
 configuration {
  modi: "window,drun,ssh,combi";
- theme: "themes/onehalf-dark/launcher.rasi";
  font: "DejaVu Sans Mono for Powerline 10";
  combi-modi: "window,drun,ssh";
 }

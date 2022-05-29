@@ -9,3 +9,7 @@ vim.cmd [[command! -bang -nargs=* GGrep
   \ call fzf#vim#grep(
   \   'git grep --line-number --ignore-case -- '.shellescape(<q-args>), 0,
   \   fzf#vim#with_preview({'options': '--delimiter : --nth 3..', 'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)]]
+vim.cmd [[command! -bang -nargs=* GGrepExact
+  \ call fzf#vim#grep(
+  \   'git grep --line-number --ignore-case -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'options': '--exact --no-extended --delimiter : --nth 3..', 'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)]]

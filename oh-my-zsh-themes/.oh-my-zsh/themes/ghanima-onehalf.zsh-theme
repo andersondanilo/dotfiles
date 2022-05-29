@@ -199,6 +199,16 @@ prompt_git() {
   fi
 }
 
+prompt_venv() {
+  bgcolor="#56b6c2"
+  fgcolor="black"
+
+  if [ ! -z "$VIRTUAL_ENV_PROMPT" ]
+  then
+    print -n "%{%K{$bgcolor}%F{$fgcolor}%} $VIRTUAL_ENV_PROMPT"
+  fi
+}
+
 prompt_right_end() {
   print -n "%{%k%f%}"
   CURRENT_BG=''
@@ -209,6 +219,7 @@ prompt_top_left() {
   prompt_vim
   prompt_dir
   prompt_git
+  prompt_venv
   prompt_end
 }
 
