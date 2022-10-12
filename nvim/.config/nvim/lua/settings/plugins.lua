@@ -134,7 +134,7 @@ return require('packer').startup(function()
           pre_save_cmds = {"tabdo NERDTreeClose"}
         }
 
-        vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+        vim.o.sessionoptions="tabpages,winsize,winpos"
       end
     }
     use { 'tpope/vim-markdown' }

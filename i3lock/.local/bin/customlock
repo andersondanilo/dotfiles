@@ -114,6 +114,7 @@ post_lock() {
     log_message "post_lock()"
     #reload_picom
     log_message "lock: unlock screen"
+    restore_xrand_brightness
 }
 
 start_i3lock() {

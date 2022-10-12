@@ -15,5 +15,6 @@ export FZF_DEFAULT_OPTS="
 "
 
 source $HOME/.asdf/asdf.sh
+source $HOME/.asdf/plugins/java/set-java-home.zsh
 
 alias sd="NEW_DIR=\$(fd --type directory | fzf --bind 'tab:replace-query+reload(fd --type directory --search-path {})') && cd \$NEW_DIR"

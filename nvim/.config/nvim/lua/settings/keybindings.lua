@@ -29,7 +29,7 @@ vim.cmd [[imap <C-c> <C-O>:echo "Ctrl+C temporary disabled use Ctrl+["<CR>]]
 vim.cmd [[vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>]]
 
 -- paste default register in visual mode without overwriting itself
-vim.cmd [[xnoremap p pgvy]]
+-- vim.cmd [[xnoremap p pgvy]]
 
 -- Custom commands
 vim.cmd [[command FormatJSON :%!jq .]]

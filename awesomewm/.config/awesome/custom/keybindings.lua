@@ -102,14 +102,6 @@ globalkeys = gears.table.join(
     awful.key({}, "XF86AudioPrev", function () awful.util.spawn("playerctl previous") end,
         {description = "prev audio", group = "multimedia keys"}),
 
-
-    awful.key({ modkey }, "t", function ()
-        gears.debug.print_warning("win-t down")
-      end, function ()
-        gears.debug.print_warning("win-t down")
-      end,
-      {description = "Take a screenshot of entire screen", group = "screenshot"}),
-
     awful.key({ }, "Print", function () awful.util.spawn("flameshot gui") end,
       {description = "Take a screenshot of entire screen", group = "screenshot"})
 )
@@ -131,6 +123,10 @@ clientkeys = gears.table.join(
         function (c)
             c.maximized = true
             c:raise()
+        end, {description = "maximize client", group = "client"}),
+    awful.key({ modkey,           }, "o",
+        function (c)
+            c.ontop = not c.ontop
         end, {description = "maximize client", group = "client"}),
     awful.key({ modkey,           }, "j",
         function (c)
