@@ -2,6 +2,6 @@
 
 configuration {
  modi: "window,drun,ssh,combi";
- font: "DejaVu Sans Mono for Powerline 10";
+ font: "DejavuSansMono Nerd Font 10";
  combi-modi: "window,drun,ssh";
 }

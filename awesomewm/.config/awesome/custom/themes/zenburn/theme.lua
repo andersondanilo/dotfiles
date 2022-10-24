@@ -29,7 +29,7 @@ theme.wallpaper = string.format("%s/Pictures/Wallpapers/current.jpg", os.getenv(
 -- }}}
 
 -- {{{ Styles
-theme.font      = "NotoSans 8"
+theme.font      = "DejavuSansMono Nerd Font 8"
 
 -- {{{ Colors
 theme.fg_normal  = colors.color_fg
