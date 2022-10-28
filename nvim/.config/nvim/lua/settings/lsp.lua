@@ -12,15 +12,15 @@ local on_attach = function(client, bufnr)
   --   }
   -- }, bufnr)
   -- require'completion'.on_attach(client, bufnr)
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_command [[augroup Format]]
     vim.api.nvim_command [[autocmd! * <buffer>]]
     vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync({}, 5000)]]
     vim.api.nvim_command [[augroup END]]
   end
-  if client.resolved_capabilities.text_ then
-    require'completion'.on_attach(client, bufnr)
-  end
+  -- if client.server_capabilities.textCompletion then
+  --   require'completion'.on_attach(client, bufnr)
+  -- end
 end
 
 -- Setup custom linters
@@ -38,8 +38,7 @@ local eslint = {
 
 nvim_lsp.efm.setup {
   on_attach = function(client, ...)
-    client.resolved_capabilities.document_formatting = true
-    client.resolved_capabilities.goto_definition = false
+    client.server_capabilities.documentFormattingProvider = true
     on_attach(client, ...)
   end,
   root_dir = function()
@@ -73,7 +72,7 @@ nvim_lsp["tsserver"].setup {
     if client.config.flags then
       client.config.flags.allow_incremental_sync = true
     end
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
     on_attach(client, ...)
   end
 }
@@ -146,7 +145,7 @@ require'nvim-treesitter.configs'.setup {
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
 
---vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())
 -- ~/.cache/nvim/lsp.log
 

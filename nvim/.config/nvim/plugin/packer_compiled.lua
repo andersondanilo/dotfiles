@@ -9,23 +9,26 @@ vim.api.nvim_command('packadd packer.nvim')
 
 local no_errors, error_msg = pcall(function()
 
-  local time
-  local profile_info
-  local should_profile = false
-  if should_profile then
-    local hrtime = vim.loop.hrtime
-    profile_info = {}
-    time = function(chunk, start)
-      if start then
-        profile_info[chunk] = hrtime()
-      else
-        profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
-      end
+_G._packer = _G._packer or {}
+_G._packer.inside_compile = true
+
+local time
+local profile_info
+local should_profile = false
+if should_profile then
+  local hrtime = vim.loop.hrtime
+  profile_info = {}
+  time = function(chunk, start)
+    if start then
+      profile_info[chunk] = hrtime()
+    else
+      profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
     end
-  else
-    time = function(chunk, start) end
   end
-  
+else
+  time = function(chunk, start) end
+end
+
 local function save_profiles(threshold)
   local sorted_times = {}
   for chunk_name, time_taken in pairs(profile_info) do
@@ -38,8 +41,10 @@ local function save_profiles(threshold)
       results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
     end
   end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
 
-  _G._packer = _G._packer or {}
   _G._packer.profile_output = results
 end
 
@@ -70,7 +75,7 @@ time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
   ["AutoSave.nvim"] = {
-    config = { "\27LJ\2\nþ\2\0\0\a\0\16\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0'\3\4\0006\4\5\0009\4\6\0049\4\a\4'\6\b\0B\4\2\2&\3\4\3=\3\t\0025\3\n\0=\3\v\0025\3\f\0004\4\0\0=\4\r\0034\4\0\0=\4\14\3=\3\15\2B\0\2\1K\0\1\0\15conditions\20filetype_is_not\20filename_is_not\1\0\2\vexists\2\15modifiable\2\vevents\1\3\0\0\16InsertLeave\16TextChanged\22execution_message\r%H:%M:%S\rstrftime\afn\bvim\24AutoSave: saved at \1\0\5\20on_off_commands\2\fenabled\1\19debounce_delay\3‡\1 clean_command_line_interval\3\0\22write_all_buffers\1\nsetup\rautosave\frequire\0" },
+    config = { "\27LJ\2\nþ\2\0\0\a\0\16\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0'\3\4\0006\4\5\0009\4\6\0049\4\a\4'\6\b\0B\4\2\2&\3\4\3=\3\t\0025\3\n\0=\3\v\0025\3\f\0004\4\0\0=\4\r\0034\4\0\0=\4\14\3=\3\15\2B\0\2\1K\0\1\0\15conditions\20filetype_is_not\20filename_is_not\1\0\2\vexists\2\15modifiable\2\vevents\1\3\0\0\16InsertLeave\16TextChanged\22execution_message\r%H:%M:%S\rstrftime\afn\bvim\24AutoSave: saved at \1\0\5 clean_command_line_interval\3\0\20on_off_commands\2\22write_all_buffers\1\19debounce_delay\3‡\1\fenabled\1\nsetup\rautosave\frequire\0" },
     loaded = true,
     path = "/home/anderson/.local/share/nvim/site/pack/packer/start/AutoSave.nvim",
     url = "https://github.com/Pocco81/AutoSave.nvim"
@@ -86,7 +91,7 @@ _G.packer_plugins = {
     url = "https://github.com/vim-scripts/LargeFile"
   },
   ["auto-session"] = {
-    config = { "\27LJ\2\n«\4\0\0\17\0\17\0(5\0\0\0004\1\0\0006\2\1\0\18\4\0\0B\2\2\4X\5\18€6\a\2\0009\a\3\a9\a\4\a\18\t\6\0+\n\1\0+\v\2\0B\a\4\0026\b\1\0\18\n\a\0B\b\2\4X\v\5€6\r\5\0009\r\6\r\18\15\1\0\18\16\f\0B\r\3\1E\v\3\3R\vùE\5\3\3R\5ì6\2\a\0'\4\b\0B\2\2\0029\2\t\0025\4\n\0=\1\v\0045\5\f\0=\5\r\4B\2\2\0016\2\2\0009\2\14\2'\3\16\0=\3\15\2K\0\1\0Eblank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal\19sessionoptions\6o\18pre_save_cmds\1\2\0\0\24tabdo NERDTreeClose\30auto_session_allowed_dirs\1\0\5\25auto_session_enabled\2\22auto_save_enabled\2\14log_level\tinfo auto_session_create_enabled\2\25auto_restore_enabled\2\nsetup\17auto-session\frequire\vinsert\ntable\vexpand\afn\bvim\vipairs\1\4\0\0\20~/Workspace/*/*\28~/Workspace/*/scripts/*\31~/Workspace/*/playground/*\0" },
+    config = { "\27LJ\2\n‚\4\0\0\17\0\17\0(5\0\0\0004\1\0\0006\2\1\0\18\4\0\0B\2\2\4X\5\18€6\a\2\0009\a\3\a9\a\4\a\18\t\6\0+\n\1\0+\v\2\0B\a\4\0026\b\1\0\18\n\a\0B\b\2\4X\v\5€6\r\5\0009\r\6\r\18\15\1\0\18\16\f\0B\r\3\1E\v\3\3R\vù\127E\5\3\3R\5ì\1276\2\a\0'\4\b\0B\2\2\0029\2\t\0025\4\n\0=\1\v\0045\5\f\0=\5\r\4B\2\2\0016\2\2\0009\2\14\2'\3\16\0=\3\15\2K\0\1\0\28tabpages,winsize,winpos\19sessionoptions\6o\18pre_save_cmds\1\2\0\0\24tabdo NERDTreeClose\30auto_session_allowed_dirs\1\0\5 auto_session_create_enabled\2\25auto_restore_enabled\2\25auto_session_enabled\2\22auto_save_enabled\2\14log_level\tinfo\nsetup\17auto-session\frequire\vinsert\ntable\vexpand\afn\bvim\vipairs\1\4\0\0\20~/Workspace/*/*\28~/Workspace/*/scripts/*\31~/Workspace/*/playground/*\0" },
     loaded = true,
     path = "/home/anderson/.local/share/nvim/site/pack/packer/start/auto-session",
     url = "https://github.com/rmagatti/auto-session"
@@ -322,6 +327,18 @@ time([[Defining packer_plugins]], false)
 time([[Runtimepath customization]], true)
 vim.o.runtimepath = vim.o.runtimepath .. ",/home/anderson/.local/share/nvim/site/pack/packer/start/onehalf/vim"
 time([[Runtimepath customization]], false)
+-- Config for: auto-session
+time([[Config for auto-session]], true)
+try_loadstring("\27LJ\2\n‚\4\0\0\17\0\17\0(5\0\0\0004\1\0\0006\2\1\0\18\4\0\0B\2\2\4X\5\18€6\a\2\0009\a\3\a9\a\4\a\18\t\6\0+\n\1\0+\v\2\0B\a\4\0026\b\1\0\18\n\a\0B\b\2\4X\v\5€6\r\5\0009\r\6\r\18\15\1\0\18\16\f\0B\r\3\1E\v\3\3R\vù\127E\5\3\3R\5ì\1276\2\a\0'\4\b\0B\2\2\0029\2\t\0025\4\n\0=\1\v\0045\5\f\0=\5\r\4B\2\2\0016\2\2\0009\2\14\2'\3\16\0=\3\15\2K\0\1\0\28tabpages,winsize,winpos\19sessionoptions\6o\18pre_save_cmds\1\2\0\0\24tabdo NERDTreeClose\30auto_session_allowed_dirs\1\0\5 auto_session_create_enabled\2\25auto_restore_enabled\2\25auto_session_enabled\2\22auto_save_enabled\2\14log_level\tinfo\nsetup\17auto-session\frequire\vinsert\ntable\vexpand\afn\bvim\vipairs\1\4\0\0\20~/Workspace/*/*\28~/Workspace/*/scripts/*\31~/Workspace/*/playground/*\0", "config", "auto-session")
+time([[Config for auto-session]], false)
+-- Config for: AutoSave.nvim
+time([[Config for AutoSave.nvim]], true)
+try_loadstring("\27LJ\2\nþ\2\0\0\a\0\16\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0'\3\4\0006\4\5\0009\4\6\0049\4\a\4'\6\b\0B\4\2\2&\3\4\3=\3\t\0025\3\n\0=\3\v\0025\3\f\0004\4\0\0=\4\r\0034\4\0\0=\4\14\3=\3\15\2B\0\2\1K\0\1\0\15conditions\20filetype_is_not\20filename_is_not\1\0\2\vexists\2\15modifiable\2\vevents\1\3\0\0\16InsertLeave\16TextChanged\22execution_message\r%H:%M:%S\rstrftime\afn\bvim\24AutoSave: saved at \1\0\5 clean_command_line_interval\3\0\20on_off_commands\2\22write_all_buffers\1\19debounce_delay\3‡\1\fenabled\1\nsetup\rautosave\frequire\0", "config", "AutoSave.nvim")
+time([[Config for AutoSave.nvim]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\n`\0\0\4\0\4\0\n6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0029\1\3\1\18\3\0\0B\1\2\1K\0\1\0\nsetup\rgitsigns\30settings/plugins/gitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
 -- Config for: nvim-projectconfig
 time([[Config for nvim-projectconfig]], true)
 try_loadstring("\27LJ\2\n@\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\23nvim-projectconfig\frequire\0", "config", "nvim-projectconfig")
@@ -330,22 +347,17 @@ time([[Config for nvim-projectconfig]], false)
 time([[Config for nrpattern.nvim]], true)
 try_loadstring("\27LJ\2\nb\0\0\4\0\4\0\n6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0029\1\3\1\18\3\0\0B\1\2\1K\0\1\0\nsetup\14nrpattern\31settings/plugins/nrpattern\frequire\0", "config", "nrpattern.nvim")
 time([[Config for nrpattern.nvim]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
-try_loadstring("\27LJ\2\n`\0\0\4\0\4\0\n6\0\0\0'\2\1\0B\0\2\0026\1\0\0'\3\2\0B\1\2\0029\1\3\1\18\3\0\0B\1\2\1K\0\1\0\nsetup\rgitsigns\30settings/plugins/gitsigns\frequire\0", "config", "gitsigns.nvim")
-time([[Config for gitsigns.nvim]], false)
--- Config for: auto-session
-time([[Config for auto-session]], true)
-try_loadstring("\27LJ\2\n«\4\0\0\17\0\17\0(5\0\0\0004\1\0\0006\2\1\0\18\4\0\0B\2\2\4X\5\18€6\a\2\0009\a\3\a9\a\4\a\18\t\6\0+\n\1\0+\v\2\0B\a\4\0026\b\1\0\18\n\a\0B\b\2\4X\v\5€6\r\5\0009\r\6\r\18\15\1\0\18\16\f\0B\r\3\1E\v\3\3R\vùE\5\3\3R\5ì6\2\a\0'\4\b\0B\2\2\0029\2\t\0025\4\n\0=\1\v\0045\5\f\0=\5\r\4B\2\2\0016\2\2\0009\2\14\2'\3\16\0=\3\15\2K\0\1\0Eblank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal\19sessionoptions\6o\18pre_save_cmds\1\2\0\0\24tabdo NERDTreeClose\30auto_session_allowed_dirs\1\0\5\25auto_session_enabled\2\22auto_save_enabled\2\14log_level\tinfo auto_session_create_enabled\2\25auto_restore_enabled\2\nsetup\17auto-session\frequire\vinsert\ntable\vexpand\afn\bvim\vipairs\1\4\0\0\20~/Workspace/*/*\28~/Workspace/*/scripts/*\31~/Workspace/*/playground/*\0", "config", "auto-session")
-time([[Config for auto-session]], false)
 -- Config for: onehalf
 time([[Config for onehalf]], true)
 try_loadstring("\27LJ\2\n;\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\28colorscheme onehalfdark\bcmd\bvim\0", "config", "onehalf")
 time([[Config for onehalf]], false)
--- Config for: AutoSave.nvim
-time([[Config for AutoSave.nvim]], true)
-try_loadstring("\27LJ\2\nþ\2\0\0\a\0\16\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0'\3\4\0006\4\5\0009\4\6\0049\4\a\4'\6\b\0B\4\2\2&\3\4\3=\3\t\0025\3\n\0=\3\v\0025\3\f\0004\4\0\0=\4\r\0034\4\0\0=\4\14\3=\3\15\2B\0\2\1K\0\1\0\15conditions\20filetype_is_not\20filename_is_not\1\0\2\vexists\2\15modifiable\2\vevents\1\3\0\0\16InsertLeave\16TextChanged\22execution_message\r%H:%M:%S\rstrftime\afn\bvim\24AutoSave: saved at \1\0\5\20on_off_commands\2\fenabled\1\19debounce_delay\3‡\1 clean_command_line_interval\3\0\22write_all_buffers\1\nsetup\rautosave\frequire\0", "config", "AutoSave.nvim")
-time([[Config for AutoSave.nvim]], false)
+
+_G._packer.inside_compile = false
+if _G._packer.needs_bufread == true then
+  vim.cmd("doautocmd BufRead")
+end
+_G._packer.needs_bufread = false
+
 if should_profile then save_profiles() end
 
 end)
