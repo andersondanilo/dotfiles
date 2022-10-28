@@ -14,13 +14,13 @@ export FZF_DEFAULT_OPTS="
 --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
 "
 
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/plugins/java/set-java-home.zsh
+source $HOME/.asdf/asdf.sh # archinstall-ignore
+source $HOME/.asdf/plugins/java/set-java-home.zsh # archinstall-ignore
 
 alias sd="NEW_DIR=\$(fd --type directory | fzf --bind 'tab:replace-query+reload(fd --type directory --search-path {})') && cd \$NEW_DIR"
-. "$HOME/.cargo/env"
+. "$HOME/.cargo/env" # archinstall-ignore
 
 
-# ESP config
-export LIBCLANG_PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-clang/esp-14.0.0-20220415-x86_64-unknown-linux-gnu/lib/"
-export PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s2-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s3-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:$PATH"
+# ESP config # archinstall-ignore
+export LIBCLANG_PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-clang/esp-14.0.0-20220415-x86_64-unknown-linux-gnu/lib/" # archinstall-ignore
+export PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s2-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s3-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:$PATH" # archinstall-ignore
