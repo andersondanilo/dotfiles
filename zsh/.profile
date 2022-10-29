@@ -14,7 +14,7 @@ export FZF_DEFAULT_OPTS="
 --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
 "
 
-source $HOME/.asdf/asdf.sh # archinstall-ignore
+source $HOME/.asdf/asdf.sh
 source $HOME/.asdf/plugins/java/set-java-home.zsh # archinstall-ignore
 
 alias sd="NEW_DIR=\$(fd --type directory | fzf --bind 'tab:replace-query+reload(fd --type directory --search-path {})') && cd \$NEW_DIR"
