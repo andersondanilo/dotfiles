@@ -85,9 +85,9 @@ return require('packer').startup(function()
       end
     }
     use {
-      'Pocco81/AutoSave.nvim',
+      'Pocco81/auto-save.nvim',
       config = function()
-        require('autosave').setup(
+        require('auto-save').setup(
           {
             enabled = false,
             execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
