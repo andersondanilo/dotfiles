@@ -2,6 +2,6 @@
 
 configuration {
  modi: "window,drun,ssh,combi";
- font: "DejavuSansMono Nerd Font 10";
+ font: "DejavuSansM Nerd Font 10";
  combi-modi: "window,drun,ssh";
 }

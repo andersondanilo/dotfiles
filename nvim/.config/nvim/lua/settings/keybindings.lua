@@ -2,9 +2,9 @@
 vim.cmd [[map <Leader>"  :split<CR>]]
 vim.cmd [[map <Leader>%  :vsplit<CR>]]
 vim.cmd [[map <Leader>h :nohl<CR>]]
-vim.cmd [[nmap  <Leader>s :w<CR>]]
-vim.cmd [[imap <C-s> <C-[>:w<CR>]]
-vim.cmd [[nmap <C-s> :w<CR>]]
+vim.cmd [[nmap  <Leader>s :update<CR>]]
+vim.cmd [[imap <C-s> <C-[>:update<CR>]]
+vim.cmd [[nmap <C-s> :update<CR>]]
 vim.cmd [[map  <Leader>q :close<CR>]]
 vim.cmd [[nmap <Leader>yf :let @+ = expand("%")<cr>]]
 
