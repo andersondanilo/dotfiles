@@ -7,7 +7,6 @@ return {
     changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
   },
   signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  keymaps = {},
   current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
   sign_priority = 6,
 }

@@ -15,7 +15,7 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_command [[augroup Format]]
     vim.api.nvim_command [[autocmd! * <buffer>]]
-    vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync({}, 5000)]]
+    vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({})]]
     vim.api.nvim_command [[augroup END]]
   end
   -- if client.server_capabilities.textCompletion then
@@ -78,7 +78,7 @@ nvim_lsp["tsserver"].setup {
 }
 nvim_lsp["jedi_language_server"].setup { on_attach = on_attach }
 nvim_lsp["phpactor"].setup { on_attach = on_attach }
--- nvim_lsp["brighterscript-ls"].setup { on_attach = on_attach }
+nvim_lsp["bright_script"].setup { on_attach = on_attach }
 nvim_lsp["gdscript"].setup { on_attach = on_attach }
 nvim_lsp["rust_analyzer"].setup {
   on_attach = on_attach,
@@ -147,7 +147,7 @@ parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
 
 vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())
--- ~/.cache/nvim/lsp.log
+-- ~/.local/state/nvim/lsp.log
 
 vim.fn.sign_define("DiagnosticSignError",
     {text = "", texthl = "DiagnosticError"})

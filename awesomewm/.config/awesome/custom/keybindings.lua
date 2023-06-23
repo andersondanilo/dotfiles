@@ -33,8 +33,6 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-    --          {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey }, "l", function () awful.screen.focus_relative( 1) end,
@@ -133,6 +131,36 @@ clientkeys = gears.table.join(
             c.maximized = false
             c:raise()
         end, {description = "minimize client", group = "client"})
+
+    -- awful.key({ modkey,           }, "w",
+    --     function (c)
+    --         if not c.maximized then
+    --             c.maximized = true
+    --             return
+    --         end
+
+    --         local screen = awful.screen.focused()
+    --         local workarea = screen.workarea
+    --         local new_width = math.floor(workarea.width * 0.5)
+    --         local new_height = math.floor(workarea.height * 0.95)
+    --         local margin_top = math.floor((workarea.height - new_height) / 2)
+    --         local margin_left = math.floor((workarea.width - new_width) / 2)
+
+    --         gears.debug.print_error("workarea.x = " .. workarea.x)
+    --         gears.debug.print_error("workarea.y = " .. workarea.y)
+    --         gears.debug.print_error("workarea.width = " .. workarea.width)
+    --         gears.debug.print_error("workarea.height = " .. workarea.height)
+    --         gears.debug.print_error("new_width = " .. new_width)
+    --         gears.debug.print_error("new_height = " .. new_height)
+    --         gears.debug.print_error("margin_top = " .. margin_top)
+    --         gears.debug.print_error("margin_left = " .. margin_left)
+
+    --         c.x = workarea.x + margin_top
+    --         c.y = workarea.y + margin_left
+    --         c.width = new_width
+    --         c.height = new_height
+    --     end,
+    --     {description = "toggle centered windows mode", group = "client"})
 )
 
 -- Bind all key numbers to tags.

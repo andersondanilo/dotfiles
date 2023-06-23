@@ -25,6 +25,7 @@ vim.cmd [[
   set splitright
   set scrolloff=3
   let g:mapleader = "ç"
+  set nofoldenable
 
   " keep it fun, use only the keyboard
   set mouse=

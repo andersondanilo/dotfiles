@@ -473,6 +473,15 @@ awful.rules.rules = {
             titlebars_enabled = false
         }
     },
+
+    {
+        rule = {
+            class = "popup"
+        },
+        properties = { 
+            placement = awful.placement.centered
+        }
+    },
 }
 -- }}}
 

@@ -5,6 +5,7 @@ vim.cmd [[let NERDTreeQuitOnOpen=1]]
 vim.cmd [[exec 'autocmd BufEnter,WinEnter NERD_tree_* set signcolumn=no']]
 
 vim.cmd [[
+  let g:NERDTreeMinimalMenu=1
   let g:WebDevIconsUnicodeDecorateFolderNodes = 1
   let g:DevIconsEnableFoldersOpenClose = 1
   let g:DevIconsDefaultFolderOpenSymbol='' " symbol for open folder (f07c)

@@ -25,14 +25,15 @@ enable_autolock() {
     log_message "enable_autolock()"
     [ -e "$AUTOLOCK_BLOCKER" ] && rm $AUTOLOCK_BLOCKER
     configure
-    xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" autolock &
+    pkill xss-lock
+    #xss-lock --notifier="$ME notify" --transfer-sleep-lock "$ME" autolock &
     log_message "enabled"
 }
 
 disable_autolock() {
     log_message "disable_autolock()"
     touch $AUTOLOCK_BLOCKER
-    pkill xss-lock
+    #pkill xss-lock
     unconfigure
     log_message "disabled"
 }

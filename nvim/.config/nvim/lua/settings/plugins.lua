@@ -42,9 +42,18 @@ return require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'folke/todo-comments.nvim'
     use 'vim-scripts/LargeFile'
-    -- use 'jparise/vim-graphql'
+    use 'jparise/vim-graphql'
     use 'cespare/vim-toml'
-    use {'nvim-treesitter/nvim-treesitter', run = function() vim.cmd(':TSUpdate') end}
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      run = function()
+        vim.cmd(':TSUpdate') 
+      end,
+      config = function()
+        require"settings/plugins/treesitter"
+      end,
+    }
+    use 'nvim-treesitter/nvim-treesitter-context'
     use 'kyazdani42/nvim-web-devicons'
     use 'folke/trouble.nvim'
     use 'tpope/vim-repeat'
@@ -84,28 +93,28 @@ return require('packer').startup(function()
         require('nvim-projectconfig').setup()
       end
     }
-    use {
-      'Pocco81/auto-save.nvim',
-      config = function()
-        require('auto-save').setup(
-          {
-            enabled = false,
-            execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
-            events = {"InsertLeave", "TextChanged"},
-            conditions = {
-                exists = true,
-                filename_is_not = {},
-                filetype_is_not = {},
-                modifiable = true
-            },
-            write_all_buffers = false,
-            on_off_commands = true,
-            clean_command_line_interval = 0,
-            debounce_delay = 135
-          }
-        )
-      end
-    }
+    -- use {
+    --   'Pocco81/auto-save.nvim',
+    --   config = function()
+    --     require('auto-save').setup(
+    --       {
+    --         enabled = false,
+    --         execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+    --         events = {"InsertLeave", "TextChanged"},
+    --         conditions = {
+    --             exists = true,
+    --             filename_is_not = {},
+    --             filetype_is_not = {},
+    --             modifiable = true
+    --         },
+    --         write_all_buffers = false,
+    --         on_off_commands = true,
+    --         clean_command_line_interval = 0,
+    --         debounce_delay = 135
+    --       }
+    --     )
+    --   end
+    -- }
     use {
       'rmagatti/auto-session',
       config = function()
@@ -125,7 +134,7 @@ return require('packer').startup(function()
         end
 
         require('auto-session').setup {
-          log_level = 'info',
+          log_level = 'error',
           auto_session_allowed_dirs = auto_session_allowed_dirs,
           auto_session_enabled = true,
           auto_save_enabled = true,
@@ -139,6 +148,7 @@ return require('packer').startup(function()
     }
     use { 'tpope/vim-markdown' }
     use { 'dhruvasagar/vim-zoom' }
+    -- use { 'github/copilot.vim' }
     --use {
     --  'wikitopian/hardmode',
     --  config = function()
@@ -155,5 +165,10 @@ return require('packer').startup(function()
     --    end
     --}
     --use 'nvim-lua/popup.nvim'
-    --use 'nvim-telescope/telescope.nvim'
+    use 'nvim-telescope/telescope.nvim'
+    use { "johmsalas/text-case.nvim",
+      config = function()
+        require('textcase').setup {}
+      end
+    }
 end)
