@@ -23,6 +23,7 @@ vim.cmd [[
   set nohidden
   set splitbelow
   set splitright
+  set nofoldenable
   set scrolloff=3
   let g:mapleader = "ç"
   set nofoldenable
