@@ -57,6 +57,11 @@ vim.cmd [[imap <silent> <c-n> <Plug>(completion_trigger)]]
 vim.cmd [[nmap = <Plug>(PatternIncrement)]]
 vim.cmd [[nmap - <Plug>(PatternDecrement)]]
 
+-- test
+vim.cmd [[nmap <Leader>ti :lua require("neotest").run.run()<CR>]]
+vim.cmd [[nmap <Leader>tf :lua require("neotest").run.run(vim.fn.expand("%"))<CR>]]
+vim.cmd [[nmap <Leader>ts :lua require("neotest").run.stop()<CR>]]
+
 -- custom movements
 -- vim.cmd [[noremap <leader>j :<C-U>call smoothie#downwards() <CR>]]
 -- vim.cmd [[noremap <leader>k :<C-U>call smoothie#upwards() <CR>]]

@@ -33,7 +33,6 @@ return require('packer').startup(function()
     use 'rafaelsq/completion-nvim'
     use 'neovim/nvim-lspconfig'
     use 'lambdalisue/suda.vim'
-    use 'tpope/vim-surround'
     use 'mfussenegger/nvim-dap'
     use 'habamax/vim-godot'
     use 'vim-crystal/vim-crystal'
@@ -56,7 +55,6 @@ return require('packer').startup(function()
     use 'nvim-treesitter/nvim-treesitter-context'
     use 'kyazdani42/nvim-web-devicons'
     use 'folke/trouble.nvim'
-    use 'tpope/vim-repeat'
     use {
       'zegervdv/nrpattern.nvim',
       config = function()
@@ -83,7 +81,7 @@ return require('packer').startup(function()
     --      require"settings/plugins/rest-nvim"
     --    end
     -- }
-    use { 'nicwest/vim-http' }
+    -- use { 'nicwest/vim-http' }
 
     use { 'rust-lang/rust.vim' }
     use { 'ryanoasis/vim-devicons' }
@@ -148,7 +146,7 @@ return require('packer').startup(function()
     }
     use { 'tpope/vim-markdown' }
     use { 'dhruvasagar/vim-zoom' }
-    -- use { 'github/copilot.vim' }
+    use { 'github/copilot.vim', config = function() require('settings/plugins/copilot') end }
     --use {
     --  'wikitopian/hardmode',
     --  config = function()
@@ -170,5 +168,20 @@ return require('packer').startup(function()
       config = function()
         require('textcase').setup {}
       end
+    }
+    use 'tpope/vim-surround'
+    use { 'tpope/vim-unimpaired' }
+    use 'tpope/vim-repeat'
+
+    use {
+      "nvim-neotest/neotest",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "antoinemadec/FixCursorHold.nvim",
+        "haydenmeade/neotest-jest",
+        "olimorris/neotest-phpunit"
+      },
+      config = function() require"settings/plugins/neotest" end
     }
 end)

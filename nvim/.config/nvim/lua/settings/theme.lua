@@ -7,9 +7,11 @@ function setup_theme()
   local colorscheme = "onehalfdark"
   vim.cmd('colorscheme ' .. colorscheme)
 
-  vim.cmd [[
+  signBg = '#282c34'
+
+  vim.cmd(string.format([[
     hi Normal guibg=NONE ctermbg=NONE
-    hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=#282c34
+    hi SignColumn ctermfg=247 ctermbg=236 guifg=#919baa guibg=%s
     hi Pmenu ctermfg=236 ctermbg=247 guifg=#B4C1D4 guibg=#373e49
     hi PmenuSel ctermfg=236 ctermbg=247 guifg=#1F2329 guibg=#98c379
     hi PmenuSbar ctermfg=236 ctermbg=247 guifg=#98c379 guibg=#2c323a
@@ -18,7 +20,7 @@ function setup_theme()
     hi def link CursorLineNr LineNr
     hi clear NERDTreeFlags
     hi def link NERDTreeFlags Comment
-  ]]
+  ]], signBg))
 
   local signs = {
     Error = { guifg = "#e06c75" },
@@ -48,8 +50,8 @@ function setup_theme()
   local colorscheme = 'onehalfdark'
 
   local diags_colors = {
-    error = { bg = { signs['Error']['guifg'], "233" }, fg = { "#282c34", "203"} },
-    warning = { bg = { signs['Warning']['guifg'], "233" }, fg = { "#282c34", "208" } }
+    error = { bg = { signs['Error']['guifg'], "233" }, fg = { signBg, "203"} },
+    warning = { bg = { signs['Warning']['guifg'], "233" }, fg = { signBg, "208" } }
   }
 
   local airline_styles = { 'normal', 'insert', 'visual', 'replace', 'inactive' }

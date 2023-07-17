@@ -30,4 +30,5 @@ vim.cmd [[
 
   " keep it fun, use only the keyboard
   set mouse=
+  autocmd TermOpen * setlocal nonumber norelativenumber signcolumn=no
 ]]
