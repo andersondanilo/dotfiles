@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Notion
+Comment=Launch Notion in chromiunm app mode
+Exec=/usr/bin/chromium --app=https://notion.so
+Terminal=false
+Icon=/home/anderson/.local/share/icons/64x64/notion.ico
+Type=Application
+Categories=Network;WebBrowser;

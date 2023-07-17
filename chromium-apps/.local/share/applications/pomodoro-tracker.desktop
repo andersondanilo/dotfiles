@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=PomodoroTracker
+Comment=Launch Pomodoro Tracker in chromiunm app mode
+Exec=/usr/bin/chromium --app=https://pomodoro-tracker.com/
+Terminal=false
+Icon=/home/anderson/.local/share/icons/64x64/pomodoro.png
+Type=Application
+Categories=Network;WebBrowser;
