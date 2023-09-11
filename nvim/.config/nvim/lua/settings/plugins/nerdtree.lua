@@ -12,7 +12,7 @@ vim.cmd [[
   let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol='' " symbol for closed folder (f07b)
   let NERDTreeDirArrowExpandable = ""
   let NERDTreeDirArrowCollapsible = ""
-  let g:NERDTreeIgnore = ['^dist$', '^node_modules$']
+  let g:NERDTreeIgnore = ['^dist$', '^node_modules$', '__pycache__']
 ]]
 
 -- vim.cmd [[

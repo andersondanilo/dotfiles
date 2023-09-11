@@ -1,26 +1,6 @@
 local nvim_lsp = require('lspconfig')
 
 local on_attach = function(client, bufnr)
-  -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  -- require "lsp_signature".on_attach({
-  --   bind = true, -- This is mandatory, otherwise border config won't get registered.
-  --   handler_opts = {
-  --     border = "none",
-  --     -- toggle_key = "<C-h>",
-  --     padding = " "
-  --   }
-  -- }, bufnr)
-  -- require'completion'.on_attach(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_command [[augroup Format]]
-    vim.api.nvim_command [[autocmd! * <buffer>]]
-    vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({})]]
-    vim.api.nvim_command [[augroup END]]
-  end
-  -- if client.server_capabilities.textCompletion then
-  --   require'completion'.on_attach(client, bufnr)
-  -- end
 end
 
 -- Setup custom linters
@@ -37,31 +17,15 @@ local eslint = {
 }
 
 nvim_lsp.efm.setup {
-  on_attach = function(client, ...)
-    client.server_capabilities.documentFormattingProvider = true
-    on_attach(client, ...)
-  end,
+  -- handle formatting a lot of linters, see $HOME/.config/efm-langserver/config.yaml
+  on_attach = on_attach,
+  --on_attach = function(client, ...)
+  --  --client.server_capabilities.documentFormattingProvider = true
+  --  on_attach(client, ...)
+  --end,
   root_dir = function()
     return vim.fn.getcwd()
-  end,
-  settings = {
-    languages = {
-      javascript = {eslint},
-      javascriptreact = {eslint},
-      ["javascript.jsx"] = {eslint},
-      typescript = {eslint},
-      ["typescript.tsx"] = {eslint},
-      typescriptreact = {eslint}
-   }
-  },
-  filetypes = {
-    "javascript",
-    "javascriptreact",
-    "javascript.jsx",
-    "typescript",
-    "typescript.tsx",
-    "typescriptreact"
-  },
+  end
 }
 
 
@@ -92,6 +56,15 @@ nvim_lsp["rust_analyzer"].setup {
               }
           }
       }
+  }
+}
+nvim_lsp["ruff_lsp"].setup {
+  on_attach = on_attach,
+  init_options = {
+    settings = {
+      -- Any extra CLI arguments for `ruff` go here.
+      args = {},
+    }
   }
 }
 --nvim_lsp["rls"].setup {
