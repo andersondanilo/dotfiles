@@ -3,6 +3,7 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim' -- can manage itself
 
+    use '/home/anderson/Workspace/personal/nvim-plugins/movetotest'
     use 'vim-airline/vim-airline'
     use 'vim-airline/vim-airline-themes'
     use 'scrooloose/nerdtree'
@@ -14,7 +15,8 @@ return require('packer').startup(function()
     use 'leafgarland/typescript-vim'
     use 'peitalin/vim-jsx-typescript'
     use 'chrisbra/Colorizer'
-    use 'adoy/vim-php-refactoring-toolbox'
+    use "ellisonleao/gruvbox.nvim"
+    --use 'adoy/vim-php-refactoring-toolbox'
     --use '2072/php-indenting-for-vim'
     use {'vim-scripts/php.vim', as = 'php-indent'}
     use {'stanangeloff/php.vim', as = 'php-syntax'}
@@ -30,12 +32,55 @@ return require('packer').startup(function()
     use 'entrez/roku.vim'
     use 'jamessan/vim-gnupg'
     use 'easymotion/vim-easymotion'
-    use 'rafaelsq/completion-nvim'
+    -- use 'rafaelsq/completion-nvim'
+    use {
+        "L3MON4D3/LuaSnip",
+        -- follow latest release.
+        tag = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+        -- install jsregexp (optional!:).
+        run = "make install_jsregexp"
+    }
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-cmdline'
+    use {
+      'hrsh7th/nvim-cmp',
+      config = function()
+        local cmp = require'cmp'
+        cmp.setup({
+          snippet = {
+            -- REQUIRED - you must specify a snippet engine
+            expand = function(args)
+              require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            end,
+          },
+          window = {
+            -- completion = cmp.config.window.bordered(),
+            -- documentation = cmp.config.window.bordered(),
+          },
+          mapping = cmp.mapping.preset.insert({
+            -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.abort(),
+            ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          }),
+          sources = cmp.config.sources({
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' }, -- For luasnip users.
+          }-- , {
+           --  { name = 'buffer' },
+          -- }
+          )
+        })
+      end
+    }
     use 'neovim/nvim-lspconfig'
     use 'lambdalisue/suda.vim'
-    use 'mfussenegger/nvim-dap'
-    use 'habamax/vim-godot'
-    use 'vim-crystal/vim-crystal'
+    --use 'mfussenegger/nvim-dap'
+    --use 'habamax/vim-godot'
+    --use 'vim-crystal/vim-crystal'
     use 'junegunn/vader.vim'
     use 'psliwka/vim-smoothie'
     use 'nvim-lua/plenary.nvim'
@@ -85,12 +130,12 @@ return require('packer').startup(function()
 
     use { 'rust-lang/rust.vim' }
     use { 'ryanoasis/vim-devicons' }
-    use {
-      'windwp/nvim-projectconfig',
-      config = function()
-        require('nvim-projectconfig').setup()
-      end
-    }
+    --use {
+    --  'windwp/nvim-projectconfig',
+    --  config = function()
+    --    require('nvim-projectconfig').setup()
+    --  end
+    --}
     -- use {
     --   'Pocco81/auto-save.nvim',
     --   config = function()
@@ -113,39 +158,39 @@ return require('packer').startup(function()
     --     )
     --   end
     -- }
-    use {
-      'rmagatti/auto-session',
-      config = function()
-        local patterns = {
-          '~/Workspace/*/*',
-          '~/Workspace/*/scripts/*',
-          '~/Workspace/*/playground/*',
-        }
+    -- use {
+    --   'rmagatti/auto-session',
+    --   config = function()
+    --     local patterns = {
+    --       '~/Workspace/*/*',
+    --       '~/Workspace/*/scripts/*',
+    --       '~/Workspace/*/playground/*',
+    --     }
 
-        local auto_session_allowed_dirs = {}
+    --     local auto_session_allowed_dirs = {}
 
-        for _, pattern in ipairs(patterns) do
-          local paths = vim.fn.expand(pattern, false, true)
-          for _, path in ipairs(paths) do
-            table.insert(auto_session_allowed_dirs, path)
-          end
-        end
+    --     for _, pattern in ipairs(patterns) do
+    --       local paths = vim.fn.expand(pattern, false, true)
+    --       for _, path in ipairs(paths) do
+    --         table.insert(auto_session_allowed_dirs, path)
+    --       end
+    --     end
 
-        require('auto-session').setup {
-          log_level = 'error',
-          auto_session_allowed_dirs = auto_session_allowed_dirs,
-          auto_session_enabled = true,
-          auto_save_enabled = true,
-          auto_restore_enabled = true,
-          auto_session_create_enabled = true,
-          pre_save_cmds = {"tabdo NERDTreeClose"}
-        }
+    --     require('auto-session').setup {
+    --       log_level = 'error',
+    --       auto_session_allowed_dirs = auto_session_allowed_dirs,
+    --       auto_session_enabled = true,
+    --       auto_save_enabled = true,
+    --       auto_restore_enabled = true,
+    --       auto_session_create_enabled = true,
+    --       pre_save_cmds = {"tabdo NERDTreeClose"}
+    --     }
 
-        vim.o.sessionoptions="tabpages,winsize,winpos"
-      end
-    }
+    --     vim.o.sessionoptions="tabpages,winsize,winpos"
+    --   end
+    -- }
     use { 'tpope/vim-markdown' }
-    use { 'dhruvasagar/vim-zoom' }
+    --use { 'dhruvasagar/vim-zoom' }
     use { 'github/copilot.vim', config = function() require('settings/plugins/copilot') end }
     --use {
     --  'wikitopian/hardmode',
@@ -173,15 +218,15 @@ return require('packer').startup(function()
     use { 'tpope/vim-unimpaired' }
     use 'tpope/vim-repeat'
 
-    use {
-      "nvim-neotest/neotest",
-      requires = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-        "antoinemadec/FixCursorHold.nvim",
-        "haydenmeade/neotest-jest",
-        "olimorris/neotest-phpunit"
-      },
-      config = function() require"settings/plugins/neotest" end
-    }
+    -- use {
+    --   "nvim-neotest/neotest",
+    --   requires = {
+    --     "nvim-lua/plenary.nvim",
+    --     "nvim-treesitter/nvim-treesitter",
+    --     "antoinemadec/FixCursorHold.nvim",
+    --     "haydenmeade/neotest-jest",
+    --     "olimorris/neotest-phpunit"
+    --   },
+    --   config = function() require"settings/plugins/neotest" end
+    -- }
 end)

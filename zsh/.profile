@@ -18,10 +18,26 @@ source $HOME/.asdf/asdf.sh # archinstall-ignore
 source $HOME/.asdf/plugins/java/set-java-home.zsh # archinstall-ignore
 
 alias sd="NEW_DIR=\$(fd --type directory | fzf --bind 'tab:replace-query+reload(fd --type directory --search-path {})') && cd \$NEW_DIR"
+alias dc="docker-compose"
+alias dcu="docker-compose up"
+alias dcd="docker-compose down"
+
 . "$HOME/.cargo/env" # archinstall-ignore
 
 
 # ESP config # archinstall-ignore
 export LIBCLANG_PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-clang/esp-14.0.0-20220415-x86_64-unknown-linux-gnu/lib/" # archinstall-ignore
-export PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s2-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s3-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.rover/bin):$PATH" # archinstall-ignore
+export PATH="/home/anderson/.espressif/tools/xtensa-esp32-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s2-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.espressif/tools/xtensa-esp32s3-elf-gcc/8_4_0-esp-2021r2-patch3-x86_64-unknown-linux-gnu/bin/:/home/anderson/.rover/bin:/opt/google-cloud-cli/bin:/home/anderson/.rover/bin:$PATH" # archinstall-ignore
 source "/home/anderson/.rover/env" # archinstall-ignore
+
+#vagrant(){
+#  docker run -it --rm \
+#    -e LIBVIRT_DEFAULT_URI \
+#    -v /var/run/libvirt/:/var/run/libvirt/ \
+#    -v ~/.vagrant.d:/.vagrant.d \
+#    -v $(realpath "${PWD}"):${PWD} \
+#    -w "${PWD}" \
+#    --network host \
+#    vagrantlibvirt/vagrant-libvirt:latest \
+#      vagrant $@
+#}

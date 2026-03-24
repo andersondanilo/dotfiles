@@ -9,6 +9,7 @@ gpgconf --launch gpg-agent
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="robbyrussell"
+#ZSH_THEME="arrow"
 ZSH_THEME="ghanima-onehalf"
 DEFAULT_USER=$USER
 
@@ -55,6 +56,7 @@ DEFAULT_USER=$USER
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git yarn-completion zsh-vi-mode)
+#plugins=(git yarn-completion)
 
 autoload -U history-search-end
 
@@ -62,15 +64,15 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
 # zsh-vi-mode: https://github.com/jeffreytse/zsh-vi-mode
-function zvm_before_init() {
-  # The plugin will auto execute this zvm_before_init function
-  zvm_bindkey viins '^[[A' history-beginning-search-backward-end
-  zvm_bindkey viins '^[[B' history-beginning-search-forward-end
-  zvm_bindkey vicmd '^[[A' history-beginning-search-backward-end
-  zvm_bindkey vicmd '^[[B' history-beginning-search-forward-end
-
-  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-}
+#function zvm_before_init() {
+#  # The plugin will auto execute this zvm_before_init function
+#  zvm_bindkey viins '^[[A' history-beginning-search-backward-end
+#  zvm_bindkey viins '^[[B' history-beginning-search-forward-end
+#  zvm_bindkey vicmd '^[[A' history-beginning-search-backward-end
+#  zvm_bindkey vicmd '^[[B' history-beginning-search-forward-end
+#
+#  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+#}
 
 # User configuration
 
@@ -110,3 +112,18 @@ source $ZSH/oh-my-zsh.sh
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
+
+alias zrl='source ~/.zshrc;echo "ZSH aliases sourced."'
+
+vterm_printf() {
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}

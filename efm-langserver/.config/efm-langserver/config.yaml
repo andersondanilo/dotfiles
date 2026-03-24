@@ -1,4 +1,6 @@
 version: 2
+log-file: /tmp/efmlog.txt
+log-level: 1
 root-markers:
   - .git/
 lint-debounce: 1s
@@ -16,15 +18,14 @@ tools:
   json-jq: &json-jq
     lint-command: 'jq .'
 
-  #php-phpstan: &php-phpstan
-  #  lint-command: './vendor/bin/phpstan analyze --error-format raw --no-progress'
+  php-phpstan: &php-phpstan
+    lint-command: 'vendor/bin/phpstan analyze --error-format raw --no-progress'
 
-  #php-psalm: &php-psalm
-  #  lint-command: './vendor/bin/psalm --output-format=emacs --no-progress'
-  #  lint-formats:
-  #    - '%f:%l:%c:%trror - %m'
-  #    - '%f:%l:%c:%tarning - %m'
-
+      # php-psalm: &php-psalm
+      #   lint-command: 'psalm --output-format=emacs --no-progress'
+      #   lint-formats:
+      #     - '%f:%l:%c:%trror - %m'
+      #     - '%f:%l:%c:%tarning - %m'
 
   #python-autopep8: &python-autopep8
   #  format-command: 'autopep8 -'
@@ -52,9 +53,8 @@ languages:
   json:
     - <<: *json-jq
 
-  #php:
-  #  - <<: *php-phpstan
-  #  - <<: *php-psalm
+  php:
+    - <<: *php-phpstan
 
   python:
     - <<: *python-black

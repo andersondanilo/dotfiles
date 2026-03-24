@@ -18,6 +18,25 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
+local is_virtual_screen = false
+
+for s in screen do
+    local outputs = s.outputs
+    local output_keys = gears.table.keys(outputs)
+    local output_name = output_keys[1]
+
+    -- check if output name starts with VFB (virtual screen)
+    if output_name ~= nil and string.find(output_name, "VFB") then
+        is_virtual_screen = true
+    end
+
+    if output_name ~= nil and string.find(output_name, "VNC") then
+        is_virtual_screen = true
+    end
+end
+
+print("is virtual screen" .. tostring(is_virtual_screen))
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -27,6 +46,14 @@ require("awful.hotkeys_popup.keys")
 local volume_widget = require('lib.awesome-wm-widgets-ext.volume-widget.volume')
 local battery_widget = require("lib.awesome-wm-widgets-ext..battery-widget.battery")
 local brightness_widget = require("lib.awesome-wm-widgets-ext.brightness-widget.brightness")
+local dummy_widget = require("lib.awesome-wm-widgets-ext.dummy-widget.dummy")
+
+if is_virtual_screen then
+    -- pomodoro_widget = dummy_widget
+    volume_widget = dummy_widget
+    battery_widget = dummy_widget
+    brightness_widget = dummy_widget
+end
 
 sharedtags = require("lib.awesome-sharedtags")
 
@@ -233,6 +260,7 @@ function enforce_screen_with_tags(s)
    end
 end
 
+
 awful.screen.connect_for_each_screen(function(s)
 
     print("DEBUG Connecting screen " .. tostring(s.index))
@@ -353,6 +381,7 @@ awful.screen.connect_for_each_screen(function(s)
             }
         },
         s.mytasklist, -- Middle widget
+
         wibox.container.margin(wibox.widget { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             {
@@ -395,7 +424,10 @@ clientbuttons = gears.table.join(
 
 -- {{ Custom
 require("custom/keybindings")
-require("custom/autostart")
+
+if not is_virtual_screen then
+    require("custom/autostart")
+end
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -458,6 +490,9 @@ awful.rules.rules = {
     },
 
     { rule = { class = "firefox" },
+      properties = { maximized = true, titlebars_enabled = false } },
+
+    { rule = { class = "obsidian" },
       properties = { maximized = true, titlebars_enabled = false } },
 
     { rule = { class = "Spotify" },
@@ -613,11 +648,14 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 --   end
 --end)
 
--- Autostart
-awful.spawn.with_shell(
+
+-- only if not is virtual screen
+if not is_virtual_screen then
+    awful.spawn.with_shell(
        'if (xrdb -query | grep -q "^awesome\\.started:\\s*true$"); then exit; fi;' ..
        'xrdb -merge <<< "awesome.started:true";' ..
        'dex -ae Awesome'
        )
 
-awful.spawn.with_shell('customlock start')
+    awful.spawn.with_shell('customlock start')
+end

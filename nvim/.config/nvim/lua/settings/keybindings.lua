@@ -32,11 +32,14 @@ vim.cmd [[vmap <C-c> :echo "Ctrl+C temporary disabled use Ctrl+["<CR>]]
 -- vim.cmd [[xnoremap p pgvy]]
 
 -- Custom commands
-vim.cmd [[command Format :lua vim.lsp.buf.format({})]]
+vim.cmd [[command Format :lua vim.lsp.buf.format({ timeout_ms = 2000 })]]
 vim.cmd [[command FormatJSON :%!jq .]]
 vim.cmd [[command FormatXML :%!xmllint --format -]]
 vim.cmd [[command -range FormatJSONSel :<line1>,<line2>!jq .]]
 vim.cmd [[command LspStop :lua vim.lsp.stop_client(vim.lsp.get_active_clients())]]
+
+-- Auto Format
+vim.cmd [[autocmd BufWritePre * Format]]
 
 -- others
 vim.cmd [[map <Leader>nt  :NERDTreeToggle<CR>]]
@@ -57,7 +60,7 @@ vim.cmd [[nmap <Leader>ga :lua vim.lsp.buf.code_action()<CR>]]
 vim.cmd [[nmap <Leader>gh :lua lsp_show_hover_doc()<CR>]]
 vim.cmd [[inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"]]
 vim.cmd [[inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"]]
-vim.cmd [[imap <silent> <c-n> <Plug>(completion_trigger)]]
+-- vim.cmd [[imap <silent> <c-n> <Plug>(completion_trigger)]]
 vim.cmd [[nmap = <Plug>(PatternIncrement)]]
 vim.cmd [[nmap - <Plug>(PatternDecrement)]]
 
