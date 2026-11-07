@@ -191,7 +191,7 @@ return require('packer').startup(function()
     -- }
     use { 'tpope/vim-markdown' }
     --use { 'dhruvasagar/vim-zoom' }
-    use { 'github/copilot.vim', config = function() require('settings/plugins/copilot') end }
+    -- use { 'github/copilot.vim', config = function() require('settings/plugins/copilot') end }
     --use {
     --  'wikitopian/hardmode',
     --  config = function()
@@ -229,4 +229,23 @@ return require('packer').startup(function()
     --   },
     --   config = function() require"settings/plugins/neotest" end
     -- }
+
+    use {
+     'andersondanilo/pomodoro-time-chamber',
+     rtp = 'contrib/nvim',  -- the Neovim module lives in a subdirectory of the repo
+     config = function()
+       require('ptc').setup()  -- re-reads the status file and redraws every second
+
+       vim.cmd [[
+         function! PtcStatus()
+           return luaeval("require('ptc').status()")
+         endfunction
+         function! PtcAirlineInit()
+           call airline#parts#define_function('ptc', 'PtcStatus')
+           let g:airline_section_x = airline#section#create_right(['ptc', 'filetype'])
+         endfunction
+         autocmd User AirlineAfterInit call PtcAirlineInit()
+       ]]
+     end,
+   }
 end)

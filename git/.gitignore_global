@@ -16,3 +16,4 @@ clover.xml
 local-service-account.json
 git-ignored/*
 Makefile.custom
+resume.sh

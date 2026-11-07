@@ -3,9 +3,10 @@
 # Please adapt and uncomment the following lines:
     name = Anderson Danilo
     email = contact@andersondanilo.com
-	signingkey = 614C8C06DE5CB261AFC3EEE257F3E6589075F87C
+    signingkey = 614C8C06DE5CB261AFC3EEE257F3E6589075F87C
 [core]
     excludesfile = ~/.gitignore_global
+	pager = less -FRX
 [alias]
     changelog = log --pretty=format:'- %s (%h) (%ae) - %cd' --date=short
     clean-merged = "!git branch --merged | grep  -v '\\*\\|master\\|develop\\|main' | xargs -n 1 git branch -d"
@@ -23,10 +24,6 @@
 	prune = true
 [init]
 	defaultBranch = master
-[branch "master"]
-	pushRemote = no_push_in_gitconfig
-[branch "main"]
-	pushRemote = no_push_in_gitconfig
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential

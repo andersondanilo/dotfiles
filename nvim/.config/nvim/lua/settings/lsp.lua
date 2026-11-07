@@ -93,45 +93,29 @@ vim.lsp.enable({"ruff"})
 --  },
 --})
 
-local original_on_publish_diagnostics = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = true,
-    virtual_text = false,
-    signs = true,
-    update_in_insert = true,
-  }
-)
+vim.diagnostic.config({
+  underline = true,
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+})
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = function (...)
-  pcall(original_on_publish_diagnostics, ...)
-end
-
-
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    disable = {},
-  },
-  indent = {
-    enable = false,
-    disable = {},
-  },
-  ensure_installed = {
-    "tsx",
-    "toml",
-    "fish",
-    "php",
-    "json",
-    "yaml",
-    "swift",
-    "html",
-    "scss"
-  },
-}
+-- local original_on_publish_diagnostics = vim.lsp.with(
+--   vim.lsp.diagnostic.on_publish_diagnostics, {
+--     underline = true,
+--     virtual_text = false,
+--     signs = true,
+--     update_in_insert = true,
+--   }
+-- )
+-- 
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function (...)
+--   pcall(original_on_publish_diagnostics, ...)
+-- end
 
 
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
+-- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+-- parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
 
 -- vim.lsp.set_log_level("debug")
 -- :lua print(vim.lsp.get_log_path())

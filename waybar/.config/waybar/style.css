@@ -1,0 +1,55 @@
+@import url("./colors.css");
+
+* {
+    font-family: "DejaVuSansMono Nerd Font Mono", "FiraCode Nerd Font", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: @background;
+    color: @foreground;
+    border-bottom: 2px solid @faint;
+}
+
+/* Exemplo de estilização de módulos */
+#workspaces button {
+    color: @foreground;
+    background: transparent;
+    padding: 0 5px;
+}
+
+#workspaces button.active {
+    color: @green;
+    border-bottom: 2px solid @green;
+}
+
+#clock {
+    color: @cyan;
+    padding: 0 10px;
+}
+
+#battery {
+    color: @green;
+    padding: 0 10px;
+}
+
+#memory {
+    color: @yellow;
+    padding: 0 10px;
+}
+
+#cpu {
+    color: @purple;
+    padding: 0 10px;
+}
+
+#network {
+    color: @blue;
+    padding: 0 10px;
+}
+
+#pulseaudio {
+    color: @red;
+    padding: 0 10px;
+}
