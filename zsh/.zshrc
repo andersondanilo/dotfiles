@@ -55,7 +55,7 @@ DEFAULT_USER=$USER
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git yarn-completion zsh-vi-mode)
+plugins=(git)
 #plugins=(git yarn-completion)
 
 autoload -U history-search-end
@@ -111,8 +111,8 @@ source $ZSH/oh-my-zsh.sh
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-eval "$(zoxide init zsh)"
-eval "$(direnv hook zsh)"
+#eval "$(zoxide init zsh)"
+#eval "$(direnv hook zsh)"
 
 alias zrl='source ~/.zshrc;echo "ZSH aliases sourced."'
 
@@ -126,4 +126,27 @@ vterm_printf() {
     else
         printf "\e]%s\e\\" "$1"
     fi
+}
+
+export GPG_TTY=$(tty)
+unset SSH_AGENT_PID
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
+moshl() {  # usage: moshl host 8080 5432 ...
+  local host=$1; shift
+  local args=()
+
+  pkill autossh
+
+  for p in "$@"; do args+=(-L "${p}:localhost:${p}"); done
+
+  # start the tunnel only if one isn't already running for this host
+  if [ ${#args[@]} -gt 0 ] && ! pgrep -f "autossh.*-L.* $host\$" >/dev/null; then
+    autossh -M 0 -fN -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes \
+      "${args[@]}" "$host"
+  fi
+
+  # attach to tmux session "main", or create it if it doesn't exist
+  TERM=xterm-256color mosh --predict=never "$host" -- tmux new-session -A -s main
 }

@@ -35,7 +35,8 @@ hl.monitor({
 ---------------------
 
 -- Set programs that you use
-local terminal    = "alacritty -e tmux"
+-- local terminal    = "alacritty -e tmux"
+local terminal    = "alacritty"
 local fileManager = "nautilus"
 local menu        = "rofi -show drun"
 
@@ -239,7 +240,7 @@ hl.config({
     input = {
         kb_layout  = "br",
         --kb_variant = "",
-        kb_model   = "abnt2",
+        kb_model   = "thinkpad60",
         --kb_options = "",
         --kb_rules   = "",
 
